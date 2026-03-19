@@ -76,17 +76,17 @@ begin
     SetElementEditValues(newRec, 'FULL', 'Bad Memories');
     SetElementEditValues(newRec, 'DESC', 'Each shell is a grudge. Each pump is a promise. The stock is scarred with tally marks — one for every lesson taught at close range. Part of the Mnehmos Archivist''s Kit. Mnemosyne remembers.');
 
-    SetElementEditValues(newRec, 'DNAM\Value', '3500');
-    SetElementEditValues(newRec, 'DNAM\Weight', '5.0');
-    SetElementEditValues(newRec, 'DNAM\Damage', '70');
-    SetElementEditValues(newRec, 'DNAM\Clip Size', '4');
-    SetElementEditValues(newRec, 'DNAM\Action Point Cost', '26');
-    SetElementEditValues(newRec, 'DNAM\Min Spread', '1.8');
-    SetElementEditValues(newRec, 'DNAM\Health', '150');
-    SetElementEditValues(newRec, 'DNAM\Skill', '25');
+    SetElementEditValues(newRec, 'DATA\Value', '3500');
+    SetElementEditValues(newRec, 'DATA\Weight', '5.000000');
+    SetElementEditValues(newRec, 'DATA\Base Damage', '70');
+    SetElementEditValues(newRec, 'DATA\Clip Size', '4');
+    SetElementEditValues(newRec, 'DATA\Health', '150');
+    SetElementEditValues(newRec, 'DNAM\Override - Action Points', '26.000000');
+    SetElementEditValues(newRec, 'DNAM\Min Spread', '1.800000');
+    SetElementEditValues(newRec, 'DNAM\Skill Req', '25');
 
-    SetElementEditValues(newRec, 'CRDT\Damage', '70');
-    SetElementEditValues(newRec, 'CRDT\% Mult', '1.5');
+    SetElementEditValues(newRec, 'CRDT\Critical Damage', '70');
+    SetElementEditValues(newRec, 'CRDT\Crit % Mult', '1.500000');
 
     Inc(itemCount);
     AddMessage('  [1/6] Bad Memories (Shotgun) — FormID: ' + IntToHex(FormID(newRec), 8));
@@ -108,18 +108,18 @@ begin
     SetElementEditValues(newRec, 'FULL', 'Good Memories');
     SetElementEditValues(newRec, 'DESC', 'Light in the hand. Steady in the dark. Some things you never forget how to do. The grip is worn smooth from years of muscle memory. Part of the Mnehmos Archivist''s Kit. Mnemosyne remembers.');
 
-    SetElementEditValues(newRec, 'DNAM\Value', '3000');
-    SetElementEditValues(newRec, 'DNAM\Weight', '1.2');
-    SetElementEditValues(newRec, 'DNAM\Damage', '28');
-    SetElementEditValues(newRec, 'DNAM\Clip Size', '17');
-    SetElementEditValues(newRec, 'DNAM\Action Point Cost', '15');
-    SetElementEditValues(newRec, 'DNAM\Min Spread', '0.8');
-    SetElementEditValues(newRec, 'DNAM\Fire Rate', '7.0');
-    SetElementEditValues(newRec, 'DNAM\Health', '175');
-    SetElementEditValues(newRec, 'DNAM\Skill', '25');
+    SetElementEditValues(newRec, 'DATA\Value', '3000');
+    SetElementEditValues(newRec, 'DATA\Weight', '1.200000');
+    SetElementEditValues(newRec, 'DATA\Base Damage', '28');
+    SetElementEditValues(newRec, 'DATA\Clip Size', '17');
+    SetElementEditValues(newRec, 'DATA\Health', '175');
+    SetElementEditValues(newRec, 'DNAM\Override - Action Points', '15.000000');
+    SetElementEditValues(newRec, 'DNAM\Min Spread', '0.800000');
+    SetElementEditValues(newRec, 'DNAM\Fire Rate', '7.000000');
+    SetElementEditValues(newRec, 'DNAM\Skill Req', '25');
 
-    SetElementEditValues(newRec, 'CRDT\Damage', '34');
-    SetElementEditValues(newRec, 'CRDT\% Mult', '2.0');
+    SetElementEditValues(newRec, 'CRDT\Critical Damage', '34');
+    SetElementEditValues(newRec, 'CRDT\Crit % Mult', '2.000000');
 
     Inc(itemCount);
     AddMessage('  [2/6] Good Memories (9mm Pistol) — FormID: ' + IntToHex(FormID(newRec), 8));
@@ -141,14 +141,14 @@ begin
     SetElementEditValues(newRec, 'FULL', 'D' + #233 + 'j' + #224 + ' Vu');
     SetElementEditValues(newRec, 'DESC', 'You''ve been here before. You''ve done this before. Your hand knows what to do. The blade moves faster than thought — it remembers the motion even when you don''t. Part of the Mnehmos Archivist''s Kit. Mnemosyne remembers.');
 
-    SetElementEditValues(newRec, 'DNAM\Value', '5000');
-    SetElementEditValues(newRec, 'DNAM\Damage', '28');
-    SetElementEditValues(newRec, 'DNAM\Action Point Cost', '14');
-    SetElementEditValues(newRec, 'DNAM\Health', '200');
-    SetElementEditValues(newRec, 'DNAM\Speed', '1.3');
+    SetElementEditValues(newRec, 'DATA\Value', '5000');
+    SetElementEditValues(newRec, 'DATA\Base Damage', '28');
+    SetElementEditValues(newRec, 'DATA\Health', '200');
+    SetElementEditValues(newRec, 'DNAM\Override - Action Points', '14.000000');
+    SetElementEditValues(newRec, 'DNAM\Animation Attack Multiplier', '1.300000');
 
-    SetElementEditValues(newRec, 'CRDT\Damage', '42');
-    SetElementEditValues(newRec, 'CRDT\% Mult', '2.0');
+    SetElementEditValues(newRec, 'CRDT\Critical Damage', '42');
+    SetElementEditValues(newRec, 'CRDT\Crit % Mult', '2.000000');
 
     Inc(itemCount);
     AddMessage('  [3/6] Deja Vu (Knife) — FormID: ' + IntToHex(FormID(newRec), 8));
