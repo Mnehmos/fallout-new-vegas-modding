@@ -1,0 +1,43 @@
+<rect name="SaveCharacterSelector">
+    <image name="Save_LeftFilterArrow">
+        <id> &generic; </id>
+        <filename> Interface\Main\main_arrow_left.dds </filename>
+        <x><copy src="sibling(Save_CharacterName)" trait="x"/><sub> 20 </sub></x>
+        <y> 12.5 </y>
+        <width> 17.5 </width>
+        <height> 35 </height>
+        <zoom> &scale; </zoom>
+        <target> &true; </target>
+        <clicksound>UIMenuPrevNext</clicksound>
+        <visible> &true; </visible>        <!-- Set in code -->
+        <depth> 1000 </depth>
+    </image>
+
+    <text name="Save_CharacterName">
+        <id> &generic; </id>
+        <font> 6 </font>
+        <string> All </string>
+        <x> 450 </x>
+        <y> 10 </y>
+        <target> &true; </target>
+        <wheelable> &true; </wheelable>
+        <mouseoversound>UIMenuFocus</mouseoversound>
+        <clicksound>UIMenuPrevNext</clicksound>
+        <depth> 1005 </depth>
+        <user0> -1 </user0>		<!-- Set to the current index of the character, or -1 for 'All' -->
+    </text>
+
+    <image name="Save_RightFilterArrow">
+        <id> &generic; </id>
+        <filename> Interface\Main\main_arrow_right.dds </filename>
+        <x><copy src="sibling(Save_CharacterName)" trait="x"/><add src="sibling(Save_CharacterName)" trait="width"/><add> 12 </add></x>
+        <y> 12.5 </y>
+        <width> 17.5 </width>
+        <height> 35 </height>
+        <zoom> &scale; </zoom>
+        <target> &true; </target>
+        <clicksound>UIMenuPrevNext</clicksound>
+        <visible> &true; </visible>        <!-- Set in code -->
+        <depth> 1005 </depth>
+    </image>
+</rect>

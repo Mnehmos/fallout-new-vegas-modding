@@ -1,0 +1,383 @@
+<menu name="TextEditMenu">
+	<class> &TextEditMenu; </class>
+	<stackingtype> &no_click_past; </stackingtype>
+	<xbuttona> <ref src="TEM_OKButton" trait="clicked"/> </xbuttona>
+	<xup> <ref src="Scrollbar_Up" trait="clicked"/> </xup>
+	<xdown> <ref src="Scrollbar_Down" trait="clicked"/> </xdown>
+	<user0> 400 </user0>
+	<user1> 200 </user1>
+	<user2> 0 </user2>
+	<user3> 0 </user3>
+
+	<rect name="NOGLOW_BRANCH">
+		<id> &noglow_branch; </id>
+		<systemcolor> 1 </systemcolor>
+		<width> <copy src="parent()" trait="user0"/> </width>
+		<height> <copy src="parent()" trait="user1"/> </height>
+		<x>
+			<copy src="parent()" trait="user2"/>
+			<add>
+				<copy src="screen()" trait="width"/> <sub src="me()" trait="width"/> <div> 2 </div>
+				<onlyifnot src="parent()" trait="user2"/>
+			</add>
+		</x>
+		<y>
+			<copy src="parent()" trait="user3"/>
+			<add>
+				<copy src="screen()" trait="height"/> <sub src="me()" trait="height"/> <div> 2 </div>
+				<onlyifnot src="parent()" trait="user3"/>
+			</add>
+		</y>
+		<locus> 1 </locus>
+		<user0> <copy src="globals()" trait="_duiHUDOffset"/> <gt> 0 </gt> </user0>
+
+		<image name="TEM_Background">
+			<filename> Interface\Shared\background\fuzzy.dds </filename>
+			<width> <copy src="parent()" trait="width"/> <mul> 1.2 </mul> </width>
+			<height> <copy src="parent()" trait="height"/> <mul> 1.3 </mul> </height>
+			<x> <copy src="parent()" trait="width"/> <mul> -0.1 </mul> </x>
+			<y> <copy src="parent()" trait="height"/> <mul> -0.15 </mul> </y>
+			<zoom> -1 </zoom>
+			<brightness> 0 </brightness>
+			<alpha> 207 </alpha>
+			<depth> 1 </depth>
+		</image>
+
+		<image name="TEM_Headline_Top_V1">
+			<filename> Interface\Shared\Line\fade_to_bottom.dds </filename>
+			<height> 45 </height>
+			<width> 3 </width>
+			<zoom> -1 </zoom>
+			<depth> 2 </depth>
+		</image>
+
+		<rect name="TEM_Headline_Top_H1">
+			<width>
+				<copy src="sibling(TEM_TitleText)" trait="x"/>
+				<sub> <copy src="sibling(TEM_TitleText)" trait="width"/> <div> 2 </div> </sub>
+				<sub> 10 </sub>
+			</width>
+			<locus> 1 </locus>
+			<user0> <copy src="sibling(TEM_TitleText)" trait="visible"/> </user0>
+
+			<image name="Line_Solid">
+				<filename> Interface\Shared\solid.dds </filename>
+				<clips> 1 </clips>
+				<width>
+					<copy src="parent()" trait="width"/>
+					<sub src="sibling(Line_Fade)" trait="width"/>
+					<onlyif src="parent()" trait="user0"/>
+					<add> <copy src="grandparent()" trait="width"/> <onlyifnot src="parent()" trait="user0"/> </add>
+				</width>
+				<height> 3 </height>
+				<depth> 2 </depth>
+			</image>
+
+			<image name="Line_Fade">
+				<visible> <copy src="parent()" trait="user0"/> </visible>
+				<filename> Interface\Shared\Line\fade_to_right.dds </filename>
+				<width> <copy src="parent()" trait="width"/> <min> 60 </min> </width>
+				<height> 3 </height>
+				<x> <copy src="sibling(Line_Solid)" trait="width"/> </x>
+				<zoom> -1 </zoom>
+				<depth> 2 </depth>
+			</image>
+		</rect>
+
+		<image name="TEM_Headline_Top_V2">
+			<filename> Interface\Shared\Line\fade_to_bottom.dds </filename>
+			<height> 45 </height>
+			<width> 3 </width>
+			<x> <copy src="parent()" trait="width"/> <sub> 3 </sub> </x>
+			<zoom> -1 </zoom>
+			<depth> 2 </depth>
+		</image>
+
+		<rect name="TEM_Headline_Top_H2">
+			<width> <copy src="sibling(TEM_Headline_Top_H1)" trait="width"/> </width>
+			<x> <copy src="parent()" trait="width"/> </x>
+			<locus> 1 </locus>
+			<visible> <copy src="sibling(TEM_TitleText)" trait="visible"/> </visible>
+
+			<image name="Line_Solid">
+				<filename> Interface\Shared\solid.dds </filename>
+				<clips> 1 </clips>
+				<width> <copy src="parent()" trait="width"/> <sub src="sibling(Line_Fade)" trait="width"/> </width>
+				<height> 3 </height>
+				<x> <copy> 0 </copy> <sub src="me()" trait="width"/> </x>
+				<depth> 2 </depth>
+			</image>
+
+			<image name="Line_Fade">
+				<filename> Interface\Shared\Line\fade_to_left.dds </filename>
+				<width> <copy src="parent()" trait="width"/> <min> 60 </min> </width>
+				<height> 3 </height>
+				<x> <copy> 0 </copy> <sub src="parent()" trait="width"/> </x>
+				<zoom> -1 </zoom>
+				<depth> 2 </depth>
+			</image>
+		</rect>
+
+		<image name="TEM_Headline_Bottom_V1">
+			<filename> Interface\Shared\Line\fade_to_top.dds </filename>
+			<height> 45 </height>
+			<width> 3 </width>
+			<y> <copy src="parent()" trait="height"/> <sub> 45 </sub> </y>
+			<zoom> -1 </zoom>
+			<depth> 2 </depth>
+		</image>
+
+		<rect name="TEM_Headline_Bottom_H1">
+			<width> <copy src="sibling(TEM_OKButton)" trait="x"/> <sub> 10 </sub> </width>
+			<y> <copy src="parent()" trait="height"/> </y>
+			<locus> 1 </locus>
+
+			<image name="Line_Solid">
+				<filename> Interface\Shared\solid.dds </filename>
+				<clips> 1 </clips>
+				<width> <copy src="parent()" trait="width"/> <sub src="sibling(Line_Fade)" trait="width"/> </width>
+				<height> 3 </height>
+				<depth> 2 </depth>
+			</image>
+
+			<image name="Line_Fade">
+				<filename> Interface\Shared\Line\fade_to_right.dds </filename>
+				<width> <copy src="parent()" trait="width"/> <min> 60 </min> </width>
+				<height> 3 </height>
+				<x> <copy src="sibling(Line_Solid)" trait="width"/> </x>
+				<zoom> -1 </zoom>
+				<depth> 2 </depth>
+			</image>
+		</rect>
+
+		<image name="TEM_Headline_Bottom_V2">
+			<filename> Interface\Shared\Line\fade_to_top.dds </filename>
+			<height> 45 </height>
+			<width> 3 </width>
+			<x> <copy src="sibling(TEM_Headline_Top_V2)" trait="x"/> </x>
+			<y> <copy src="sibling(TEM_Headline_Bottom_V1)" trait="y"/> </y>
+			<zoom> -1 </zoom>
+			<depth> 2 </depth>
+		</image>
+
+		<rect name="TEM_Headline_Bottom_H2">
+			<width>
+				<copy src="me()" trait="x"/>
+				<sub src="sibling(TEM_Headline_Bottom_H1)" trait="width"/>
+				<sub src="sibling(TEM_OKButton)" trait="width"/>
+				<sub> 20 </sub>
+			</width>
+			<x> <copy src="parent()" trait="width"/> </x>
+			<y> <copy src="parent()" trait="height"/> </y>
+			<locus> 1 </locus>
+
+			<image name="Line_Solid">
+				<filename> Interface\Shared\solid.dds </filename>
+				<clips> 1 </clips>
+				<width> <copy src="parent()" trait="width"/> <sub src="sibling(Line_Fade)" trait="width"/> </width>
+				<height> 3 </height>
+				<x> <copy> 0 </copy> <sub src="me()" trait="width"/> </x>
+				<depth> 2 </depth>
+			</image>
+
+			<image name="Line_Fade">
+				<filename> Interface\Shared\Line\fade_to_left.dds </filename>
+				<width> <copy src="parent()" trait="width"/> <min> 60 </min> </width>
+				<height> 3 </height>
+				<x> <copy> 0 </copy> <sub src="parent()" trait="width"/> </x>
+				<zoom> -1 </zoom>
+				<depth> 2 </depth>
+			</image>
+		</rect>
+
+		<text name="TEM_TitleText">
+			<id> 2 </id>
+			<visible> 1 </visible>
+			<string></string>
+			<wrapwidth> <copy src="parent()" trait="width"/> <sub> 50 </sub> </wrapwidth>
+			<wraplines> 2 </wraplines>
+			<justify> 2 </justify>
+			<depth> 3 </depth>
+			<x> <copy src="parent()" trait="width"/> <div> 2 </div> </x>
+			<y> <copy src="me()" trait="height"/> <div> -2 </div> <add> 5 </add> </y>
+			<font> <copy> 1 </copy> <add> <copy> 6 </copy> <onlyif src="parent()" trait="user0"/> </add> </font>
+			<alpha> 207 </alpha>
+		</text>
+
+		<hotrect name="TEM_TextInputBox">
+			<y>
+				<copy src="sibling(TEM_TitleText)" trait="y"/>
+				<add src="sibling(TEM_TitleText)" trait="height"/>
+				<add> 4 </add>
+			</y>
+			<width> <copy src="parent()" trait="width"/> </width>
+			<height> <copy src="sibling(TEM_OKButton)" trait="y"/> <sub src="me()" trait="y"/> </height>
+			<wheelable> <copy src="me()" trait="user1"/> <gt> 0 </gt> </wheelable>
+			<clipwindow> 1 </clipwindow>
+			<user0>
+				<copy src="me()" trait="height"/>
+				<sub src="child(TEM_InputText)" trait="user0"/>
+				<div src="child(TEM_InputText)" trait="user1"/>
+				<floor> 0 </floor>
+			</user0>
+			<user1>
+				<copy src="child(TEM_InputText)" trait="user2"/>
+				<sub src="me()" trait="user0"/>
+				<max> 0 </max>
+			</user1>
+			<user2> 0 </user2>
+
+			<rect name="TEM_Scrollbar">
+				<user0>
+					<add>
+						<copy src="child(Scrollbar_Down)" trait="clicked"/>
+						<sub src="child(Scrollbar_Up)" trait="clicked"/>
+						<add src="parent()" trait="wheelmoved"/>
+						<add src="parent()" trait="user1"/>
+						<sub src="parent()" trait="user2"/>
+					</add>
+					<onlyif src="child(Scrollbar_Marker)" trait="user0"/>
+					<add src="child(Scrollbar_Marker)" trait="user2"/>
+					<min src="parent()" trait="user1"/>
+					<max> 0 </max>
+				</user0>
+				<height> <copy src="grandparent()" trait="height"/> <sub> 96 </sub> </height>
+				<x> <copy src="parent()" trait="width"/> <sub> 17 </sub> </x>
+				<y> 48 </y>
+				<locus> 1 </locus>
+				<alpha> 223 </alpha>
+				<visible>
+					<copy src="me()" trait="height"/>
+					<gte> 80 </gte>
+					<and src="parent()" trait="user1"/>
+				</visible>
+
+				<image name="Scrollbar_Marker">
+					<id> -1 </id>
+					<target> <copy src="parent()" trait="visible"/> </target>
+					<draggable> 1 </draggable>
+					<dragstarty> -1 </dragstarty>
+					<filename> Interface\Shared\scrollbar\vert_marker.dds </filename>
+					<texatlas> Interface\InterfaceShared.tai </texatlas>
+					<depth> 3 </depth>
+					<width> 5 </width>
+					<height>
+						<copy src="parent()" trait="height"/>
+						<div> <copy> 1 </copy> <add src="grandparent()" trait="user1"/> </div>
+						<max> 24 </max>
+					</height>
+					<user0> <copy src="me()" trait="dragstarty"/> <lt> 0 </lt> </user0>
+					<user1>
+						<copy src="parent()" trait="height"/>
+						<sub src="me()" trait="height"/>
+						<div> <copy src="grandparent()" trait="user1"/> <max> 1 </max> </div>
+					</user1>
+					<user2>
+						<copy src="me()" trait="dragy"/>
+						<div src="me()" trait="user1"/>
+						<floor> 0 </floor>
+						<mul> <not src="me()" trait="user0"/> </mul>
+					</user2>
+					<x> 13 </x>
+					<y>
+						<copy src="parent()" trait="user0"/>
+						<mul src="me()" trait="user1"/>
+						<max> 0 </max>
+						<min> <copy src="parent()" trait="height"/> <sub src="me()" trait="height"/> </min>
+					</y>
+				</image>
+
+				<image name="Scrollbar_Up">
+					<id> -1 </id>
+					<target> <copy src="parent()" trait="visible"/> </target>
+					<filename> Interface\Shared\scrollbar\arrow_up.dds </filename>
+					<width> 32 </width>
+					<height> 16 </height>
+					<y> -16 </y>
+					<alpha> <copy src="parent()" trait="alpha"/> </alpha>
+					<depth> 3 </depth>
+				</image>
+
+				<image name="Scrollbar_Down">
+					<id> -1 </id>
+					<target> <copy src="parent()" trait="visible"/> </target>
+					<filename> Interface\Shared\scrollbar\arrow_down.dds </filename>
+					<width> 32 </width>
+					<height> 16 </height>
+					<y> <copy src="parent()" trait="height"/> </y>
+					<alpha> <copy src="parent()" trait="alpha"/> </alpha>
+					<depth> 3 </depth>
+				</image>
+			</rect>
+
+			<text name="TEM_InputText">
+				<id> 0 </id>
+				<string></string>
+				<clips> 1 </clips>
+				<user0> 0 </user0>
+				<user1> 0 </user1>
+				<user2> <copy src="me()" trait="height"/> <sub src="me()" trait="user0"/> <div src="me()" trait="user1"/> </user2>
+				<x> 30 </x>
+				<y>
+					<copy> 2 </copy> <add src="parent()" trait="y"/>
+					<sub> <copy src="sibling(TEM_Scrollbar)" trait="user0"/> <mul src="me()" trait="user1"/> </sub>
+				</y>
+				<wrapwidth> <copy src="grandparent()" trait="width"/> <sub> <copy src="me()" trait="x"/> <mul> 2 </mul> </sub> </wrapwidth>
+				<font> <copy> 3 </copy> <sub src="grandparent()" trait="user0"/> </font>
+				<justify> 1 </justify>
+				<systemcolor> 0 </systemcolor>
+				<red> 207 </red>
+				<green> 207 </green>
+				<blue> 207 </blue>
+				<depth> 2 </depth>
+			</text>
+		</hotrect>
+
+		<hotrect name="TEM_OKButton">
+			<id> 1 </id>
+			<width>
+				<copy src="child(Button_Text)" trait="width"/> <add> 20 </add>
+				<onlyif src="child(Button_Text)" trait="visible"/>
+				<add> <copy> 48 </copy> <onlyif src="child(Button_Xbox)" trait="visible"/> </add>
+			</width>
+			<height>
+				<copy src="child(Button_Text)" trait="height"/> <add> 20 </add>
+				<onlyif src="child(Button_Text)" trait="visible"/>
+				<add> <copy> 48 </copy> <onlyif src="child(Button_Xbox)" trait="visible"/> </add>
+			</height>
+			<x>	<copy src="parent()" trait="width"/> <sub src="me()" trait="width"/> <sub> 60 </sub> </x>
+			<y> <copy src="parent()" trait="height"/> <sub> <copy src="me()" trait="height"/> <div> 2 </div> </sub> </y>
+			<target> 1 </target>
+			<locus> 1 </locus>
+			<mouseoversound> UIMenuFocus </mouseoversound>
+
+			<rect name="Button_Box">
+				<depth> 3 </depth>
+				<include src="box.xml"/>
+				<visible> <copy src="parent()" trait="mouseover"/> </visible>
+			</rect>
+
+			<text name="Button_Text">
+				<visible> <not src="sibling(Button_Xbox)" trait="visible"/> </visible>
+				<font> <copy> 2 </copy> <add src="grandparent()" trait="user0"/> </font>
+				<string> &-sOk; </string>
+				<justify> 2 </justify>
+				<alpha> <copy> 128 </copy> <add> <copy> 127 </copy> <onlyif src="parent()" trait="target"/> </add> </alpha>
+				<depth> 3 </depth>
+				<x> <copy src="parent()" trait="width"/> <div> 2 </div> </x>
+				<y> <copy> 20 </copy> <sub> <copy> 2 </copy> <onlyif src="grandparent()" trait="user0"/> </sub> </y>
+			</text>
+			
+			<image name="Button_Xbox">
+				<visible> <copy src="globals()" trait="_Has360Controller"/> </visible>
+				<filename> Interface\Shared\Button\general_button_a.dds </filename>
+				<width> 64 </width>
+				<height> 64 </height>
+				<x> -8 </x>
+				<y> -8 </y>
+				<alpha> <copy src="sibling(Button_Text)" trait="alpha"/> </alpha>
+				<depth> 3 </depth>
+			</image>
+		</hotrect>
+	</rect>
+</menu>

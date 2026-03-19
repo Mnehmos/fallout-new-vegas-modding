@@ -1,0 +1,23 @@
+<text name="IM_SearchBar">
+  <string></string>
+  <id> 87698483 </id>
+  <visible>1</visible>
+  <depth>6</depth>
+  <x>
+    <copy src="IM_HeadlineRect" trait="x" />
+    <add>70</add>
+    <sub> 
+      <copy>25</copy>
+      <onlyif src="globals" trait="_VUI+" />
+    </sub>
+  </x>
+	<y>
+    <copy src="IM_HeadlineRect" trait="y" />
+    <add>74</add>
+    <sub> 
+      <copy>10</copy>
+      <onlyif src="globals" trait="_VUI+" />
+    </sub>
+  </y>
+	<systemcolor> &hudmain; </systemcolor>
+</text>

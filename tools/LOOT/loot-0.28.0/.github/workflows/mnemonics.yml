@@ -1,0 +1,23 @@
+name: 'Validate translation mnemonics'
+
+on:
+  push:
+    paths: ['resources/l10n/*/LC_MESSAGES/loot.po']
+  pull_request:
+    paths: ['resources/l10n/*/LC_MESSAGES/loot.po']
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.10'
+
+      - name: Run the validation script
+        run: pipx run scripts/validate_mnemonics.py

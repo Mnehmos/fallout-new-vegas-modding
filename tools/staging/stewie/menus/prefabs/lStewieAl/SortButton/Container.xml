@@ -1,0 +1,31 @@
+<hotrect name="SortButton">
+<xbuttonx> <ref src="SortButton" trait="clicked"/></xbuttonx>
+    <visible>1</visible>
+    <depth>6</depth>
+    <_whichIcon>0</_whichIcon>
+    <target> &true; </target>
+    <id> &generic; </id>
+    <locus> &true; </locus>
+    <x><copy src="CM_ItemsRect" trait="x" /><add>6</add></x>
+    <y><copy src="CM_ItemsRect" trait="y" /> <sub src="child(SortButtonImage)" trait="height"/><add src="CM_ItemsRect" trait="height"/><sub>4</sub></y>
+    <width><copy src="child(SortButtonImage)" trait="width"/></width>
+    <height><copy src="child(SortButtonImage)" trait="height"/></height>
+        <image name="SortButtonImage">
+            <depth>7</depth>
+            <id> &generic; </id>
+            <mouseoversound>UIMenuFocus</mouseoversound>
+            <visible>1</visible>
+                <target> &true; </target>
+                <filename>lStewieAl\Sorting\empty.dds</filename>
+                <zoom> &scale; </zoom>
+                <width> 39</width>
+                <height> 38 </height>
+                <alpha>
+                    <copy> 128 </copy>
+                    <add>
+                        <copy> 127 </copy>
+                        <onlyif src="sibling(SortButtonImage)" trait="mouseover"/>
+                    </add>
+                </alpha>
+        </image>
+</hotrect>

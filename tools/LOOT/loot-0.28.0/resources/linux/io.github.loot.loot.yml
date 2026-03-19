@@ -1,0 +1,199 @@
+app-id: io.github.loot.loot
+runtime: org.kde.Platform
+runtime-version: '6.9'
+sdk: org.kde.Sdk
+command: LOOT
+finish-args:
+  - --device=dri
+  - --share=ipc
+  - --share=network
+  - --socket=fallback-x11
+  - --socket=wayland
+  # Steam package data.
+  - --filesystem=xdg-data/Steam:ro
+  # Steam package default library paths.
+  - --filesystem=xdg-data/Steam/steamapps/common
+  - --filesystem=xdg-data/Steam/steamapps/compatdata
+  - --filesystem=~/.steam/steam/steamapps/common
+  # Steam Flatpak data.
+  - --filesystem=~/.var/app/com.valvesoftware.Steam/.local/share/Steam:ro
+  # Steam Flatpak default library paths.
+  - --filesystem=~/.var/app/com.valvesoftware.Steam/.local/share/Steam/steamapps/common
+  - --filesystem=~/.var/app/com.valvesoftware.Steam/.local/share/Steam/steamapps/compatdata
+  # Steam Deck SD card mount point parent path.
+  - --filesystem=/run/media
+  # Heroic Games Launcher package config.
+  - --filesystem=xdg-config/heroic:ro
+  # Heroic Games Launcher Flatpak config.
+  - --filesystem=~/.var/app/com.heroicgameslauncher.hgl/config/heroic:ro
+  # Heroic Games Launcher default games install path.
+  - --filesystem=~/Games/Heroic
+  # OpenMW's Ubuntu, Debian, Arch and OpenSUSE packages install its global
+  # config files under /etc/openmw.
+  - --filesystem=host-etc:ro
+  # OpenMW's Ubuntu, Debian, Arch and OpenSUSE packages install its global data
+  # and executable files under /usr.
+  - --filesystem=host-os:ro
+  # OpenMW user config for Ubuntu, Debian, Arch and OpenSUSE packages
+  - --filesystem=xdg-config/openmw/openmw.cfg
+  # OpenMW user data for Ubuntu, Debian, Arch and OpenSUSE packages
+  - --filesystem=xdg-data/openmw:ro
+  # OpenMW system Flatpak install path
+  - --filesystem=/var/lib/flatpak/app/org.openmw.OpenMW:ro
+  # OpenMW user Flatpak install path
+  - --filesystem=~/.local/share/flatpak/app/org.openmw.OpenMW:ro
+  # OpenMW Flatpak user config
+  - --filesystem=~/.var/app/org.openmw.OpenMW/config/openmw/openmw.cfg
+  # OpenMW Flatpak user data
+  - --filesystem=~/.var/app/org.openmw.OpenMW/data/openmw:ro
+
+sdk-extensions:
+  - org.freedesktop.Sdk.Extension.rust-stable
+modules:
+  - name: Boost
+    buildsystem: simple
+    build-commands:
+      - ./bootstrap.sh --prefix=/app
+      - ./b2 link=static runtime-link=shared variant=release cxxflags="-std=c++17 -fPIC" --with-locale install
+    sources:
+      - type: archive
+        url: https://archives.boost.io/release/1.87.0/source/boost_1_87_0.tar.bz2
+        sha256: af57be25cb4c4f4b413ed692fe378affb4352ea50fbe294a11ef548f4d527d89
+
+  - name: libtbb
+    buildsystem: cmake-ninja
+    builddir: true
+    config-opts:
+      - -DCMAKE_BUILD_TYPE=Release
+      - -DTBB_TEST=OFF
+    sources:
+      - type: archive
+        url: https://github.com/uxlfoundation/oneTBB/archive/refs/tags/v2022.0.0.tar.gz
+        sha256: e8e89c9c345415b17b30a2db3095ba9d47647611662073f7fbf54ad48b7f3c2a
+
+  - name: minizip-ng
+    buildsystem: cmake-ninja
+    builddir: true
+    config-opts:
+      - -DCMAKE_BUILD_TYPE=Release
+      - -DMZ_ZLIB=ON
+      - -DMZ_BZIP2=OFF
+      - -DMZ_LZMA=OFF
+      - -DMZ_ZSTD=OFF
+      - -DMZ_FETCH_LIBS=OFF
+      - -DMZ_PKCRYPT=OFF
+      - -DMZ_WZAES=OFF
+      - -DMZ_OPENSSL=OFF
+      - -DMZ_LIBBSD=OFF
+      - -DMZ_SIGNING=OFF
+      - -DMZ_COMPRESS_ONLY=ON
+    sources:
+      - type: archive
+        url: https://github.com/zlib-ng/minizip-ng/archive/refs/tags/4.0.10.tar.gz
+        sha256: c362e35ee973fa7be58cc5e38a4a6c23cc8f7e652555daf4f115a9eb2d3a6be7
+
+  - name: tomlplusplus
+    buildsystem: cmake-ninja
+    builddir: true
+    config-opts:
+      - -DCMAKE_BUILD_TYPE=Release
+    sources:
+      - type: archive
+        url: https://github.com/marzer/tomlplusplus/archive/v3.4.0.tar.gz
+        sha256: 8517f65938a4faae9ccf8ebb36631a38c1cadfb5efa85d9a72e15b9e97d25155
+
+  - name: fmt
+    buildsystem: cmake-ninja
+    builddir: true
+    config-opts:
+      - -DCMAKE_BUILD_TYPE=Release
+      - -DFMT_DOC=OFF
+      - -DFMT_TEST=OFF
+      - -DCMAKE_POSITION_INDEPENDENT_CODE=ON
+    sources:
+      - type: archive
+        url: https://github.com/fmtlib/fmt/archive/refs/tags/12.0.0.tar.gz
+        sha256: aa3e8fbb6a0066c03454434add1f1fc23299e85758ceec0d7d2d974431481e40
+
+  - name: spdlog
+    buildsystem: cmake-ninja
+    builddir: true
+    config-opts:
+      - -DCMAKE_BUILD_TYPE=Release
+      - -DSPDLOG_BUILD_EXAMPLE=OFF
+      - -DSPDLOG_BUILD_PIC=ON
+      - -DSPDLOG_FMT_EXTERNAL=ON
+    sources:
+      - type: archive
+        url: https://github.com/gabime/spdlog/archive/v1.15.3.tar.gz
+        sha256: 15a04e69c222eb6c01094b5c7ff8a249b36bb22788d72519646fb85feb267e67
+
+  - name: OGDF
+    buildsystem: cmake-ninja
+    builddir: true
+    config-opts:
+      - -DCMAKE_BUILD_TYPE=Release
+    sources:
+      - type: archive
+        url: https://ogdf.uos.de/wp-content/uploads/2023/09/ogdf.v2023.09.zip
+        sha256: a82298cfbcd9365d9650f3e5c09b49dc3e6cdf7ff80483133d02b9d371165436
+
+  - name: libloot
+    buildsystem: cmake-ninja
+    builddir: true
+    subdir: cpp
+    build-options:
+      append-path: /usr/lib/sdk/rust-stable/bin
+      env:
+        CARGO_HOME: /run/build/libloot/cargo
+    config-opts:
+      - -DCMAKE_BUILD_TYPE=Release
+      - -DLIBLOOT_BUILD_TESTS=OFF
+      - -DLIBLOOT_INSTALL_DOCS=OFF
+    sources:
+      # Use the Git repository so that libloot's commit hash gets embedded in the build.
+      - type: git
+        url: https://github.com/loot/libloot.git
+        tag: 0.28.2
+        commit: cfda074b2e35b898be06b36d5d0af5cdddd32764
+      # Generated using scripts/generate_manifests.sh
+      - ../../build/flatpak-manifests/libloot.json
+
+  - name: LOOT
+    buildsystem: cmake-ninja
+    builddir: true
+    config-opts:
+      - -DCMAKE_BUILD_TYPE=Release
+      - -DLOOT_BUILD_TESTS=OFF
+      - -DVALVE_FILE_VDF_URL=/run/build/LOOT/v1.1.0.tar.gz
+    build-commands:
+      - install -D LOOT /app/bin/LOOT
+      - install -D ../resources/linux/io.github.loot.loot.metainfo.xml /app/share/metainfo/io.github.loot.loot.metainfo.xml
+      - install -D ../resources/linux/io.github.loot.loot.desktop /app/share/applications/io.github.loot.loot.desktop
+      - install -D ../resources/icons/loot.svg /app/share/icons/hicolor/scalable/apps/io.github.loot.loot.svg
+      - cd ..; python scripts/po_to_mo.py
+      - for path in ../resources/l10n/*/LC_MESSAGES/loot.mo; do install -D "$path" "/app/share/locale/${path#../resources/l10n/}"; done
+      - sphinx-build -b html ../docs /app/share/doc/loot
+    no-make-install: true
+    modules:
+      # Generated using scripts/generate_manifests.sh
+      - ../../build/flatpak-manifests/docs.json
+    sources:
+      - type: dir
+        path: ../..
+        skip:
+          - .github
+          - build
+      - type: file
+        url: https://github.com/TinyTinni/ValveFileVDF/archive/refs/tags/v1.1.0.tar.gz
+        sha256: 9149a6b01ca857f49f5660d608639acd579542bf862ad23e9cbf4c1e80ade55e
+cleanup:
+  - /include
+  - /lib/cmake
+  - /lib/*.a
+  - /lib/pkgconfig
+  - /lib/python3.10
+  - /lib/x86_64-linux-gnu
+  - /share/doc/libogdf
+  - /share/doc/TBB
+  - /share/tomlplusplus

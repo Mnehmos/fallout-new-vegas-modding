@@ -1,0 +1,189 @@
+name: Release
+
+on:
+  push:
+    tags: '*'
+
+env:
+  BOOST_VERSION: 1.87.0
+  OGDF_VERSION: elderberry-202309
+  QT_VERSION: 6.9.1
+
+jobs:
+  create_release:
+    runs-on: ubuntu-24.04
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Create a draft GitHub Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          RELEASE_TAG="${{ github.ref_name }}"
+          RELEASE_TITLE="LOOT v$RELEASE_TAG"
+          RELEASE_NOTES="$(printf "The list of changes can be found [here](https://loot.readthedocs.io/en/latest/app/changelog.html).\n\n## Windows\n\nLOOT requires a 64-bit version of Windows 10 (1809) or later and the [MSVC 2022 x64 redistributable](https://aka.ms/vs/17/release/vc_redist.x64.exe).\n\nThe \`.exe\` installer will automatically download and install the redistributable if you don't already have it installed.\n\n[7-Zip](https://www.7-zip.org/) is required to extract the \`.7z\` archive on Windows 10.\n\n## Linux\n\nLOOT requires a 64-bit version of Linux, and can be installed from [Flathub](https://flathub.org/apps/io.github.loot.loot).")"
+
+          gh release create --draft --title "$RELEASE_TITLE" --notes "$RELEASE_NOTES" --verify-tag --repo "${{ github.repository }}" "$RELEASE_TAG"
+
+  windows:
+    runs-on: windows-2022
+    needs: create_release
+
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.10'
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@eb1897b8dc4b5d5bfe39a428a8f2304605e0983c # v7.0.0
+        with:
+          version: "0.8.20"
+
+      - name: Get Boost metadata
+        id: boost-metadata
+        run: |
+          $BOOST_ROOT="${{ github.workspace }}/boost_" + $env:BOOST_VERSION -replace "\.", "_"
+          echo "root=$BOOST_ROOT" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
+
+      - name: Set OGDF install path
+        shell: bash
+        run: echo "OGDF_INSTALL_PATH=${{ github.workspace }}/ogdf-${{ env.OGDF_VERSION }}-install" >> $GITHUB_ENV
+
+      - name: Boost cache
+        id: boost-cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            ${{ steps.boost-metadata.outputs.root }}/boost
+            ${{ steps.boost-metadata.outputs.root }}/stage
+          key: ${{ runner.os }}-x64-Boost-${{ env.BOOST_VERSION }}
+
+      - name: OGDF cache
+        id: ogdf-cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.OGDF_INSTALL_PATH }}
+          key: ${{ runner.os }}-x64-ogdf-${{ env.OGDF_VERSION }}
+
+      - name: Download and extract svg_to_ico
+        run: |
+          $filename = scripts\download_file.ps1 `
+            'https://github.com/Ortham/svg_to_ico/releases/download/1.1.0/svg_to_ico.7z' `
+            'b2a3e82591ad4834a253290a76f007e5bab35e5a97584d29b3a4b5d0ff9acef3'
+          7z e -y $filename
+
+      - name: Generate ICO file
+        run: .\svg_to_ico.exe -i resources\icons\loot.svg -o build\icon\icon.ico
+
+      - name: Download & build Boost
+        run: |
+          $filename = scripts\download_file.ps1 `
+            'https://raw.githubusercontent.com/Ortham/ci-scripts/2.2.1/install_boost.py' `
+            'a6e3f965d31cf45ff80a28d932b011359a45d7154398807e296a9e08f27e67e7'
+          python $filename --directory ${{ github.workspace }} --boost-version ${{ env.BOOST_VERSION }} -a 64 locale
+        if: steps.boost-cache.outputs.cache-hit != 'true'
+
+      - name: Download and build OGDF
+        run: |
+          $filename = scripts\download_file.ps1 `
+            "https://github.com/ogdf/ogdf/archive/refs/tags/${env:OGDF_VERSION}.zip" `
+            'b3ae408c95ea79e36fb4bd0ad54f145dde564132e3c849edf9f992c3ba411ab4'
+
+          Expand-Archive -Path "${env:OGDF_VERSION}.zip" -DestinationPath .
+
+          $OGDF_BUILD_DIR="ogdf-${env:OGDF_VERSION}/build"
+
+          cmake -G "Visual Studio 17 2022" `
+            -A x64 `
+            -DCMAKE_INSTALL_PREFIX="${env:OGDF_INSTALL_PATH}" `
+            -B $OGDF_BUILD_DIR `
+            -S "ogdf-${env:OGDF_VERSION}"
+          cmake --build $OGDF_BUILD_DIR --config Release
+          cmake --install $OGDF_BUILD_DIR --config Release
+        if: steps.ogdf-cache.outputs.cache-hit != 'true'
+
+      - name: Download Qt
+        id: qt-metadata
+        run: |
+          uv run --with aqtinstall==3.3.0 -- aqt install-qt windows desktop ${env:QT_VERSION} win64_msvc2022_64
+          echo "root=${{ github.workspace }}/${env:QT_VERSION}/msvc2022_64" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
+
+      - name: Run CMake
+        run: |
+          cmake -G "Visual Studio 17 2022" `
+            -A x64 `
+            -DCMAKE_PREFIX_PATH="${{ steps.boost-metadata.outputs.root }}\stage" `
+            -DQt6_ROOT="${{ steps.qt-metadata.outputs.root }}" `
+            -DOGDF_ROOT="${{ env.OGDF_INSTALL_PATH }}" `
+            -B build
+          cmake --build build --config Release
+
+      - name: Install packages for building docs
+        run: uv sync --locked --project docs
+
+      - name: Build docs
+        working-directory: docs
+        run: uv run --locked -- sphinx-build -b html . ..\build\docs\html
+
+      - name: Install Gettext
+        run: |
+          $filename = scripts\download_file.ps1 `
+            'https://github.com/vslavik/gettext-tools-windows/releases/download/v0.22.5/gettext-tools-windows-0.22.5.zip' `
+            '2a49b7c26e91c4f4f3d389067c3d6dda77aee816aee0f36e172d84577311b7da'
+
+          7z x -y -ogettext ".\$filename"
+
+          echo "$PWD/gettext/bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+
+      - name: Build translation message object files
+        run: python scripts/po_to_mo.py
+
+      - name: Get descriptive LOOT version
+        id: get-loot-version
+        shell: bash
+        run: |
+          GIT_DESCRIBE=$(git describe --tags --long --abbrev=7)
+          GIT_REF=${{ github.ref }}
+          LOOT_DESC_REF=${GIT_DESCRIBE}_${GIT_REF#refs/*/}
+          LOOT_SAFE_DESC_REF=${LOOT_DESC_REF//[\/<>\"|]/_}
+          echo "version=$LOOT_SAFE_DESC_REF" >> $GITHUB_OUTPUT
+
+      - name: Get LOOT artifact basename
+        id: get-artifact-basename
+        shell: bash
+        run: |
+          echo "basename=loot_${{ github.ref_name }}-win64" >> $GITHUB_OUTPUT
+
+      - name: Build archive
+        run: |
+          $env:PATH="${{ steps.qt-metadata.outputs.root }}/bin;$env:PATH"
+          python scripts\archive.py . ${{ github.ref_name }}
+          mv "build\loot_${{ steps.get-loot-version.outputs.version }}.7z" "build\${{ steps.get-artifact-basename.outputs.basename }}.7z"
+
+      - name: Build installer
+        run: |
+          scripts\prepare_installer.ps1
+
+          $env:PATH += ';C:\Program Files (x86)\Inno Setup 6'
+          iscc scripts\installer.iss
+
+          mv "build\LOOT Installer.exe" "build\${{ steps.get-artifact-basename.outputs.basename }}.exe"
+
+      - name: Upload archive to GitHub Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release upload --repo "${{ github.repository }}" "${{ github.ref_name }}" build\${{ steps.get-artifact-basename.outputs.basename }}.7z#${{ steps.get-artifact-basename.outputs.basename }}.7z
+
+      - name: Upload installer to GitHub Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release upload --repo "${{ github.repository }}" "${{ github.ref_name }}" build\${{ steps.get-artifact-basename.outputs.basename }}.exe#${{ steps.get-artifact-basename.outputs.basename }}.exe

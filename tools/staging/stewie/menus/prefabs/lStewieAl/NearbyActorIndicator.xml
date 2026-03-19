@@ -1,0 +1,19 @@
+<rect name="Nearby_Actors_rect">
+		<locus>&true;</locus>
+		<!--<visible><copy src="sibling(ActionPoints)" trait="visible"></visible> -->
+		<visible>1</visible>
+</rect>
+
+<template name="DetectionIndicatorTemplate">
+	<image name="detection_indicator">
+		<filename>Interface\HUD\explosive_indicator.dds</filename>
+		<systemcolor>&hudalt;</systemcolor>
+		<width>151</width>
+		<height>187</height>
+		<x>-75</x>
+		<y>-93</y>
+		<zoom>&scale;</zoom>
+		<visible>&true;</visible>
+		<alpha>0</alpha>
+	</image>
+</template>

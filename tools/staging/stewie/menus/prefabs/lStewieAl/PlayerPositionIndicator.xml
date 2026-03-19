@@ -1,0 +1,33 @@
+<rect name="PlayerPosIndicator">
+	<width> 10 </width>
+	<height> 10 </height>
+	<image name="PlayerPosIcon">
+		<filename> Interface\Worldmap\waypoint_node.dds </filename>
+		<clips> 1 </clips>
+		<locus> 1 </locus>
+		<depth> 3 </depth>
+		<zoom> &scale; </zoom>
+
+		<!-- Place on map proportional to the map's current dimensions; offset so that icon is centered on point -->
+		<x>
+			<copy src="me" trait="_x"/>
+			<mul src="grandparent" trait="width"/>
+			<sub>
+				<copy src="me" trait="width"/>
+				<div> 2 </div>
+			</sub>
+		</x>
+		<y>
+			<copy src="me" trait="_y"/>
+			<mul src="grandparent" trait="height"/>
+			<sub>
+				<copy src="me" trait="height"/>
+				<div> 2 </div>
+			</sub>
+		</y>
+
+		<width> <copy src="parent" trait="width"/> </width>
+		<height> <copy src="parent" trait="height"/> </height>
+		<brightness> <copy src="MM_WorldMapCursor" trait="brightness"/> </brightness>
+	</image>
+</rect>

@@ -1,0 +1,33 @@
+<hotrect name="MM_Recentre">
+	<include src="text_box.xml"/>
+	<clicksound> UIPipboySelect </clicksound>
+	<_y>
+		<copy src="sibling(MM_ButtonY)" trait="_y"/>
+		<add>
+			<copy src="sibling(MM_ButtonY)" trait="height"/>
+			<onlyif src="sibling(MM_ButtonY)" trait="visible"/>
+		</add>
+	</_y>
+	<_horbuf> 20 </_horbuf>
+	<_verbuf> 15 </_verbuf>
+	<justify> &right; </justify>
+	<_line_alpha>
+		<copy> 127 </copy>
+		<add>
+			<copy> 128 </copy>
+			<onlyif src="me" trait="target"/>
+		</add>
+	</_line_alpha>
+
+	<visible>
+		<copy src="MM_Tabline" trait="_CurrentTab"/>
+		<eq> 1 </eq>
+	</visible>
+	<target> 1 </target>
+
+	<justify> &right; </justify>
+	<_xbox_button> &xbuttony; </_xbox_button>
+	<_PCButtonText> &-sPCMenuHintR; </_PCButtonText>
+	<string> Recentre </string>
+	<depth> 3 </depth>
+</hotrect>

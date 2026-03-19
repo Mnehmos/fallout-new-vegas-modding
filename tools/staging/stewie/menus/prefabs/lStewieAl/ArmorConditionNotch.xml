@@ -1,0 +1,10 @@
+<image name="CNDArrowsArmor">
+	<depth>10</depth>
+	<locus>&true;</locus>
+	  <filename>interface\shared\arrow\repair_meter_pips.dds</filename>
+	<width>16</width>
+	<height>16</height>
+	<alpha>255</alpha>
+	<zoom>&scale;</zoom>
+	<visible>&true;</visible>
+</image>

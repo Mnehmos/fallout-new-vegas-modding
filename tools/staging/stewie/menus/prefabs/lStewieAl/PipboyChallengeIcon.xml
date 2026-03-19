@@ -1,0 +1,15 @@
+<image name="ChallengeIcon">
+	<user0></user0> <!-- set in code if the filename is non-zero -->
+	<visible>
+		<copy src="parent" trait="visible"/>
+		<and>
+			<copy src="me" trait="user0"/>
+		</and>
+	</visible>
+	<filename></filename>
+	<zoom> &scale; </zoom>
+	<width>126</width>
+	<height>126</height>
+	<x>420</x>
+	<y>0</y>
+</image>

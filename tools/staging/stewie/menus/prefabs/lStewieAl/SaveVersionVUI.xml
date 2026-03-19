@@ -1,0 +1,14 @@
+<!--VUI+ hides this text by making it a rect, restore it here -->
+<text name="saveload_version">
+	<id> 22 </id>
+	<depth> 4 </depth>
+	<font> <copy src="io" trait="font" /> </font>
+	<visible> 1 </visible>
+	<wrapwidth> <copy src="sibling(saveload_container)" trait="width"/> </wrapwidth>
+	<justify> &center; </justify> <!--VUI+ align save info to the center of the image -->
+	<x>
+		<copy src="sibling(saveload_screenshot)" trait="x"/>
+		<add> <copy src="sibling(saveload_screenshot)" trait="width"/> <div> 2 </div> </add>
+	</x>
+	<y> 470 </y>
+</text>

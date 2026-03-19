@@ -1,0 +1,24 @@
+<rect name="BlackJackDisplay">
+	<text name="MainHand">
+		<depth> 4 </depth>
+		<x>620</x>
+		<y><copy src="screen()" trait="height" /> <sub src="me()" trait="height"/><sub>40</sub></y>
+		<string></string>
+		<font>7</font>
+		<alpha> 255 </alpha>
+		<systemcolor> &true; </systemcolor>
+		<justify> &center; </justify>
+		<brightness> 255 </brightness>
+	</text>
+	<text name="SplitHand">
+		<depth> 4 </depth>
+		<x>850</x>
+		<y><copy src="screen()" trait="height" /> <sub src="me()" trait="height"/><sub>150</sub></y>
+		<string></string>
+		<font>7</font>
+		<alpha> 255 </alpha>
+		<systemcolor> &true; </systemcolor>
+		<justify> &center; </justify>
+		<brightness> 255 </brightness>
+	</text>
+</rect>

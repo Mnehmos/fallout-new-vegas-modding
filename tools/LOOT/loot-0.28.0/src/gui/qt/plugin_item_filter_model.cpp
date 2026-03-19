@@ -1,0 +1,200 @@
+/*  LOOT
+
+    A load order optimisation tool for
+    Morrowind, Oblivion, Skyrim, Skyrim Special Edition, Skyrim VR,
+    Fallout 3, Fallout: New Vegas, Fallout 4 and Fallout 4 VR.
+
+    Copyright (C) 2021    Oliver Hamlet
+
+    This file is part of LOOT.
+
+    LOOT is free software: you can redistribute
+    it and/or modify it under the terms of the GNU General Public License
+    as published by the Free Software Foundation, either version 3 of
+    the License, or (at your option) any later version.
+
+    LOOT is distributed in the hope that it will
+    be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with LOOT.  If not, see
+    <https://www.gnu.org/licenses/>.
+    */
+
+#include "gui/qt/plugin_item_filter_model.h"
+
+#include "gui/helpers.h"
+#include "gui/plugin_item.h"
+#include "gui/qt/plugin_item_model.h"
+
+namespace {
+bool isMatch(const std::string& text, const QRegularExpression& regex) {
+  return regex.match(QString::fromUtf8(text)).hasMatch();
+}
+
+bool containsMatchingText(const loot::PluginItem& pluginItem,
+                          const QRegularExpression& regex) {
+  if (isMatch(pluginItem.name, regex)) {
+    return true;
+  }
+
+  if (pluginItem.version.has_value() &&
+      isMatch(pluginItem.version.value(), regex)) {
+    return true;
+  }
+
+  if (pluginItem.crc.has_value()) {
+    auto crcText = loot::crcToString(pluginItem.crc.value());
+    if (isMatch(crcText, regex)) {
+      return true;
+    }
+  }
+
+  for (const auto& tag : pluginItem.currentTags) {
+    if (isMatch(tag, regex)) {
+      return true;
+    }
+  }
+
+  for (const auto& tag : pluginItem.addTags) {
+    if (isMatch(tag, regex)) {
+      return true;
+    }
+  }
+
+  for (const auto& tag : pluginItem.removeTags) {
+    if (isMatch(tag, regex)) {
+      return true;
+    }
+  }
+
+  for (const auto& message : pluginItem.messages) {
+    if (isMatch(message.text, regex)) {
+      return true;
+    }
+  }
+
+  for (const auto& location : pluginItem.locations) {
+    if (isMatch(location.GetName(), regex)) {
+      return true;
+    }
+  }
+
+  return false;
+}
+}
+
+namespace loot {
+PluginItemFilterModel::PluginItemFilterModel(QObject* parent) :
+    QSortFilterProxyModel(parent) {}
+
+void PluginItemFilterModel::setFiltersState(PluginFiltersState&& state) {
+  filterState = std::move(state);
+
+  invalidateFilter();
+}
+
+void PluginItemFilterModel::setFiltersState(
+    PluginFiltersState&& state,
+    std::vector<std::string>&& newOverlappingPluginNames) {
+  filterState = std::move(state);
+  this->overlappingPluginNames = std::move(newOverlappingPluginNames);
+
+  invalidateFilter();
+}
+
+void PluginItemFilterModel::setSearchResults(QModelIndexList results) {
+  std::set<int> resultRows;
+  for (const auto& result : results) {
+    resultRows.insert(result.row());
+  }
+
+  for (int row = 1; row < rowCount(); row += 1) {
+    const auto index = this->index(row, PluginItemModel::CARDS_COLUMN);
+    const auto isNewResult = resultRows.find(row) != resultRows.end();
+
+    // When setting new search results, there is no initial current result.
+    const SearchResultData newValue(isNewResult, false);
+    setData(index, QVariant::fromValue(newValue), SearchResultRole);
+  }
+}
+
+void PluginItemFilterModel::clearSearchResults() { setSearchResults({}); }
+
+bool PluginItemFilterModel::filterAcceptsRow(
+    int sourceRow,
+    const QModelIndex& sourceParent) const {
+  if (sourceRow == 0) {
+    // The general information card is never filtered out.
+    return true;
+  }
+
+  const auto sourceIndex = sourceModel()->index(
+      sourceRow, PluginItemModel::CARDS_COLUMN, sourceParent);
+
+  auto item = sourceIndex.data(FilteredContentRole).value<PluginItem>();
+
+  if (filterState.hideInactivePlugins && !item.isActive) {
+    return false;
+  }
+
+  if (filterState.hideMessagelessPlugins && item.messages.empty()) {
+    return false;
+  }
+
+  if (filterState.hideCreationClubPlugins && item.isCreationClubPlugin) {
+    return false;
+  }
+
+  if (filterState.showOnlyEmptyPlugins && !item.isEmpty) {
+    return false;
+  }
+
+  if (filterState.showOnlyPluginsWithLoadAfterMetadata &&
+      !item.hasLoadAfterMetadata) {
+    return false;
+  }
+
+  if (filterState.showOnlyPluginsWithLoadAfterUserMetadata &&
+      !item.hasLoadAfterUserMetadata) {
+    return false;
+  }
+
+  if (filterState.showOnlyPluginsWithoutLoadOrderMetadata &&
+      item.hasLoadOrderMetadata) {
+    return false;
+  }
+
+  if (filterState.groupName.has_value() &&
+      item.group.value_or(std::string(Group::DEFAULT_NAME)) !=
+          filterState.groupName.value()) {
+    return false;
+  }
+
+  if (std::holds_alternative<std::string>(filterState.content) &&
+      !item.containsText(std::get<std::string>(filterState.content))) {
+    return false;
+  }
+
+  if (std::holds_alternative<QRegularExpression>(filterState.content) &&
+      !containsMatchingText(
+          item, std::get<QRegularExpression>(filterState.content))) {
+    return false;
+  }
+
+  if (filterState.overlapPluginName.has_value()) {
+    const auto hasOverlap =
+        std::any_of(overlappingPluginNames.begin(),
+                    overlappingPluginNames.end(),
+                    [&](const auto& name) { return name == item.name; });
+
+    if (!hasOverlap) {
+      return false;
+    }
+  }
+
+  return true;
+}
+}

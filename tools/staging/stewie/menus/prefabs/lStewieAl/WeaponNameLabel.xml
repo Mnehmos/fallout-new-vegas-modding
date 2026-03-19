@@ -1,0 +1,12 @@
+<text name="WeaponNameLabel">
+    <visible><copy src="Region_Location" trait="visible"/></visible>
+    <depth> 4 </depth>
+    <x><copy src="screen()" trait="width"/><sub>66</sub></x>
+    <y><copy src="ActionPoints" trait="y" /> <sub src="me()" trait="height"/><add>20</add></y>
+    <string></string>
+    <font>7</font>
+    <alpha> 255 </alpha>
+    <systemcolor> &true; </systemcolor>
+    <justify> &right; </justify>
+    <brightness> 255 </brightness>
+</text>

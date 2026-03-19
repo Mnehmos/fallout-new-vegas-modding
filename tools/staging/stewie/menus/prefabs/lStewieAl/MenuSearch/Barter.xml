@@ -1,0 +1,9 @@
+<text name="BM_SearchBar">
+  <string></string>
+  <id> 87698483 </id>
+  <visible>1</visible>
+  <depth>6</depth>
+  <x><copy src="BM_Items_headline_h1" trait="x" /><add>20</add></x>
+	<y><copy src="BM_Items_headline_h1" trait="y" /><add>20</add></y>
+	<systemcolor> &hudmain; </systemcolor>
+</text>

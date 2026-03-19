@@ -11,7 +11,76 @@ The Mojave should feel populated and dangerous. Right now it's sparse — encoun
 
 ---
 
-## Four Pillars
+## FNV Spawn System Architecture (Discovered)
+
+```
+ECZN (17 Encounter Zones) — difficulty scaling per area
+  └── Placed REFR in CELL/WRLD — spawn markers at specific x/y/z
+       └── References LVLN or LVLC — the "what spawns" pool
+            └── Entries: NPC/CREA refs + level + count + chance %
+```
+
+### Record Counts
+| Type | Count | Purpose |
+|------|-------|---------|
+| LVLN | 365 | NPC leveled lists (factions, wastelanders) |
+| LVLC | 343 | Creature leveled lists (wildlife, monsters) |
+| NPC_ | ~3000+ | Individual NPC templates (compressed records) |
+| CREA | 1578 | Creature templates |
+| ECZN | 17 | Encounter zone difficulty settings |
+
+### Tier System (VEnc naming)
+| Tier | Creatures | Level Range |
+|------|-----------|-------------|
+| 0 | Ravens | Any |
+| 1 | Geckos, Coyotes, Bloatflies, Radroaches, Mole Rats, Dogs | 1-8 |
+| 2 | Night Stalkers, Feral Ghouls, Centaurs, Fire Ants, Geckos (med) | 8-16 |
+| 3 | Cazadors (young), Fire Geckos, Young Deathclaws, Lakelurks | 16-24 |
+| 4 | Adult Deathclaws, Cazadors, Super Mutants, Fire Geckos (med) | 24+ |
+| 5 | Reavers, Glowing Ghouls, Night Stalker Alphas | 30+ |
+
+### Spawn Chance Convention
+Numbers in record names (30/50/75) = spawn chance percentage.
+`VEncTier1GeckoSmall75` = 75% chance to spawn a small gecko.
+
+### Faction Lists
+| Faction | LVLN Count | Key Lists |
+|---------|-----------|-----------|
+| NCR | 92 | EncNCRTrooper, VarNCRRangerPatrol, VarNCRTrooper |
+| Fiends | 24 | EncFiendRandom, EncFiendGun, EncFiendMelee |
+| Legion | 23 | VarLegionWastelandRecruit, VarLegionWastelandVeteran |
+| Powder Gangers | 3 | VarNCRCFPowderGangerGun, VarNCRCFPowderGangerMelee |
+| Wastelanders | 5 | VarWastelander, VarWastelanderMale, VarWastelanderGhoul |
+
+---
+
+## Implementation Phases
+
+### Phase 1: Creature Density (LVLC — buildable now, no GECK)
+Modify existing leveled creature lists to increase spawn frequency.
+- Boost spawn chance: 30% → 50%, 50% → 75%, 75% → 90%
+- Target: ~200 LVLC records with probability entries
+- Tool: xEdit Pascal script (batch modify chance fields)
+
+### Phase 2: Faction Patrol Density (LVLN — buildable now, no GECK)
+Add more entries to faction NPC leveled lists.
+- More weapon variants per faction encounter
+- Higher NPC counts per spawn point
+- Mix in higher-tier units at low probability
+- Target: Fiend, NCR, Legion lists
+
+### Phase 3: New Spawn Points (REQUIRES GECK)
+Place new REFR spawn markers in the worldspace.
+- Caravan routes, patrol paths, civilian traffic
+- New encounter zones for empty areas
+
+### Phase 4: Scripted Events (REQUIRES NVSE)
+Dynamic battle events, caravan ambushes, migration swarms.
+- Timer-based scripts, faction warfare AI
+
+---
+
+## Four Pillars (Aspirational)
 
 ### 1. Enemy Pack Tactics & Swarms
 Enemies don't fight alone unless they're loners by nature. Predators hunt in packs. Raiders have reinforcements.

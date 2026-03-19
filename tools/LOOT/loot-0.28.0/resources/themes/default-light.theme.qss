@@ -1,0 +1,69 @@
+loot--GraphView {
+    qproperty-masterColor: #767676;
+    qproperty-userColor: palette(text);
+    qproperty-backgroundColor: palette(base);
+}
+
+loot--MainWindow {
+    qproperty-normalIconColor: #787878;
+    qproperty-disabledIconColor: #949494;
+    qproperty-selectedIconColor: palette(highlighted-text);
+    qproperty-selectedSidebarPluginTextColor: #FFFFFF;
+    qproperty-unselectedSidebarPluginGroupColor: #595959;
+    qproperty-linkColor: #0000FF;
+}
+
+loot--Card {
+    qproperty-shadowNearColor: palette(shadow);
+    qproperty-shadowFarColor: palette(window);
+}
+
+loot--GeneralInfoCard,
+loot--PluginCard {
+    background-color: palette(base);
+}
+
+loot--PluginCard[isSearchResult="true"] {
+    border-left: 4px solid #2B99F3;
+}
+
+loot--PluginCard[isSearchResult="true"][isCurrentSearchResult="true"] {
+    border-left: 4px solid #32408F;
+}
+
+QListView#pluginCardsView {
+    background-color: palette(window);
+}
+
+QLabel[messageType="warn"] {
+    background-color: #FFE79E;
+}
+
+QLabel[messageType="error"] {
+    background-color: #FF9999;
+}
+
+QLabel#plugin-crc,
+QLabel#plugin-version {
+    margin-left: 16px;
+}
+
+QLabel#plugin-version {
+    color: #455D63;
+}
+
+QLabel#plugin-crc {
+    color: #735045;
+}
+
+QLabel#tags-current {
+    color: #595959;
+}
+
+QLabel#tags-add {
+    color: #006600;
+}
+
+QLabel#tags-remove {
+    color: #B30000;
+}

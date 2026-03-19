@@ -1,0 +1,22 @@
+<text name="KO">
+	<string>K.O.</string>
+	<x>
+		<copy src="sibling(HardcoreMode)" trait="x" />
+		<sub src="me" trait="width" />
+		<sub> 20 </sub>
+	</x>
+	<y>
+		<copy src="sibling(HardcoreMode)" trait="y" />
+	</y>
+	<font>
+		<copy src="sibling(AmmoTypeLabel)" trait="font" />
+	</font>
+	<alpha>
+		<copy> 1 </copy>
+		<mul src="sibling(AmmoTypeLabel)" trait="alpha" />
+	</alpha>
+	<visible>
+		<copy src="sibling(HitPoints)" trait="visible" />
+	</visible>
+	<systemcolor> &hudmain; </systemcolor>
+</text>

@@ -1,0 +1,25 @@
+<text name="MM_SearchPredictionBar">
+  <string></string>
+  <id> &generic; </id>
+  <visible>
+    <copy src="parent()" trait="visible"/>
+	<onlyif>
+	  <copy src="parent()" trait="alpha"/>
+	  <eq> 255 </eq>
+	  <and>
+		<copy src="MM_Tabline" trait="_CurrentTab"/>
+        <eq> 1 </eq>
+	  </and>
+	</onlyif>
+  </visible>
+  <depth>6</depth>
+  <x>
+    <copy src="parent()" trait="x"/>
+  </x>
+  <y>
+    <copy src="parent()" trait="y"/>
+	<add> 32 </add>
+  </y>
+  <systemcolor> &hudmain; </systemcolor>
+  <alpha>127</alpha>
+</text>

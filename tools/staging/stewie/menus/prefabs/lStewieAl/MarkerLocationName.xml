@@ -1,0 +1,23 @@
+<text name="ClosestMarkerIndicator">
+	<string></string>
+	<user0></user0>
+	<!-- is visible (set in code) -->
+	<user1></user1>
+	<!-- heading (set in code) -->
+	<x>
+		<copy src="me" trait="user1"/>
+		<sub>
+			<copy src="me" trait="width"/>
+			<div>2</div>
+		</sub>
+		<add>20</add>
+	</x>
+	<y>60</y>
+	<font>7</font>
+	<visible>
+		<copy src="me" trait="user0"/>
+	</visible>
+	<systemcolor>&hudmain;</systemcolor>
+	<zoom>60</zoom>
+	<alpha>127</alpha>
+</text>

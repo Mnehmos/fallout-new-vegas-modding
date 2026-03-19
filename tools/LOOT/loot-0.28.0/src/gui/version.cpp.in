@@ -1,0 +1,39 @@
+/*  LOOT
+
+    A load order optimisation tool for Oblivion, Skyrim, Fallout 3 and
+    Fallout: New Vegas.
+
+    Copyright (C) 2017 WrinklyNinja
+
+    This file is part of the LOOT metadata validator.
+
+    LOOT is free software: you can redistribute
+    it and/or modify it under the terms of the GNU General Public License
+    as published by the Free Software Foundation, either version 3 of
+    the License, or (at your option) any later version.
+
+    LOOT is distributed in the hope that it will
+    be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with LOOT.  If not, see
+    <https://www.gnu.org/licenses/>.
+    */
+
+#include "gui/version.h"
+
+namespace loot {
+std::string getLootVersion() {
+  static const auto LOOT_VERSION = std::to_string(LOOT_VERSION_MAJOR) + '.' +
+                                   std::to_string(LOOT_VERSION_MINOR) + '.' +
+                                   std::to_string(LOOT_VERSION_PATCH);
+
+  return LOOT_VERSION;
+}
+
+std::string getLootRevision() {
+  return "@GIT_COMMIT_STRING@";
+}
+}

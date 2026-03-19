@@ -1,0 +1,26 @@
+<image name="ConsoleBackground">
+	<filename> Interface\HUD\fade_to_top.dds </filename>
+	<texatlas> Interface\InterfaceShared.tai </texatlas>
+  
+  <systemcolor>0</systemcolor>
+  <red>0</red>
+  <green>0</green>
+  <blue>0</blue>
+  <alpha> 160 </alpha>
+	<brightness> 100 </brightness>
+	<depth> 100 </depth>
+  <zoom> &scale; </zoom>
+  <visible> 0 </visible>
+  
+	<width>
+		<copy src="screen()" trait="width"/>
+	</width>
+	<height>
+		<copy src="screen()" trait="height"/>
+		<mul> 1.5 </mul>
+	</height>
+	<y>
+		<copy src="screen()" trait="height"/>
+		<sub src="me()" trait="height"/>
+	</y>
+</image>
