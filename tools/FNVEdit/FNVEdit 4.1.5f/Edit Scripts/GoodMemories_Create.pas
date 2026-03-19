@@ -23,7 +23,7 @@ begin
 
   targetPlugin := nil;
   for i := 0 to Pred(FileCount) do begin
-    if SameText(GetFileName(FileByIndex(i)), 'PerkOverhaul.esp') then begin
+    if SameText(GetFileName(FileByIndex(i)), 'MnehmosMojave.esp') then begin
       targetPlugin := FileByIndex(i);
       Break;
     end;
