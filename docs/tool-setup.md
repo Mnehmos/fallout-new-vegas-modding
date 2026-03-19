@@ -23,18 +23,58 @@ Install in this exact order. Each tool builds on the previous.
 
 ---
 
-## 3. New Vegas Script Extender (NVSE)
+## 3. FNV 4GB Patcher
+
+**What it does:** Removes the 2GB memory ceiling from the 32-bit executable. Without this, the game crashes in mod-heavy setups.
+
+- Search: "FNV 4GB Patcher" on Nexus Mods
+- Run once against `FalloutNV.exe` — it patches the executable in-place
+- Must be done BEFORE NVSE installation
+
+---
+
+## 4. New Vegas Script Extender (NVSE)
 
 **What it does:** Extends the game engine's scripting capabilities. Required by ~90% of modern mods.
 
 - Search: "NVSE New Vegas Script Extender" on nvse.silverlock.org
-- Install: Copy `nvse_loader.exe` and DLLs into your FNV root folder
+- Install: Copy `nvse_loader.exe`, `nvse_1_4.dll`, `nvse_1_4ng.dll` into your FNV root folder (same folder as `FalloutNV.exe`)
 - Launch the game through `nvse_loader.exe` (or MO2 will handle this)
 - Test: Open console in-game, type `GetNVSEVersion` — should return a number
 
 ---
 
-## 4. FNVEdit (xEdit for New Vegas)
+## 5. JIP LN NVSE Plugin
+
+**What it does:** Adds hundreds of new NVSE functions, bug fixes, and engine extensions. Required for perk condition scripting.
+
+- Search: "JIP LN NVSE Plugin" on Nexus Mods
+- Install via MO2 (just drag the archive into MO2)
+- Key functions it adds: `GetPerkRank`, `HasPerk`, `GetWeaponType` — critical for our perk overhaul
+
+---
+
+## 6. JohnnyGuitar NVSE
+
+**What it does:** Additional NVSE functions, especially for condition and perk scripting.
+
+- Search: "JohnnyGuitar NVSE" on Nexus Mods
+- Install via MO2
+- Adds condition functions used for complex perk triggers (time-of-day, weapon category, AP state)
+
+---
+
+## 7. lStewieAl's Tweaks
+
+**What it does:** INI-configurable engine-level fixes and QOL improvements. Fixes dozens of vanilla engine bugs.
+
+- Search: "lStewieAl's Tweaks and Engine Fixes" on Nexus Mods
+- Install via MO2
+- Configure via `Data\NVSE\Plugins\nvse_stewie_tweaks.ini`
+
+---
+
+## 8. FNVEdit (xEdit for New Vegas)
 
 **What it does:** The primary tool for viewing/editing ESP/ESM plugin files. Used for perk editing.
 
@@ -51,7 +91,7 @@ FNVEdit.exe -script
 
 ---
 
-## 5. GECK (Garden of Eden Construction Kit)
+## 9. GECK (Garden of Eden Construction Kit)
 
 **What it does:** Bethesda's official editor. Needed for complex scripting, dialogue, and world editing.
 
@@ -61,7 +101,17 @@ FNVEdit.exe -script
 
 ---
 
-## 6. NifSkope
+## 10. LOOT (Load Order Optimisation Tool)
+
+**What it does:** Automatically sorts your load order using community metadata to minimize conflicts.
+
+- Search: "LOOT" on GitHub (loot/loot releases)
+- Run after adding new plugins to verify load order
+- Not strictly required for development (we control our own ESP order) but useful for testing compatibility
+
+---
+
+## 11. NifSkope
 
 **What it does:** View and edit .nif 3D mesh files used by the engine.
 
@@ -70,7 +120,7 @@ FNVEdit.exe -script
 
 ---
 
-## 7. Blender + Niftools Addon
+## 12. Blender + Niftools Addon
 
 **What it does:** Full 3D modeling. Export .nif files for the game engine.
 
@@ -80,7 +130,7 @@ FNVEdit.exe -script
 
 ---
 
-## 8. GIMP + DDS Plugin (or Photoshop + Intel Texture Works)
+## 13. GIMP + DDS Plugin (or Photoshop + Intel Texture Works)
 
 **What it does:** Create/edit textures in DDS format (what FNV uses).
 
@@ -90,7 +140,7 @@ FNVEdit.exe -script
 
 ---
 
-## 9. Audacity
+## 14. Audacity
 
 **What it does:** Record/edit audio. We'll use OpenAI TTS for generation, Audacity for cleanup.
 
@@ -99,7 +149,7 @@ FNVEdit.exe -script
 
 ---
 
-## 10. Python 3.11+
+## 15. Python 3.11+
 
 **What it does:** Our automation layer — batch editing, TTS integration, data processing.
 
