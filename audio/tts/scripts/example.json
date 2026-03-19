@@ -1,0 +1,17 @@
+{
+  "mod": "PerkOverhaul",
+  "npc_id": "CasinoAnnouncer",
+  "description": "Lines for a casino PA announcer reacting to player perks",
+  "lines": [
+    {
+      "id": "PO_Casino_001",
+      "text": "Attention: the individual with suspiciously good luck at the blackjack table is asked to leave. Politely. For now.",
+      "voice": "announcer"
+    },
+    {
+      "id": "PO_Casino_002",
+      "text": "House rules reminder: card counting is not illegal. It is, however, deeply unwelcome.",
+      "voice": "announcer"
+    }
+  ]
+}

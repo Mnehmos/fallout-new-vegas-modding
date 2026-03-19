@@ -1,0 +1,70 @@
+# ============================================================
+# Fallout New Vegas Modding — .gitignore
+# ============================================================
+
+# --- Compiled / Generated mod files ---
+# Track .esp/.esm as source of truth, but ignore backups
+*.bak
+*.orig
+*.tmp
+
+# FNVEdit backups
+FNVEdit Backups/
+Edit Scripts/Cache/
+
+# --- Large binary assets (use Git LFS for these if needed) ---
+*.bsa
+*.dds
+*.nif
+*.kf
+*.egm
+*.tri
+*.lip
+
+# Audio — track scripts/source, not compiled audio
+*.wav
+*.mp3
+*.ogg
+# Exception: keep TTS source text scripts
+!audio/tts/*.txt
+!audio/tts/*.json
+
+# --- Tool artifacts ---
+*.log
+*.crash
+Logs/
+*.tes5pas
+ModOrganizer/
+Mod Organizer 2/
+
+# --- Python ---
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+
+# --- Node / JS (if any tooling) ---
+node_modules/
+.npm/
+
+# --- OS ---
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# --- IDE ---
+.vscode/settings.json
+.idea/
+*.suo
+*.user
+
+# --- API keys / secrets ---
+.env
+.env.*
+secrets.json
+openai_key.txt
