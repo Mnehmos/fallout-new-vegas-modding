@@ -171,12 +171,13 @@ begin
     SetElementEditValues(newRec, 'DESC', 'Shells line the inside like chapters in a book. Every pocket holds a memory. Every scratch tells a story. The leather is worn soft but the stitching holds. It''s outlasted everything else. Part of the Mnehmos Archivist''s Kit. Mnemosyne remembers.');
 
     SetElementEditValues(newRec, 'DATA\Value', '5000');
-    SetElementEditValues(newRec, 'DATA\Weight', '3.5');
-    SetElementEditValues(newRec, 'DNAM', '11');
+    SetElementEditValues(newRec, 'DATA\Health', '300');
+    SetElementEditValues(newRec, 'DATA\Weight', '3.500000');
+    SetElementEditValues(newRec, 'DNAM\DT', '11.000000');
 
     Inc(itemCount);
     AddMessage('  [4/6] The Archivist''s Duster — FormID: ' + IntToHex(FormID(newRec), 8));
-    AddMessage('         DT:11 Wt:3.5 Val:5000');
+    AddMessage('         DT:11 HP:300 Wt:3.5 Val:5000');
   end;
 
   // ═══════════════════════════════════════════════════
@@ -195,11 +196,12 @@ begin
     SetElementEditValues(newRec, 'DESC', 'Wide brim, low profile. The Archivist doesn''t need to be recognized — just remembered. The hat has seen more sunsets than most people have seen days. Part of the Mnehmos Archivist''s Kit. Mnemosyne remembers.');
 
     SetElementEditValues(newRec, 'DATA\Value', '2000');
-    SetElementEditValues(newRec, 'DNAM', '2');
+    SetElementEditValues(newRec, 'DATA\Health', '150');
+    SetElementEditValues(newRec, 'DNAM\DT', '2.000000');
 
     Inc(itemCount);
     AddMessage('  [5/6] Mnehmos Hat — FormID: ' + IntToHex(FormID(newRec), 8));
-    AddMessage('         DT:2 Val:2000');
+    AddMessage('         DT:2 HP:150 Val:2000');
   end;
 
   // ═══════════════════════════════════════════════════
@@ -218,10 +220,11 @@ begin
     SetElementEditValues(newRec, 'DESC', 'Pre-War optics, hand-ground by someone who understood precision. Everything looks clearer through the lens of experience. The world sharpens. Details emerge. Nothing escapes notice. Part of the Mnehmos Archivist''s Kit. Mnemosyne remembers.');
 
     SetElementEditValues(newRec, 'DATA\Value', '2500');
+    SetElementEditValues(newRec, 'DATA\Health', '200');
 
     Inc(itemCount);
     AddMessage('  [6/6] Recollection Lenses — FormID: ' + IntToHex(FormID(newRec), 8));
-    AddMessage('         Val:2500');
+    AddMessage('         HP:200 Val:2500');
   end;
 
 end;
