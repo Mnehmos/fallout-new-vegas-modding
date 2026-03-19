@@ -1,0 +1,129 @@
+{
+  Bad Memories — Unique Shotgun
+  Creates a new weapon record by cloning Hunting Shotgun and modifying stats.
+
+  Run on: WeapNVHuntingShotgun in FalloutNV.esm
+  Creates: WeapBadMemories in target ESP
+
+  After running, use console command to test:
+    player.additem xx000800 1
+  (where xx is the load order index of your ESP)
+}
+
+unit BadMemoriesCreate;
+
+var
+  targetPlugin: IInterface;
+
+function Initialize: Integer;
+var
+  i: Integer;
+begin
+  Result := 0;
+
+  // Find PerkOverhaul.esp or create new file
+  targetPlugin := nil;
+  for i := 0 to Pred(FileCount) do begin
+    if SameText(GetFileName(FileByIndex(i)), 'PerkOverhaul.esp') then begin
+      targetPlugin := FileByIndex(i);
+      Break;
+    end;
+  end;
+
+  if not Assigned(targetPlugin) then begin
+    targetPlugin := AddNewFile;
+    if not Assigned(targetPlugin) then begin
+      AddMessage('[BadMemories] ERROR: No target plugin. Aborting.');
+      Result := 1;
+      Exit;
+    end;
+  end;
+
+  AddMessage('[BadMemories] Creating unique shotgun...');
+  AddMessage('[BadMemories] Target: ' + GetFileName(targetPlugin));
+end;
+
+function Process(e: IInterface): Integer;
+var
+  newWeap, el: IInterface;
+begin
+  Result := 0;
+
+  // Only process the Hunting Shotgun
+  if Signature(e) <> 'WEAP' then Exit;
+  if not SameText(EditorID(e), 'WeapNVHuntingShotgun') then Exit;
+
+  AddMessage('  Found base weapon: ' + EditorID(e));
+
+  // Copy as NEW record (not override) into our ESP
+  AddRequiredElementMasters(e, targetPlugin, False);
+  newWeap := wbCopyElementToFile(e, targetPlugin, True, True);
+
+  if not Assigned(newWeap) then begin
+    AddMessage('  ERROR: Failed to copy weapon record');
+    Exit;
+  end;
+
+  // Set Editor ID
+  SetElementEditValues(newWeap, 'EDID', 'WeapBadMemories');
+
+  // Set display name
+  SetElementEditValues(newWeap, 'FULL', 'Bad Memories');
+
+  // Set description
+  SetElementEditValues(newWeap, 'DESC', 'There''s a tally mark for every lesson taught. The stock is running out of room. Mnemosyne''s children remember everything — this shotgun makes sure everyone else does too. If they survive.');
+
+  // Set value (caps)
+  SetElementEditValues(newWeap, 'DNAM\Value', '8500');
+
+  // Set weight
+  SetElementEditValues(newWeap, 'DNAM\Weight', '7.0');
+
+  // Set damage
+  SetElementEditValues(newWeap, 'DNAM\Damage', '105');
+
+  // Set clip size / magazine
+  SetElementEditValues(newWeap, 'DNAM\Clip Size', '7');
+
+  // Set AP cost
+  SetElementEditValues(newWeap, 'DNAM\Action Point Cost', '32');
+
+  // Set spread (min spread)
+  SetElementEditValues(newWeap, 'DNAM\Min Spread', '1.0');
+
+  // Set critical damage
+  SetElementEditValues(newWeap, 'CRDT\Damage', '126');
+
+  // Set critical % multiplier
+  SetElementEditValues(newWeap, 'CRDT\% Mult', '2.0');
+
+  // Set max condition/health
+  SetElementEditValues(newWeap, 'DNAM\Health', '150');
+
+  AddMessage('  Created: WeapBadMemories "Bad Memories"');
+  AddMessage('  FormID: ' + IntToHex(FormID(newWeap), 8));
+  AddMessage('');
+  AddMessage('  Stats:');
+  AddMessage('    Damage:    105 (was 84)');
+  AddMessage('    Crit Dmg:  126 (was 84)');
+  AddMessage('    Crit Mult: x2 (was x1)');
+  AddMessage('    Magazine:  7 (was 5)');
+  AddMessage('    AP Cost:   32 (was 28)');
+  AddMessage('    Spread:    1.0 (was 1.5)');
+  AddMessage('    Weight:    7.0 (was 5.5)');
+  AddMessage('    Value:     8500 (was 3500)');
+  AddMessage('    Health:    150 (was 100)');
+  AddMessage('');
+  AddMessage('  To test in-game:');
+  AddMessage('    Open console (~)');
+  AddMessage('    help "Bad Memories" 4');
+  AddMessage('    player.additem [FormID] 1');
+end;
+
+function Finalize: Integer;
+begin
+  Result := 0;
+  AddMessage('[BadMemories] Done. Save the ESP to keep changes.');
+end;
+
+end.
