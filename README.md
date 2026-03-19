@@ -13,6 +13,7 @@ See [mods/PerkOverhaul/docs/design-brief.md](mods/PerkOverhaul/docs/design-brief
 - [Tool Setup Guide](docs/tool-setup.md)
 - [Modding Pipeline](docs/modding-pipeline.md)
 - [Perk Database](research/perks/perk-database.md)
+- [Dense Combat Redesign](research/perks/perk-dense-combat-redesign.md)
 - [Tier Framework](research/perks/perk-tier-framework.md)
 
 ## Structure

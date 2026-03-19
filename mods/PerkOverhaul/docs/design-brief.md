@@ -10,12 +10,15 @@
 
 Every perk the player can take at level-up must feel like a meaningful choice.
 No perk should be taken because "nothing else was useful."
+The perk overhaul is now tuned for a denser Mojave with substantially more enemies per encounter.
+Perks should be slightly OP by vanilla standards so combat stays lethal, fast, and sustainable instead of turning into a resource-drain slog.
 
 ### Success Criteria
 - No perk is tier C or below after overhaul
 - At least 15–20 perks are build-defining (S tier)
 - Every build archetype has 3–5 "anchor" perks it orbits around
 - New players can feel powerful quickly; veterans still have depth to explore
+- The full perk set can support a future high-density enemy mod without forcing bullet-spongy balance
 
 ---
 
@@ -25,6 +28,7 @@ No perk should be taken because "nothing else was useful."
 - NVSE required (JIP LN NVSE + JohnnyGuitar NVSE)
 - Should not make the game trivially easy — power should feel earned
 - Where possible, perks should reward specific playstyles, not just raw numbers
+- Power budget should sit above vanilla because encounter density will also sit above vanilla
 
 ---
 
