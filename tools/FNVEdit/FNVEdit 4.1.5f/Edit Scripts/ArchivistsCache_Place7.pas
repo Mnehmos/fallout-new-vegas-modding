@@ -148,13 +148,14 @@ begin
   sig := Signature(e);
   if sig <> 'REFR' then Exit;
 
-  // Find a REFR anywhere in the Goodsprings area
-  // Real coords: X ~ -68000, Y ~ 2000
+  // Find a REFR in Goodsprings grid cell (-17, 0)
+  // GoodspringsArrivalMarker = (-67856, 2332, 8376)
   x := GetElementNativeValues(e, 'DATA\Position\X');
   y := GetElementNativeValues(e, 'DATA\Position\Y');
 
-  if (x < -70000) or (x > -65000) then Exit;
-  if (y < -1000) or (y > 5000) then Exit;
+  // Grid cell (-17, 0) bounds: X = -69632 to -65536, Y = 0 to 4096
+  if (x < -69632) or (x > -65536) then Exit;
+  if (y < 0) or (y > 4096) then Exit;
 
   donorFound := True;
   AddMessage('  Donor REFR: ' + IntToHex(FormID(e), 8));
@@ -171,16 +172,15 @@ begin
       trunkFormID := FormID(RecordByIndex(tp, i));
   end;
 
-  // Add dead wastelander master
-  AddRequiredElementMasters(RecordByFormID(FileByIndex(0), $000A11F7, True), tp, False);
-
   // ═══ PLACE OBJECTS ═══
-  // Trunk: near Goodsprings saloon (real coords from player)
+  // Trunk: east of GoodspringsArrivalMarker (-67856, 2332, 8376)
   if trunkFormID > 0 then
-    PlaceClone(e, trunkFormID, -67800.0, 2100.0, 8380.0, 45.0, 'ArchivistTrunk');
+    PlaceClone(e, trunkFormID, -67600.0, 2400.0, 8376.0, 45.0, 'ArchivistTrunk');
 
-  // Dead wastelander: near trunk
-  PlaceClone(e, $000A11F7, -67900.0, 2200.0, 8380.0, 180.0, 'DeadWastelander');
+  // Dead prospector: north toward cemetery path
+  // NVProspectorMaleDEADSLCrater02 [NPC_:0017AFDC] — simpler dead body
+  AddRequiredElementMasters(RecordByFormID(FileByIndex(0), $0017AFDC, True), tp, False);
+  PlaceClone(e, $0017AFDC, -67900.0, 2800.0, 8376.0, 270.0, 'DeadArchivist');
 end;
 
 function Finalize: Integer;
