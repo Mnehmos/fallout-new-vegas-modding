@@ -26,14 +26,14 @@ begin
 
   tp := nil;
   for i := 0 to Pred(FileCount) do begin
-    if SameText(GetFileName(FileByIndex(i)), 'ArchivistsCache.esp') then begin
+    if SameText(GetFileName(FileByIndex(i)), 'MnehmosMojave.esp') then begin
       tp := FileByIndex(i);
       Break;
     end;
   end;
 
   if not Assigned(tp) then begin
-    AddMessage('[Place] ERROR: ArchivistsCache.esp not loaded.');
+    AddMessage('[Place] ERROR: MnehmosMojave.esp not loaded.');
     Result := 1;
     Exit;
   end;
