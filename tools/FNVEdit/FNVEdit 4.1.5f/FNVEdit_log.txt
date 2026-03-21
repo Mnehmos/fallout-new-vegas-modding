@@ -20589,3 +20589,1178 @@ Loading active plugin list: C:\Users\mnehm\AppData\Local\FalloutNV\Plugins.txt
 [00:01] Background Loader: [OldWorldBlues.esm] Done loading reference info.
 [00:02] Loading of modules got terminated early. Editing is disabled.
 [00:02] Background Loader: finished
+FNVEdit 4.1.5f (AC5635A7) starting session 2026-03-19 12:59:52
+
+The Source Code Form of this program is subject to the terms of the Mozilla Public License, v. 2.0
+If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+
+The Source Code Form is available at https://github.com/TES5Edit/TES5Edit
+
+Using FalloutNV Data Path: H:\01_Games\Steam\SteamApps\common\Fallout New Vegas\Data\
+Using Backup Path: H:\01_Games\Steam\SteamApps\common\Fallout New Vegas\Data\FNVEdit Backups\
+Using Scripts Path: F:\Github\Fallout New Vegas Modding\tools\FNVEdit\FNVEdit 4.1.5f\Edit Scripts\
+Using Cache Path: H:\01_Games\Steam\SteamApps\common\Fallout New Vegas\Data\FNVEdit Cache\
+Using ini: C:\Users\mnehm\Documents\My Games\FalloutNV\Fallout.ini
+Using save path: C:\Users\mnehm\Documents\My Games\FalloutNV\Saves\
+Using plugin list: C:\Users\mnehm\AppData\Local\FalloutNV\Plugins.txt
+Using settings file: C:\Users\mnehm\AppData\Local\FalloutNV\Plugins.fnvviewsettings
+Using language: English
+Using general string encoding: 1252  (ANSI - Latin I)
+Using translatable string encoding: 1252  (ANSI - Latin I)
+Loading active plugin list: C:\Users\mnehm\AppData\Local\FalloutNV\Plugins.txt
+[00:00] Background Loader: starting...
+[00:00] Background Loader: [Fallout - Textures.bsa] Skipped.
+[00:00] Background Loader: [Fallout - Textures2.bsa] Skipped.
+[00:00] Background Loader: [Fallout - Meshes.bsa] Skipped.
+[00:00] Background Loader: [Fallout - Voices1.bsa] Skipped.
+[00:00] Background Loader: [Fallout - Sound.bsa] Skipped.
+[00:00] Background Loader: [Fallout - Misc.bsa] Skipped.
+[00:00] Background Loader: [Update.bsa] Skipped.
+[00:00] Background Loader: [DeadMoney - Main.bsa] Skipped.
+[00:00] Background Loader: [DeadMoney - Sounds.bsa] Skipped.
+[00:00] Background Loader: [HonestHearts - Main.bsa] Skipped.
+[00:00] Background Loader: [HonestHearts - Sounds.bsa] Skipped.
+[00:00] Background Loader: [LonesomeRoad - Main.bsa] Skipped.
+[00:00] Background Loader: [LonesomeRoad - Sounds.bsa] Skipped.
+[00:00] Background Loader: [OldWorldBlues - Main.bsa] Skipped.
+[00:00] Background Loader: [OldWorldBlues - Sounds.bsa] Skipped.
+[00:00] Background Loader: [TribalPack - Main.bsa] Skipped.
+[00:00] Background Loader: [MercenaryPack - Main.bsa] Skipped.
+[00:00] Background Loader: [ClassicPack - Main.bsa] Skipped.
+[00:00] Background Loader: [CaravanPack - Main.bsa] Skipped.
+[00:00] Background Loader: [GunRunnersArsenal - Main.bsa] Skipped.
+[00:00] Background Loader: [GunRunnersArsenal - Sounds.bsa] Skipped.
+[00:00] Background Loader: [H:\01_Games\Steam\SteamApps\common\Fallout New Vegas\Data\] Setting Resource Path.
+[00:00] Background Loader: Start building resources cache...
+[00:00] Background Loader: ...resources cache finished building
+[00:00] Background Loader: loading "FalloutNV.esm"...
+[00:00] Background Loader: [FalloutNV.esm] Loading file
+[00:00] Background Loader: [FalloutNV.esm] File loaded (CRC32:26D5B980)
+[00:00] Background Loader: [FalloutNV.esm] Start processing
+[00:00] Background Loader: [FalloutNV.esm] Header processed. Expecting 542016 records
+[00:00] Background Loader: [FalloutNV.esm] GRUP Top "GMST" processed
+[00:00] Background Loader: [FalloutNV.esm] GRUP Top "TXST" processed
+[00:00] Background Loader: [FalloutNV.esm] GRUP Top "MICN" processed
+[00:00] Background Loader: [FalloutNV.esm] GRUP Top "GLOB" processed
+[00:00] Background Loader: [FalloutNV.esm] GRUP Top "CLAS" processed
+[00:00] Background Loader: [FalloutNV.esm] GRUP Top "FACT" processed
+[00:00] Background Loader: [FalloutNV.esm] GRUP Top "HDPT" processed
+[00:00] Background Loader: [FalloutNV.esm] GRUP Top "HAIR" processed
+[00:00] Background Loader: [FalloutNV.esm] GRUP Top "EYES" processed
+[00:00] Background Loader: [FalloutNV.esm] GRUP Top "RACE" processed
+[00:00] Background Loader: [FalloutNV.esm] GRUP Top "SOUN" processed
+[00:00] Background Loader: [FalloutNV.esm] GRUP Top "ASPC" processed
+[00:00] Background Loader: [FalloutNV.esm] GRUP Top "MGEF" processed
+[00:00] Background Loader: [FalloutNV.esm] GRUP Top "SCPT" processed
+[00:00] Background Loader: [FalloutNV.esm] GRUP Top "LTEX" processed
+[00:00] Background Loader: [FalloutNV.esm] GRUP Top "ENCH" processed
+[00:00] Background Loader: [FalloutNV.esm] GRUP Top "SPEL" processed
+[00:00] Background Loader: [FalloutNV.esm] GRUP Top "ACTI" processed
+[00:00] Background Loader: [FalloutNV.esm] GRUP Top "TACT" processed
+[00:00] Background Loader: [FalloutNV.esm] GRUP Top "TERM" processed
+[00:00] Background Loader: [FalloutNV.esm] GRUP Top "ARMO" processed
+[00:00] Background Loader: [FalloutNV.esm] GRUP Top "BOOK" processed
+[00:00] Background Loader: [FalloutNV.esm] GRUP Top "CONT" processed
+[00:00] Background Loader: [FalloutNV.esm] GRUP Top "DOOR" processed
+[00:00] Background Loader: [FalloutNV.esm] GRUP Top "INGR" processed
+[00:00] Background Loader: [FalloutNV.esm] GRUP Top "LIGH" processed
+[00:00] Background Loader: [FalloutNV.esm] GRUP Top "MISC" processed
+[00:00] Background Loader: [FalloutNV.esm] GRUP Top "STAT" processed
+[00:00] Background Loader: [FalloutNV.esm] GRUP Top "SCOL" processed
+[00:00] Background Loader: [FalloutNV.esm] GRUP Top "MSTT" processed
+[00:00] Background Loader: [FalloutNV.esm] GRUP Top "PWAT" processed
+[00:00] Background Loader: [FalloutNV.esm] GRUP Top "GRAS" processed
+[00:00] Background Loader: [FalloutNV.esm] GRUP Top "TREE" processed
+[00:00] Background Loader: [FalloutNV.esm] GRUP Top "FURN" processed
+[00:00] Background Loader: [FalloutNV.esm] GRUP Top "WEAP" processed
+[00:00] Background Loader: [FalloutNV.esm] GRUP Top "AMMO" processed
+[00:00] Background Loader: [FalloutNV.esm] GRUP Top "NPC_" processed
+[00:00] Background Loader: [FalloutNV.esm] GRUP Top "CREA" processed
+[00:00] Background Loader: [FalloutNV.esm] GRUP Top "LVLC" processed
+[00:00] Background Loader: [FalloutNV.esm] GRUP Top "LVLN" processed
+[00:00] Background Loader: [FalloutNV.esm] GRUP Top "KEYM" processed
+[00:00] Background Loader: [FalloutNV.esm] GRUP Top "ALCH" processed
+[00:00] Background Loader: [FalloutNV.esm] GRUP Top "IDLM" processed
+[00:00] Background Loader: [FalloutNV.esm] GRUP Top "NOTE" processed
+[00:00] Background Loader: [FalloutNV.esm] GRUP Top "COBJ" processed
+[00:00] Background Loader: [FalloutNV.esm] GRUP Top "PROJ" processed
+[00:00] Background Loader: [FalloutNV.esm] GRUP Top "LVLI" processed
+[00:00] Background Loader: [FalloutNV.esm] GRUP Top "WTHR" processed
+[00:00] Background Loader: [FalloutNV.esm] GRUP Top "CLMT" processed
+[00:00] Background Loader: [FalloutNV.esm] GRUP Top "REGN" processed
+[00:00] Background Loader: [FalloutNV.esm] GRUP Top "NAVI" processed
+[00:00] Background Loader: [FalloutNV.esm] GRUP Top "CELL" processed
+[00:00] Background Loader: [FalloutNV.esm] GRUP Top "WRLD" processed
+[00:01] Background Loader: [FalloutNV.esm] GRUP Top "DIAL" processed
+[00:01] Background Loader: [FalloutNV.esm] GRUP Top "QUST" processed
+[00:01] Background Loader: [FalloutNV.esm] GRUP Top "IDLE" processed
+[00:01] Background Loader: [FalloutNV.esm] GRUP Top "PACK" processed
+[00:01] Background Loader: [FalloutNV.esm] GRUP Top "CSTY" processed
+[00:01] Background Loader: [FalloutNV.esm] GRUP Top "LSCR" processed
+[00:01] Background Loader: [FalloutNV.esm] GRUP Top "ANIO" processed
+[00:01] Background Loader: [FalloutNV.esm] GRUP Top "WATR" processed
+[00:01] Background Loader: [FalloutNV.esm] GRUP Top "EFSH" processed
+[00:01] Background Loader: [FalloutNV.esm] GRUP Top "EXPL" processed
+[00:01] Background Loader: [FalloutNV.esm] GRUP Top "DEBR" processed
+[00:01] Background Loader: [FalloutNV.esm] GRUP Top "IMGS" processed
+[00:01] Background Loader: [FalloutNV.esm] GRUP Top "IMAD" processed
+[00:01] Background Loader: [FalloutNV.esm] GRUP Top "FLST" processed
+[00:01] Background Loader: [FalloutNV.esm] GRUP Top "PERK" processed
+[00:01] Background Loader: [FalloutNV.esm] GRUP Top "BPTD" processed
+[00:01] Background Loader: [FalloutNV.esm] GRUP Top "ADDN" processed
+[00:01] Background Loader: [FalloutNV.esm] GRUP Top "AVIF" processed
+[00:01] Background Loader: [FalloutNV.esm] GRUP Top "RADS" processed
+[00:01] Background Loader: [FalloutNV.esm] GRUP Top "CAMS" processed
+[00:01] Background Loader: [FalloutNV.esm] GRUP Top "CPTH" processed
+[00:01] Background Loader: [FalloutNV.esm] GRUP Top "VTYP" processed
+[00:01] Background Loader: [FalloutNV.esm] GRUP Top "IPCT" processed
+[00:01] Background Loader: [FalloutNV.esm] GRUP Top "IPDS" processed
+[00:01] Background Loader: [FalloutNV.esm] GRUP Top "ARMA" processed
+[00:01] Background Loader: [FalloutNV.esm] GRUP Top "ECZN" processed
+[00:01] Background Loader: [FalloutNV.esm] GRUP Top "MESG" processed
+[00:01] Background Loader: [FalloutNV.esm] GRUP Top "RGDL" processed
+[00:01] Background Loader: [FalloutNV.esm] GRUP Top "DOBJ" processed
+[00:01] Background Loader: [FalloutNV.esm] GRUP Top "LGTM" processed
+[00:01] Background Loader: [FalloutNV.esm] GRUP Top "MUSC" processed
+[00:01] Background Loader: [FalloutNV.esm] GRUP Top "IMOD" processed
+[00:01] Background Loader: [FalloutNV.esm] GRUP Top "REPU" processed
+[00:01] Background Loader: [FalloutNV.esm] GRUP Top "RCPE" processed
+[00:01] Background Loader: [FalloutNV.esm] GRUP Top "RCCT" processed
+[00:01] Background Loader: [FalloutNV.esm] GRUP Top "CHIP" processed
+[00:01] Background Loader: [FalloutNV.esm] GRUP Top "CSNO" processed
+[00:01] Background Loader: [FalloutNV.esm] GRUP Top "LSCT" processed
+[00:01] Background Loader: [FalloutNV.esm] GRUP Top "MSET" processed
+[00:01] Background Loader: [FalloutNV.esm] GRUP Top "ALOC" processed
+[00:01] Background Loader: [FalloutNV.esm] GRUP Top "CHAL" processed
+[00:01] Background Loader: [FalloutNV.esm] GRUP Top "AMEF" processed
+[00:01] Background Loader: [FalloutNV.esm] GRUP Top "CCRD" processed
+[00:01] Background Loader: [FalloutNV.esm] GRUP Top "CMNY" processed
+[00:01] Background Loader: [FalloutNV.esm] GRUP Top "CDCK" processed
+[00:01] Background Loader: [FalloutNV.esm] GRUP Top "DEHY" processed
+[00:01] Background Loader: [FalloutNV.esm] GRUP Top "HUNG" processed
+[00:01] Background Loader: [FalloutNV.esm] GRUP Top "SLPD" processed
+[00:01] Background Loader: [FalloutNV.esm] Building FormID index
+[00:01] Background Loader: [FalloutNV.esm] FormID index built
+[00:01] Background Loader: [FalloutNV.esm] Building string indices
+[00:01] Background Loader: [FalloutNV.esm] String indices built
+[00:01] Background Loader: [FalloutNV.esm] Warning: File contains empty top level group: GRUP Top "COBJ"
+[00:01] Background Loader: [FalloutNV.esm] Removed empty group: GRUP Top "COBJ"
+[00:01] Background Loader: [FalloutNV.esm] Processing completed
+[00:01] Background Loader: loading "FalloutNV.exe"...
+[00:01] Background Loader: [FalloutNV.exe] Loading file
+[00:01] Background Loader: [FalloutNV.exe] File loaded (CRC32:9C8213E7)
+[00:01] Background Loader: [FalloutNV.exe] Start processing
+[00:01] Background Loader: [FalloutNV.exe] Adding master "FalloutNV.esm"
+[00:01] Background Loader: [FalloutNV.exe] Header processed. Expecting 57 records
+[00:01] Background Loader: [FalloutNV.exe] GRUP Top "MICN" processed
+[00:01] Background Loader: [FalloutNV.exe] GRUP Top "GLOB" processed
+[00:01] Background Loader: [FalloutNV.exe] GRUP Top "MGEF" processed
+[00:01] Background Loader: [FalloutNV.exe] GRUP Top "STAT" processed
+[00:01] Background Loader: [FalloutNV.exe] GRUP Top "AVIF" processed
+[00:01] Background Loader: [FalloutNV.exe] GRUP Top "ECZN" processed
+[00:01] Background Loader: [FalloutNV.exe] GRUP Top "MESG" processed
+[00:01] Background Loader: [FalloutNV.exe] Building FormID index
+[00:01] Background Loader: [FalloutNV.exe] FormID index built
+[00:01] Background Loader: [FalloutNV.exe] Building string indices
+[00:01] Background Loader: [FalloutNV.exe] String indices built
+[00:01] Background Loader: [FalloutNV.exe] Processing completed
+[00:01] Background Loader: loading "DeadMoney.esm"...
+[00:01] Background Loader: [DeadMoney.esm] Loading file
+[00:01] Background Loader: [DeadMoney.esm] File loaded (CRC32:D70F165B)
+[00:01] Background Loader: [DeadMoney.esm] Start processing
+[00:01] Background Loader: [DeadMoney.esm] Adding master "FalloutNV.esm"
+[00:01] Background Loader: [DeadMoney.esm] Header processed. Expecting 42617 records
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "GMST" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "TXST" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "GLOB" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "CLAS" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "FACT" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "RACE" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "SOUN" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "ASPC" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "MGEF" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "SCPT" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "LTEX" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "ENCH" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "SPEL" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "ACTI" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "TACT" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "TERM" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "ARMO" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "CONT" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "DOOR" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "LIGH" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "MISC" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "STAT" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "SCOL" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "MSTT" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "WEAP" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "NPC_" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "CREA" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "ALCH" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "NOTE" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "LVLI" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "REGN" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "DIAL" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "QUST" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "PACK" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "EFSH" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "EXPL" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "IMAD" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "FLST" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "PERK" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "IPCT" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "IPDS" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "MESG" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "MUSC" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "RCPE" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "ALOC" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "IMOD" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "NOTE" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "LVLI" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "RCPE" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "IMOD" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "STAT" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "MSTT" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "NPC_" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "CREA" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "NOTE" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "LVLI" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "DIAL" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "QUST" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "PACK" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "LSCR" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "EXPL" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "IMAD" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "FLST" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "MESG" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "RCPE" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "MSET" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "CHAL" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "CCRD" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "DIAL" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "CCRD" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "DIAL" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "CCRD" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "STAT" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "WEAP" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "NPC_" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "CREA" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "ALCH" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "NOTE" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "LVLI" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "REGN" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "DIAL" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "QUST" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "IDLE" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "PACK" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "EXPL" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "IMAD" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "FLST" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "MESG" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "RCPE" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "ALOC" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "CHAL" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "IMOD" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "STAT" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "MSTT" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "FURN" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "WEAP" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "NPC_" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "CREA" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "LVLC" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "KEYM" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "NOTE" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "PROJ" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "LVLI" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "WTHR" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "CLMT" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "REGN" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "DIAL" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "QUST" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "IDLE" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "PACK" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "LSCR" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "EXPL" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "IMGS" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "IMAD" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "PERK" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "ECZN" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "MESG" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "LGTM" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "MUSC" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "RCPE" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "CHAL" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "CHIP" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "STAT" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "SCOL" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "MSTT" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "PWAT" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "FURN" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "WEAP" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "AMMO" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "NPC_" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "CREA" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "KEYM" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "ALCH" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "IDLM" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "NOTE" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "PROJ" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "LVLI" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "WTHR" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "CLMT" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "REGN" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "NAVI" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "CELL" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "WRLD" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "DIAL" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "QUST" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "IDLE" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "PACK" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "CSTY" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "LSCR" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "ANIO" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "WATR" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "EFSH" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "EXPL" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "IMGS" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "IMAD" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "FLST" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "PERK" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "BPTD" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "VTYP" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "IPCT" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "IPDS" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "ARMA" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "ECZN" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "MESG" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "RGDL" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "LGTM" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "RCPE" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "RCCT" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "CHAL" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "CHIP" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "CSNO" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "CHAL" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "AMEF" processed
+[00:01] Background Loader: [DeadMoney.esm] GRUP Top "WRLD" processed
+[00:01] Background Loader: [DeadMoney.esm] Building FormID index
+[00:01] Background Loader: [DeadMoney.esm] FormID index built
+[00:01] Background Loader: [DeadMoney.esm] Building string indices
+[00:01] Background Loader: [DeadMoney.esm] String indices built
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains empty top level group: GRUP Top "WRLD"
+[00:01] Background Loader: [DeadMoney.esm] Removed empty group: GRUP Top "WRLD"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains empty top level group: GRUP Top "CHIP"
+[00:01] Background Loader: [DeadMoney.esm] Removed empty group: GRUP Top "CHIP"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "CHAL"
+[00:01] Background Loader: [DeadMoney.esm] Merged 1 record from duplicated group: GRUP Top "CHAL"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains empty top level group: GRUP Top "LSCR"
+[00:01] Background Loader: [DeadMoney.esm] Removed empty group: GRUP Top "LSCR"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "CHAL"
+[00:01] Background Loader: [DeadMoney.esm] Merged 8 record from duplicated group: GRUP Top "CHAL"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "RCPE"
+[00:01] Background Loader: [DeadMoney.esm] Merged 28 record from duplicated group: GRUP Top "RCPE"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "LGTM"
+[00:01] Background Loader: [DeadMoney.esm] Merged 1 record from duplicated group: GRUP Top "LGTM"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "MESG"
+[00:01] Background Loader: [DeadMoney.esm] Merged 12 record from duplicated group: GRUP Top "MESG"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "ECZN"
+[00:01] Background Loader: [DeadMoney.esm] Merged 1 record from duplicated group: GRUP Top "ECZN"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "PERK"
+[00:01] Background Loader: [DeadMoney.esm] Merged 2 record from duplicated group: GRUP Top "PERK"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "IMAD"
+[00:01] Background Loader: [DeadMoney.esm] Merged 4 record from duplicated group: GRUP Top "IMAD"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "IMGS"
+[00:01] Background Loader: [DeadMoney.esm] Merged 1 record from duplicated group: GRUP Top "IMGS"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "EXPL"
+[00:01] Background Loader: [DeadMoney.esm] Merged 1 record from duplicated group: GRUP Top "EXPL"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "PACK"
+[00:01] Background Loader: [DeadMoney.esm] Merged 14 record from duplicated group: GRUP Top "PACK"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "IDLE"
+[00:01] Background Loader: [DeadMoney.esm] Merged 5 record from duplicated group: GRUP Top "IDLE"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "QUST"
+[00:01] Background Loader: [DeadMoney.esm] Merged 6 record from duplicated group: GRUP Top "QUST"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "DIAL"
+[00:01] Background Loader: [DeadMoney.esm] Merged 437 record from duplicated group: GRUP Top "DIAL"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "REGN"
+[00:01] Background Loader: [DeadMoney.esm] Merged 1 record from duplicated group: GRUP Top "REGN"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "CLMT"
+[00:01] Background Loader: [DeadMoney.esm] Merged 3 record from duplicated group: GRUP Top "CLMT"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "WTHR"
+[00:01] Background Loader: [DeadMoney.esm] Merged 3 record from duplicated group: GRUP Top "WTHR"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "LVLI"
+[00:01] Background Loader: [DeadMoney.esm] Merged 12 record from duplicated group: GRUP Top "LVLI"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "PROJ"
+[00:01] Background Loader: [DeadMoney.esm] Merged 1 record from duplicated group: GRUP Top "PROJ"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "NOTE"
+[00:01] Background Loader: [DeadMoney.esm] Merged 59 record from duplicated group: GRUP Top "NOTE"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains empty top level group: GRUP Top "KEYM"
+[00:01] Background Loader: [DeadMoney.esm] Removed empty group: GRUP Top "KEYM"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "CREA"
+[00:01] Background Loader: [DeadMoney.esm] Merged 27 record from duplicated group: GRUP Top "CREA"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "NPC_"
+[00:01] Background Loader: [DeadMoney.esm] Merged 2 record from duplicated group: GRUP Top "NPC_"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "WEAP"
+[00:01] Background Loader: [DeadMoney.esm] Merged 21 record from duplicated group: GRUP Top "WEAP"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "FURN"
+[00:01] Background Loader: [DeadMoney.esm] Merged 1 record from duplicated group: GRUP Top "FURN"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "MSTT"
+[00:01] Background Loader: [DeadMoney.esm] Merged 2 record from duplicated group: GRUP Top "MSTT"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "STAT"
+[00:01] Background Loader: [DeadMoney.esm] Merged 75 record from duplicated group: GRUP Top "STAT"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "CHAL"
+[00:01] Background Loader: [DeadMoney.esm] Merged 3 record from duplicated group: GRUP Top "CHAL"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "RCPE"
+[00:01] Background Loader: [DeadMoney.esm] Merged 5 record from duplicated group: GRUP Top "RCPE"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "MESG"
+[00:01] Background Loader: [DeadMoney.esm] Merged 14 record from duplicated group: GRUP Top "MESG"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "FLST"
+[00:01] Background Loader: [DeadMoney.esm] Merged 4 record from duplicated group: GRUP Top "FLST"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "IMAD"
+[00:01] Background Loader: [DeadMoney.esm] Merged 4 record from duplicated group: GRUP Top "IMAD"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "EXPL"
+[00:01] Background Loader: [DeadMoney.esm] Merged 1 record from duplicated group: GRUP Top "EXPL"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "PACK"
+[00:01] Background Loader: [DeadMoney.esm] Merged 7 record from duplicated group: GRUP Top "PACK"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "IDLE"
+[00:01] Background Loader: [DeadMoney.esm] Merged 1 record from duplicated group: GRUP Top "IDLE"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "QUST"
+[00:01] Background Loader: [DeadMoney.esm] Merged 3 record from duplicated group: GRUP Top "QUST"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "DIAL"
+[00:01] Background Loader: [DeadMoney.esm] Merged 624 record from duplicated group: GRUP Top "DIAL"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "REGN"
+[00:01] Background Loader: [DeadMoney.esm] Merged 7 record from duplicated group: GRUP Top "REGN"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "LVLI"
+[00:01] Background Loader: [DeadMoney.esm] Merged 34 record from duplicated group: GRUP Top "LVLI"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "NOTE"
+[00:01] Background Loader: [DeadMoney.esm] Merged 15 record from duplicated group: GRUP Top "NOTE"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "ALCH"
+[00:01] Background Loader: [DeadMoney.esm] Merged 4 record from duplicated group: GRUP Top "ALCH"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "CREA"
+[00:01] Background Loader: [DeadMoney.esm] Merged 2 record from duplicated group: GRUP Top "CREA"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "NPC_"
+[00:01] Background Loader: [DeadMoney.esm] Merged 2 record from duplicated group: GRUP Top "NPC_"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "WEAP"
+[00:01] Background Loader: [DeadMoney.esm] Merged 11 record from duplicated group: GRUP Top "WEAP"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "STAT"
+[00:01] Background Loader: [DeadMoney.esm] Merged 18 record from duplicated group: GRUP Top "STAT"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "DIAL"
+[00:01] Background Loader: [DeadMoney.esm] Merged 43 record from duplicated group: GRUP Top "DIAL"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "CCRD"
+[00:01] Background Loader: [DeadMoney.esm] Merged 25 record from duplicated group: GRUP Top "CCRD"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "DIAL"
+[00:01] Background Loader: [DeadMoney.esm] Merged 20 record from duplicated group: GRUP Top "DIAL"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "CCRD"
+[00:01] Background Loader: [DeadMoney.esm] Merged 28 record from duplicated group: GRUP Top "CCRD"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "CHAL"
+[00:01] Background Loader: [DeadMoney.esm] Merged 2 record from duplicated group: GRUP Top "CHAL"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "RCPE"
+[00:01] Background Loader: [DeadMoney.esm] Merged 6 record from duplicated group: GRUP Top "RCPE"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "MESG"
+[00:01] Background Loader: [DeadMoney.esm] Merged 15 record from duplicated group: GRUP Top "MESG"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "FLST"
+[00:01] Background Loader: [DeadMoney.esm] Merged 5 record from duplicated group: GRUP Top "FLST"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "IMAD"
+[00:01] Background Loader: [DeadMoney.esm] Merged 1 record from duplicated group: GRUP Top "IMAD"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "EXPL"
+[00:01] Background Loader: [DeadMoney.esm] Merged 1 record from duplicated group: GRUP Top "EXPL"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "LSCR"
+[00:01] Background Loader: [DeadMoney.esm] Merged 2 record from duplicated group: GRUP Top "LSCR"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "PACK"
+[00:01] Background Loader: [DeadMoney.esm] Merged 5 record from duplicated group: GRUP Top "PACK"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "QUST"
+[00:01] Background Loader: [DeadMoney.esm] Merged 11 record from duplicated group: GRUP Top "QUST"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "DIAL"
+[00:01] Background Loader: [DeadMoney.esm] Merged 363 record from duplicated group: GRUP Top "DIAL"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "LVLI"
+[00:01] Background Loader: [DeadMoney.esm] Merged 3 record from duplicated group: GRUP Top "LVLI"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "NOTE"
+[00:01] Background Loader: [DeadMoney.esm] Merged 24 record from duplicated group: GRUP Top "NOTE"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "CREA"
+[00:01] Background Loader: [DeadMoney.esm] Merged 3 record from duplicated group: GRUP Top "CREA"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "NPC_"
+[00:01] Background Loader: [DeadMoney.esm] Merged 1 record from duplicated group: GRUP Top "NPC_"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "MSTT"
+[00:01] Background Loader: [DeadMoney.esm] Merged 8 record from duplicated group: GRUP Top "MSTT"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "STAT"
+[00:01] Background Loader: [DeadMoney.esm] Merged 21 record from duplicated group: GRUP Top "STAT"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "IMOD"
+[00:01] Background Loader: [DeadMoney.esm] Merged 1 record from duplicated group: GRUP Top "IMOD"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "RCPE"
+[00:01] Background Loader: [DeadMoney.esm] Merged 1 record from duplicated group: GRUP Top "RCPE"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "LVLI"
+[00:01] Background Loader: [DeadMoney.esm] Merged 1 record from duplicated group: GRUP Top "LVLI"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "NOTE"
+[00:01] Background Loader: [DeadMoney.esm] Merged 1 record from duplicated group: GRUP Top "NOTE"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "IMOD"
+[00:01] Background Loader: [DeadMoney.esm] Merged 1 record from duplicated group: GRUP Top "IMOD"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "ALOC"
+[00:01] Background Loader: [DeadMoney.esm] Merged 1 record from duplicated group: GRUP Top "ALOC"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "RCPE"
+[00:01] Background Loader: [DeadMoney.esm] Merged 1 record from duplicated group: GRUP Top "RCPE"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "MUSC"
+[00:01] Background Loader: [DeadMoney.esm] Merged 1 record from duplicated group: GRUP Top "MUSC"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "MESG"
+[00:01] Background Loader: [DeadMoney.esm] Merged 7 record from duplicated group: GRUP Top "MESG"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "IPDS"
+[00:01] Background Loader: [DeadMoney.esm] Merged 1 record from duplicated group: GRUP Top "IPDS"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "IPCT"
+[00:01] Background Loader: [DeadMoney.esm] Merged 4 record from duplicated group: GRUP Top "IPCT"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "PERK"
+[00:01] Background Loader: [DeadMoney.esm] Merged 2 record from duplicated group: GRUP Top "PERK"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "FLST"
+[00:01] Background Loader: [DeadMoney.esm] Merged 16 record from duplicated group: GRUP Top "FLST"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "IMAD"
+[00:01] Background Loader: [DeadMoney.esm] Merged 1 record from duplicated group: GRUP Top "IMAD"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "EXPL"
+[00:01] Background Loader: [DeadMoney.esm] Merged 1 record from duplicated group: GRUP Top "EXPL"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "EFSH"
+[00:01] Background Loader: [DeadMoney.esm] Merged 1 record from duplicated group: GRUP Top "EFSH"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "PACK"
+[00:01] Background Loader: [DeadMoney.esm] Merged 7 record from duplicated group: GRUP Top "PACK"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "QUST"
+[00:01] Background Loader: [DeadMoney.esm] Merged 6 record from duplicated group: GRUP Top "QUST"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "DIAL"
+[00:01] Background Loader: [DeadMoney.esm] Merged 35 record from duplicated group: GRUP Top "DIAL"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "REGN"
+[00:01] Background Loader: [DeadMoney.esm] Merged 1 record from duplicated group: GRUP Top "REGN"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "LVLI"
+[00:01] Background Loader: [DeadMoney.esm] Merged 9 record from duplicated group: GRUP Top "LVLI"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "NOTE"
+[00:01] Background Loader: [DeadMoney.esm] Merged 15 record from duplicated group: GRUP Top "NOTE"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "ALCH"
+[00:01] Background Loader: [DeadMoney.esm] Merged 2 record from duplicated group: GRUP Top "ALCH"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "CREA"
+[00:01] Background Loader: [DeadMoney.esm] Merged 4 record from duplicated group: GRUP Top "CREA"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "NPC_"
+[00:01] Background Loader: [DeadMoney.esm] Merged 2 record from duplicated group: GRUP Top "NPC_"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "WEAP"
+[00:01] Background Loader: [DeadMoney.esm] Merged 6 record from duplicated group: GRUP Top "WEAP"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "MSTT"
+[00:01] Background Loader: [DeadMoney.esm] Merged 2 record from duplicated group: GRUP Top "MSTT"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "SCOL"
+[00:01] Background Loader: [DeadMoney.esm] Merged 1 record from duplicated group: GRUP Top "SCOL"
+[00:01] Background Loader: [DeadMoney.esm] Warning: File contains duplicated top level group: GRUP Top "STAT"
+[00:01] Background Loader: [DeadMoney.esm] Merged 16 record from duplicated group: GRUP Top "STAT"
+[00:01] Background Loader: [DeadMoney.esm] Processing completed
+[00:01] Background Loader: loading "HonestHearts.esm"...
+[00:01] Background Loader: [HonestHearts.esm] Loading file
+[00:01] Background Loader: [HonestHearts.esm] File loaded (CRC32:2352B189)
+[00:01] Background Loader: [HonestHearts.esm] Start processing
+[00:01] Background Loader: [HonestHearts.esm] Adding master "FalloutNV.esm"
+[00:01] Background Loader: [HonestHearts.esm] Header processed. Expecting 45312 records
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "TXST" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "GLOB" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "CLAS" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "FACT" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "RACE" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "SOUN" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "ASPC" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "MGEF" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "SCPT" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "LTEX" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "ENCH" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "SPEL" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "ACTI" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "TACT" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "TERM" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "ARMO" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "CONT" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "DOOR" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "LIGH" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "MISC" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "STAT" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "SCOL" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "MSTT" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "PWAT" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "GRAS" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "FURN" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "WEAP" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "NPC_" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "CREA" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "LVLC" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "LVLN" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "KEYM" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "ALCH" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "IDLM" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "NOTE" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "PROJ" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "LVLI" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "WTHR" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "CLMT" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "REGN" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "CELL" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "DIAL" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "QUST" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "IDLE" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "PACK" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "CSTY" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "ANIO" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "EXPL" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "IMAD" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "FLST" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "PERK" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "BPTD" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "VTYP" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "IPCT" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "IPDS" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "ARMA" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "MESG" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "MUSC" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "RCPE" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "IMOD" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "STAT" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "FURN" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "WEAP" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "AMMO" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "NPC_" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "CREA" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "LVLC" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "LVLN" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "KEYM" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "IDLM" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "NOTE" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "LVLI" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "WTHR" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "REGN" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "CELL" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "DIAL" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "QUST" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "IDLE" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "PACK" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "WATR" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "EXPL" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "IMGS" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "FLST" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "PERK" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "BPTD" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "ARMA" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "ECZN" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "MESG" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "RGDL" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "LGTM" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "RCPE" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "MSET" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "ALOC" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "CHAL" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "AMEF" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "IMOD" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "STAT" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "WEAP" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "AMMO" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "NPC_" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "CREA" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "ALCH" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "WTHR" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "CLMT" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "CELL" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "DIAL" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "QUST" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "IMAD" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "ECZN" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "RCPE" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "IMOD" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "STAT" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "WEAP" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "NPC_" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "WTHR" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "REGN" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "NAVI" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "CELL" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "WRLD" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "QUST" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "MESG" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "IPDS" processed
+[00:01] Background Loader: [HonestHearts.esm] GRUP Top "IPCT" processed
+[00:01] Background Loader: [HonestHearts.esm] Building FormID index
+[00:01] Background Loader: [HonestHearts.esm] FormID index built
+[00:01] Background Loader: [HonestHearts.esm] Building string indices
+[00:01] Background Loader: [HonestHearts.esm] String indices built
+[00:01] Background Loader: [HonestHearts.esm] Warning: File contains duplicated top level group: GRUP Top "QUST"
+[00:01] Background Loader: [HonestHearts.esm] Merged 6 record from duplicated group: GRUP Top "QUST"
+[00:01] Background Loader: [HonestHearts.esm] Warning: File contains duplicated top level group: GRUP Top "CELL"
+[00:01] Background Loader: [HonestHearts.esm] Merged 8 record from duplicated group: GRUP Top "CELL"
+[00:01] Background Loader: [HonestHearts.esm] Warning: File contains duplicated top level group: GRUP Top "WTHR"
+[00:01] Background Loader: [HonestHearts.esm] Merged 1 record from duplicated group: GRUP Top "WTHR"
+[00:01] Background Loader: [HonestHearts.esm] Warning: File contains duplicated top level group: GRUP Top "NPC_"
+[00:01] Background Loader: [HonestHearts.esm] Merged 20 record from duplicated group: GRUP Top "NPC_"
+[00:01] Background Loader: [HonestHearts.esm] Warning: File contains duplicated top level group: GRUP Top "WEAP"
+[00:01] Background Loader: [HonestHearts.esm] Merged 1 record from duplicated group: GRUP Top "WEAP"
+[00:01] Background Loader: [HonestHearts.esm] Warning: File contains duplicated top level group: GRUP Top "STAT"
+[00:01] Background Loader: [HonestHearts.esm] Merged 62 record from duplicated group: GRUP Top "STAT"
+[00:01] Background Loader: [HonestHearts.esm] Warning: File contains duplicated top level group: GRUP Top "IMOD"
+[00:01] Background Loader: [HonestHearts.esm] Merged 2 record from duplicated group: GRUP Top "IMOD"
+[00:01] Background Loader: [HonestHearts.esm] Warning: File contains duplicated top level group: GRUP Top "RCPE"
+[00:01] Background Loader: [HonestHearts.esm] Merged 4 record from duplicated group: GRUP Top "RCPE"
+[00:01] Background Loader: [HonestHearts.esm] Warning: File contains duplicated top level group: GRUP Top "MESG"
+[00:01] Background Loader: [HonestHearts.esm] Merged 16 record from duplicated group: GRUP Top "MESG"
+[00:01] Background Loader: [HonestHearts.esm] Warning: File contains duplicated top level group: GRUP Top "ECZN"
+[00:01] Background Loader: [HonestHearts.esm] Merged 2 record from duplicated group: GRUP Top "ECZN"
+[00:01] Background Loader: [HonestHearts.esm] Warning: File contains duplicated top level group: GRUP Top "QUST"
+[00:01] Background Loader: [HonestHearts.esm] Merged 10 record from duplicated group: GRUP Top "QUST"
+[00:01] Background Loader: [HonestHearts.esm] Warning: File contains duplicated top level group: GRUP Top "DIAL"
+[00:01] Background Loader: [HonestHearts.esm] Merged 172 record from duplicated group: GRUP Top "DIAL"
+[00:01] Background Loader: [HonestHearts.esm] Warning: File contains duplicated top level group: GRUP Top "CELL"
+[00:01] Background Loader: [HonestHearts.esm] Merged 7 record from duplicated group: GRUP Top "CELL"
+[00:01] Background Loader: [HonestHearts.esm] Warning: File contains duplicated top level group: GRUP Top "REGN"
+[00:01] Background Loader: [HonestHearts.esm] Merged 5 record from duplicated group: GRUP Top "REGN"
+[00:01] Background Loader: [HonestHearts.esm] Warning: File contains duplicated top level group: GRUP Top "WTHR"
+[00:01] Background Loader: [HonestHearts.esm] Merged 1 record from duplicated group: GRUP Top "WTHR"
+[00:01] Background Loader: [HonestHearts.esm] Warning: File contains duplicated top level group: GRUP Top "CREA"
+[00:01] Background Loader: [HonestHearts.esm] Merged 51 record from duplicated group: GRUP Top "CREA"
+[00:01] Background Loader: [HonestHearts.esm] Warning: File contains duplicated top level group: GRUP Top "NPC_"
+[00:01] Background Loader: [HonestHearts.esm] Merged 45 record from duplicated group: GRUP Top "NPC_"
+[00:01] Background Loader: [HonestHearts.esm] Warning: File contains duplicated top level group: GRUP Top "AMMO"
+[00:01] Background Loader: [HonestHearts.esm] Merged 3 record from duplicated group: GRUP Top "AMMO"
+[00:01] Background Loader: [HonestHearts.esm] Warning: File contains duplicated top level group: GRUP Top "WEAP"
+[00:01] Background Loader: [HonestHearts.esm] Merged 9 record from duplicated group: GRUP Top "WEAP"
+[00:01] Background Loader: [HonestHearts.esm] Warning: File contains duplicated top level group: GRUP Top "STAT"
+[00:01] Background Loader: [HonestHearts.esm] Merged 101 record from duplicated group: GRUP Top "STAT"
+[00:01] Background Loader: [HonestHearts.esm] Warning: File contains duplicated top level group: GRUP Top "IMOD"
+[00:01] Background Loader: [HonestHearts.esm] Merged 2 record from duplicated group: GRUP Top "IMOD"
+[00:01] Background Loader: [HonestHearts.esm] Warning: File contains duplicated top level group: GRUP Top "RCPE"
+[00:01] Background Loader: [HonestHearts.esm] Merged 27 record from duplicated group: GRUP Top "RCPE"
+[00:01] Background Loader: [HonestHearts.esm] Warning: File contains duplicated top level group: GRUP Top "MESG"
+[00:01] Background Loader: [HonestHearts.esm] Merged 53 record from duplicated group: GRUP Top "MESG"
+[00:01] Background Loader: [HonestHearts.esm] Warning: File contains duplicated top level group: GRUP Top "ARMA"
+[00:01] Background Loader: [HonestHearts.esm] Merged 2 record from duplicated group: GRUP Top "ARMA"
+[00:01] Background Loader: [HonestHearts.esm] Warning: File contains duplicated top level group: GRUP Top "IPDS"
+[00:01] Background Loader: [HonestHearts.esm] Merged 1 record from duplicated group: GRUP Top "IPDS"
+[00:01] Background Loader: [HonestHearts.esm] Warning: File contains duplicated top level group: GRUP Top "IPCT"
+[00:01] Background Loader: [HonestHearts.esm] Merged 1 record from duplicated group: GRUP Top "IPCT"
+[00:01] Background Loader: [HonestHearts.esm] Warning: File contains duplicated top level group: GRUP Top "BPTD"
+[00:01] Background Loader: [HonestHearts.esm] Merged 1 record from duplicated group: GRUP Top "BPTD"
+[00:01] Background Loader: [HonestHearts.esm] Warning: File contains duplicated top level group: GRUP Top "PERK"
+[00:01] Background Loader: [HonestHearts.esm] Merged 5 record from duplicated group: GRUP Top "PERK"
+[00:01] Background Loader: [HonestHearts.esm] Warning: File contains duplicated top level group: GRUP Top "FLST"
+[00:01] Background Loader: [HonestHearts.esm] Merged 20 record from duplicated group: GRUP Top "FLST"
+[00:01] Background Loader: [HonestHearts.esm] Warning: File contains duplicated top level group: GRUP Top "IMAD"
+[00:01] Background Loader: [HonestHearts.esm] Merged 15 record from duplicated group: GRUP Top "IMAD"
+[00:01] Background Loader: [HonestHearts.esm] Warning: File contains duplicated top level group: GRUP Top "EXPL"
+[00:01] Background Loader: [HonestHearts.esm] Merged 2 record from duplicated group: GRUP Top "EXPL"
+[00:01] Background Loader: [HonestHearts.esm] Warning: File contains duplicated top level group: GRUP Top "PACK"
+[00:01] Background Loader: [HonestHearts.esm] Merged 270 record from duplicated group: GRUP Top "PACK"
+[00:01] Background Loader: [HonestHearts.esm] Warning: File contains duplicated top level group: GRUP Top "IDLE"
+[00:01] Background Loader: [HonestHearts.esm] Merged 42 record from duplicated group: GRUP Top "IDLE"
+[00:01] Background Loader: [HonestHearts.esm] Warning: File contains duplicated top level group: GRUP Top "QUST"
+[00:01] Background Loader: [HonestHearts.esm] Merged 31 record from duplicated group: GRUP Top "QUST"
+[00:01] Background Loader: [HonestHearts.esm] Warning: File contains duplicated top level group: GRUP Top "DIAL"
+[00:01] Background Loader: [HonestHearts.esm] Merged 1010 record from duplicated group: GRUP Top "DIAL"
+[00:01] Background Loader: [HonestHearts.esm] Warning: File contains duplicated top level group: GRUP Top "CELL"
+[00:01] Background Loader: [HonestHearts.esm] Merged 2 record from duplicated group: GRUP Top "CELL"
+[00:01] Background Loader: [HonestHearts.esm] Warning: File contains duplicated top level group: GRUP Top "REGN"
+[00:01] Background Loader: [HonestHearts.esm] Merged 3 record from duplicated group: GRUP Top "REGN"
+[00:01] Background Loader: [HonestHearts.esm] Warning: File contains duplicated top level group: GRUP Top "CLMT"
+[00:01] Background Loader: [HonestHearts.esm] Merged 3 record from duplicated group: GRUP Top "CLMT"
+[00:01] Background Loader: [HonestHearts.esm] Warning: File contains duplicated top level group: GRUP Top "WTHR"
+[00:01] Background Loader: [HonestHearts.esm] Merged 6 record from duplicated group: GRUP Top "WTHR"
+[00:01] Background Loader: [HonestHearts.esm] Warning: File contains duplicated top level group: GRUP Top "LVLI"
+[00:01] Background Loader: [HonestHearts.esm] Merged 204 record from duplicated group: GRUP Top "LVLI"
+[00:01] Background Loader: [HonestHearts.esm] Warning: File contains duplicated top level group: GRUP Top "NOTE"
+[00:01] Background Loader: [HonestHearts.esm] Merged 18 record from duplicated group: GRUP Top "NOTE"
+[00:01] Background Loader: [HonestHearts.esm] Warning: File contains duplicated top level group: GRUP Top "IDLM"
+[00:01] Background Loader: [HonestHearts.esm] Merged 2 record from duplicated group: GRUP Top "IDLM"
+[00:01] Background Loader: [HonestHearts.esm] Warning: File contains duplicated top level group: GRUP Top "ALCH"
+[00:01] Background Loader: [HonestHearts.esm] Merged 11 record from duplicated group: GRUP Top "ALCH"
+[00:01] Background Loader: [HonestHearts.esm] Warning: File contains duplicated top level group: GRUP Top "KEYM"
+[00:01] Background Loader: [HonestHearts.esm] Merged 2 record from duplicated group: GRUP Top "KEYM"
+[00:01] Background Loader: [HonestHearts.esm] Warning: File contains duplicated top level group: GRUP Top "LVLN"
+[00:01] Background Loader: [HonestHearts.esm] Merged 25 record from duplicated group: GRUP Top "LVLN"
+[00:01] Background Loader: [HonestHearts.esm] Warning: File contains duplicated top level group: GRUP Top "LVLC"
+[00:01] Background Loader: [HonestHearts.esm] Merged 20 record from duplicated group: GRUP Top "LVLC"
+[00:01] Background Loader: [HonestHearts.esm] Warning: File contains duplicated top level group: GRUP Top "CREA"
+[00:01] Background Loader: [HonestHearts.esm] Merged 44 record from duplicated group: GRUP Top "CREA"
+[00:01] Background Loader: [HonestHearts.esm] Warning: File contains duplicated top level group: GRUP Top "NPC_"
+[00:01] Background Loader: [HonestHearts.esm] Merged 102 record from duplicated group: GRUP Top "NPC_"
+[00:01] Background Loader: [HonestHearts.esm] Warning: File contains duplicated top level group: GRUP Top "WEAP"
+[00:01] Background Loader: [HonestHearts.esm] Merged 27 record from duplicated group: GRUP Top "WEAP"
+[00:01] Background Loader: [HonestHearts.esm] Warning: File contains duplicated top level group: GRUP Top "FURN"
+[00:01] Background Loader: [HonestHearts.esm] Merged 6 record from duplicated group: GRUP Top "FURN"
+[00:01] Background Loader: [HonestHearts.esm] Warning: File contains duplicated top level group: GRUP Top "STAT"
+[00:01] Background Loader: [HonestHearts.esm] Merged 96 record from duplicated group: GRUP Top "STAT"
+[00:01] Background Loader: [HonestHearts.esm] Processing completed
+[00:01] Background Loader: loading "LonesomeRoad.esm"...
+[00:01] Background Loader: [LonesomeRoad.esm] Loading file
+[00:01] Background Loader: [LonesomeRoad.esm] File loaded (CRC32:30073D50)
+[00:01] Background Loader: [LonesomeRoad.esm] Start processing
+[00:01] Background Loader: [LonesomeRoad.esm] Adding master "FalloutNV.esm"
+[00:01] Background Loader: [LonesomeRoad.esm] Header processed. Expecting 45420 records
+[00:01] Background Loader: [LonesomeRoad.esm] GRUP Top "GMST" processed
+[00:01] Background Loader: [LonesomeRoad.esm] GRUP Top "TXST" processed
+[00:01] Background Loader: [LonesomeRoad.esm] GRUP Top "GLOB" processed
+[00:01] Background Loader: [LonesomeRoad.esm] GRUP Top "CLAS" processed
+[00:01] Background Loader: [LonesomeRoad.esm] GRUP Top "FACT" processed
+[00:01] Background Loader: [LonesomeRoad.esm] GRUP Top "RACE" processed
+[00:01] Background Loader: [LonesomeRoad.esm] GRUP Top "SOUN" processed
+[00:01] Background Loader: [LonesomeRoad.esm] GRUP Top "ASPC" processed
+[00:01] Background Loader: [LonesomeRoad.esm] GRUP Top "MGEF" processed
+[00:01] Background Loader: [LonesomeRoad.esm] GRUP Top "SCPT" processed
+[00:01] Background Loader: [LonesomeRoad.esm] GRUP Top "ENCH" processed
+[00:01] Background Loader: [LonesomeRoad.esm] GRUP Top "SPEL" processed
+[00:01] Background Loader: [LonesomeRoad.esm] GRUP Top "ACTI" processed
+[00:01] Background Loader: [LonesomeRoad.esm] GRUP Top "TERM" processed
+[00:01] Background Loader: [LonesomeRoad.esm] GRUP Top "ARMO" processed
+[00:01] Background Loader: [LonesomeRoad.esm] GRUP Top "CONT" processed
+[00:01] Background Loader: [LonesomeRoad.esm] GRUP Top "DOOR" processed
+[00:01] Background Loader: [LonesomeRoad.esm] GRUP Top "LIGH" processed
+[00:01] Background Loader: [LonesomeRoad.esm] GRUP Top "MISC" processed
+[00:01] Background Loader: [LonesomeRoad.esm] GRUP Top "IMOD" processed
+[00:01] Background Loader: [LonesomeRoad.esm] GRUP Top "STAT" processed
+[00:01] Background Loader: [LonesomeRoad.esm] GRUP Top "SCOL" processed
+[00:01] Background Loader: [LonesomeRoad.esm] GRUP Top "MSTT" processed
+[00:01] Background Loader: [LonesomeRoad.esm] GRUP Top "PWAT" processed
+[00:01] Background Loader: [LonesomeRoad.esm] GRUP Top "WEAP" processed
+[00:01] Background Loader: [LonesomeRoad.esm] GRUP Top "AMMO" processed
+[00:01] Background Loader: [LonesomeRoad.esm] GRUP Top "NPC_" processed
+[00:01] Background Loader: [LonesomeRoad.esm] GRUP Top "CREA" processed
+[00:01] Background Loader: [LonesomeRoad.esm] GRUP Top "LVLC" processed
+[00:01] Background Loader: [LonesomeRoad.esm] GRUP Top "KEYM" processed
+[00:01] Background Loader: [LonesomeRoad.esm] GRUP Top "ALCH" processed
+[00:01] Background Loader: [LonesomeRoad.esm] GRUP Top "NOTE" processed
+[00:01] Background Loader: [LonesomeRoad.esm] GRUP Top "PROJ" processed
+[00:01] Background Loader: [LonesomeRoad.esm] GRUP Top "LVLI" processed
+[00:01] Background Loader: [LonesomeRoad.esm] GRUP Top "WTHR" processed
+[00:01] Background Loader: [LonesomeRoad.esm] GRUP Top "CLMT" processed
+[00:01] Background Loader: [LonesomeRoad.esm] GRUP Top "REGN" processed
+[00:01] Background Loader: [LonesomeRoad.esm] GRUP Top "NAVI" processed
+[00:01] Background Loader: [LonesomeRoad.esm] GRUP Top "CELL" processed
+[00:01] Background Loader: [LonesomeRoad.esm] GRUP Top "WRLD" processed
+[00:01] Background Loader: [LonesomeRoad.esm] GRUP Top "DIAL" processed
+[00:01] Background Loader: [LonesomeRoad.esm] GRUP Top "QUST" processed
+[00:01] Background Loader: [LonesomeRoad.esm] GRUP Top "IDLE" processed
+[00:01] Background Loader: [LonesomeRoad.esm] GRUP Top "PACK" processed
+[00:01] Background Loader: [LonesomeRoad.esm] GRUP Top "CSTY" processed
+[00:01] Background Loader: [LonesomeRoad.esm] GRUP Top "ANIO" processed
+[00:01] Background Loader: [LonesomeRoad.esm] GRUP Top "WATR" processed
+[00:01] Background Loader: [LonesomeRoad.esm] GRUP Top "EXPL" processed
+[00:01] Background Loader: [LonesomeRoad.esm] GRUP Top "IMGS" processed
+[00:01] Background Loader: [LonesomeRoad.esm] GRUP Top "IMAD" processed
+[00:01] Background Loader: [LonesomeRoad.esm] GRUP Top "FLST" processed
+[00:01] Background Loader: [LonesomeRoad.esm] GRUP Top "PERK" processed
+[00:01] Background Loader: <Note: AVVariable04 [AVIF:000005EF] was injected into FalloutNV.esm>
+[00:01] Background Loader: [LonesomeRoad.esm] GRUP Top "AVIF" processed
+[00:01] Background Loader: [LonesomeRoad.esm] GRUP Top "VTYP" processed
+[00:01] Background Loader: [LonesomeRoad.esm] GRUP Top "IPCT" processed
+[00:01] Background Loader: [LonesomeRoad.esm] GRUP Top "IPDS" processed
+[00:01] Background Loader: [LonesomeRoad.esm] GRUP Top "ARMA" processed
+[00:01] Background Loader: [LonesomeRoad.esm] GRUP Top "ECZN" processed
+[00:01] Background Loader: [LonesomeRoad.esm] GRUP Top "MESG" processed
+[00:01] Background Loader: [LonesomeRoad.esm] GRUP Top "MUSC" processed
+[00:01] Background Loader: [LonesomeRoad.esm] GRUP Top "RCPE" processed
+[00:01] Background Loader: [LonesomeRoad.esm] GRUP Top "MSET" processed
+[00:01] Background Loader: [LonesomeRoad.esm] GRUP Top "ALOC" processed
+[00:01] Background Loader: [LonesomeRoad.esm] GRUP Top "CHAL" processed
+[00:01] Background Loader: [LonesomeRoad.esm] GRUP Top "AMEF" processed
+[00:01] Background Loader: [LonesomeRoad.esm] Building FormID index
+[00:01] Background Loader: [LonesomeRoad.esm] FormID index built
+[00:01] Background Loader: [LonesomeRoad.esm] Building string indices
+[00:01] Background Loader: [LonesomeRoad.esm] String indices built
+[00:01] Background Loader: [LonesomeRoad.esm] Processing completed
+[00:01] Background Loader: loading "OldWorldBlues.esm"...
+[00:01] Background Loader: [OldWorldBlues.esm] Loading file
+[00:01] Background Loader: [OldWorldBlues.esm] File loaded (CRC32:7F8F8225)
+[00:01] Background Loader: [OldWorldBlues.esm] Start processing
+[00:01] Background Loader: [OldWorldBlues.esm] Adding master "FalloutNV.esm"
+[00:01] Background Loader: [OldWorldBlues.esm] Header processed. Expecting 62056 records
+[00:01] Background Loader: [OldWorldBlues.esm] GRUP Top "TXST" processed
+[00:01] Background Loader: [OldWorldBlues.esm] GRUP Top "GLOB" processed
+[00:01] Background Loader: [OldWorldBlues.esm] GRUP Top "CLAS" processed
+[00:01] Background Loader: [OldWorldBlues.esm] GRUP Top "FACT" processed
+[00:01] Background Loader: [OldWorldBlues.esm] GRUP Top "RACE" processed
+[00:01] Background Loader: [OldWorldBlues.esm] GRUP Top "SOUN" processed
+[00:01] Background Loader: [OldWorldBlues.esm] GRUP Top "ASPC" processed
+[00:01] Background Loader: [OldWorldBlues.esm] GRUP Top "MGEF" processed
+[00:01] Background Loader: [OldWorldBlues.esm] GRUP Top "SCPT" processed
+[00:01] Background Loader: [OldWorldBlues.esm] GRUP Top "LTEX" processed
+[00:01] Background Loader: [OldWorldBlues.esm] GRUP Top "ENCH" processed
+[00:01] Background Loader: [OldWorldBlues.esm] GRUP Top "SPEL" processed
+[00:01] Background Loader: [OldWorldBlues.esm] GRUP Top "ACTI" processed
+[00:01] Background Loader: [OldWorldBlues.esm] GRUP Top "TACT" processed
+[00:01] Background Loader: [OldWorldBlues.esm] GRUP Top "TERM" processed
+[00:01] Background Loader: [OldWorldBlues.esm] GRUP Top "ARMO" processed
+[00:01] Background Loader: [OldWorldBlues.esm] GRUP Top "CONT" processed
+[00:01] Background Loader: [OldWorldBlues.esm] GRUP Top "DOOR" processed
+[00:01] Background Loader: [OldWorldBlues.esm] GRUP Top "LIGH" processed
+[00:01] Background Loader: [OldWorldBlues.esm] GRUP Top "MISC" processed
+[00:01] Background Loader: [OldWorldBlues.esm] GRUP Top "IMOD" processed
+[00:01] Background Loader: [OldWorldBlues.esm] GRUP Top "STAT" processed
+[00:01] Background Loader: [OldWorldBlues.esm] GRUP Top "SCOL" processed
+[00:01] Background Loader: [OldWorldBlues.esm] GRUP Top "MSTT" processed
+[00:01] Background Loader: [OldWorldBlues.esm] GRUP Top "PWAT" processed
+[00:01] Background Loader: [OldWorldBlues.esm] GRUP Top "GRAS" processed
+[00:01] Background Loader: [OldWorldBlues.esm] GRUP Top "FURN" processed
+[00:01] Background Loader: [OldWorldBlues.esm] GRUP Top "WEAP" processed
+[00:01] Background Loader: [OldWorldBlues.esm] GRUP Top "AMMO" processed
+[00:01] Background Loader: [OldWorldBlues.esm] GRUP Top "NPC_" processed
+[00:01] Background Loader: [OldWorldBlues.esm] GRUP Top "CREA" processed
+[00:01] Background Loader: [OldWorldBlues.esm] GRUP Top "LVLC" processed
+[00:01] Background Loader: [OldWorldBlues.esm] GRUP Top "LVLN" processed
+[00:01] Background Loader: [OldWorldBlues.esm] GRUP Top "KEYM" processed
+[00:01] Background Loader: [OldWorldBlues.esm] GRUP Top "ALCH" processed
+[00:01] Background Loader: [OldWorldBlues.esm] GRUP Top "IDLM" processed
+[00:01] Background Loader: [OldWorldBlues.esm] GRUP Top "NOTE" processed
+[00:01] Background Loader: [OldWorldBlues.esm] GRUP Top "PROJ" processed
+[00:01] Background Loader: [OldWorldBlues.esm] GRUP Top "LVLI" processed
+[00:01] Background Loader: [OldWorldBlues.esm] GRUP Top "WTHR" processed
+[00:01] Background Loader: [OldWorldBlues.esm] GRUP Top "CLMT" processed
+[00:01] Background Loader: [OldWorldBlues.esm] GRUP Top "REGN" processed
+[00:01] Background Loader: [OldWorldBlues.esm] GRUP Top "NAVI" processed
+[00:01] Background Loader: [OldWorldBlues.esm] GRUP Top "CELL" processed
+[00:01] Background Loader: [OldWorldBlues.esm] GRUP Top "WRLD" processed
+[00:01] Background Loader: [OldWorldBlues.esm] GRUP Top "DIAL" processed
+[00:01] Background Loader: [OldWorldBlues.esm] GRUP Top "QUST" processed
+[00:01] Background Loader: [OldWorldBlues.esm] GRUP Top "IDLE" processed
+[00:01] Background Loader: [OldWorldBlues.esm] GRUP Top "PACK" processed
+[00:01] Background Loader: [OldWorldBlues.esm] GRUP Top "CSTY" processed
+[00:01] Background Loader: [OldWorldBlues.esm] GRUP Top "WATR" processed
+[00:01] Background Loader: [OldWorldBlues.esm] GRUP Top "EFSH" processed
+[00:01] Background Loader: [OldWorldBlues.esm] GRUP Top "EXPL" processed
+[00:01] Background Loader: [OldWorldBlues.esm] GRUP Top "IMGS" processed
+[00:01] Background Loader: [OldWorldBlues.esm] GRUP Top "IMAD" processed
+[00:01] Background Loader: [OldWorldBlues.esm] GRUP Top "FLST" processed
+[00:01] Background Loader: [OldWorldBlues.esm] GRUP Top "PERK" processed
+[00:01] Background Loader: [OldWorldBlues.esm] GRUP Top "BPTD" processed
+[00:01] Background Loader: [OldWorldBlues.esm] GRUP Top "VTYP" processed
+[00:01] Background Loader: [OldWorldBlues.esm] GRUP Top "IPCT" processed
+[00:01] Background Loader: [OldWorldBlues.esm] GRUP Top "IPDS" processed
+[00:01] Background Loader: [OldWorldBlues.esm] GRUP Top "ARMA" processed
+[00:01] Background Loader: [OldWorldBlues.esm] GRUP Top "ECZN" processed
+[00:01] Background Loader: [OldWorldBlues.esm] GRUP Top "MESG" processed
+[00:01] Background Loader: [OldWorldBlues.esm] GRUP Top "RGDL" processed
+[00:01] Background Loader: [OldWorldBlues.esm] GRUP Top "LGTM" processed
+[00:01] Background Loader: [OldWorldBlues.esm] GRUP Top "MUSC" processed
+[00:01] Background Loader: [OldWorldBlues.esm] GRUP Top "RCPE" processed
+[00:01] Background Loader: [OldWorldBlues.esm] GRUP Top "MSET" processed
+[00:01] Background Loader: [OldWorldBlues.esm] GRUP Top "ALOC" processed
+[00:01] Background Loader: [OldWorldBlues.esm] GRUP Top "CHAL" processed
+[00:01] Background Loader: [OldWorldBlues.esm] Building FormID index
+[00:01] Background Loader: [OldWorldBlues.esm] FormID index built
+[00:01] Background Loader: [OldWorldBlues.esm] Building string indices
+[00:01] Background Loader: [OldWorldBlues.esm] String indices built
+[00:01] Background Loader: [OldWorldBlues.esm] Warning: File contains empty top level group: GRUP Top "FURN"
+[00:01] Background Loader: [OldWorldBlues.esm] Removed empty group: GRUP Top "FURN"
+[00:01] Background Loader: [OldWorldBlues.esm] Processing completed
+[00:01] Background Loader: loading "TribalPack.esm"...
+[00:01] Background Loader: [TribalPack.esm] Loading file
+[00:01] Background Loader: [TribalPack.esm] File loaded (CRC32:0DE09873)
+[00:01] Background Loader: [TribalPack.esm] Start processing
+[00:01] Background Loader: [TribalPack.esm] Adding master "FalloutNV.esm"
+[00:01] Background Loader: [TribalPack.esm] Header processed. Expecting 10 records
+[00:01] Background Loader: <Note: VPreorderTribalSCRIPT [SCPT:00172A26] was injected into FalloutNV.esm>
+[00:01] Background Loader: [TribalPack.esm] GRUP Top "SCPT" processed
+[00:01] Background Loader: <Note: PreordArmorTribalRaiding "Tribal Raiding Armor" [ARMO:001735E2] was injected into FalloutNV.esm>
+[00:01] Background Loader: [TribalPack.esm] GRUP Top "ARMO" processed
+[00:01] Background Loader: <Note: WeapPreordMachete "Broad Machete" [WEAP:001735E5] was injected into FalloutNV.esm>
+[00:01] Background Loader: [TribalPack.esm] GRUP Top "WEAP" processed
+[00:01] Background Loader: <Note: VPreorderTribal [QUST:00172A1F] was injected into FalloutNV.esm>
+[00:01] Background Loader: [TribalPack.esm] GRUP Top "QUST" processed
+[00:01] Background Loader: <Note: PreorderMessageInventoryTribal "Tribal Pack" [MESG:001674D2] was injected into FalloutNV.esm>
+[00:01] Background Loader: [TribalPack.esm] GRUP Top "MESG" processed
+[00:01] Background Loader: [TribalPack.esm] Building FormID index
+[00:01] Background Loader: [TribalPack.esm] FormID index built
+[00:01] Background Loader: [TribalPack.esm] Building string indices
+[00:01] Background Loader: [TribalPack.esm] String indices built
+[00:01] Background Loader: [TribalPack.esm] Processing completed
+[00:01] Background Loader: loading "MercenaryPack.esm"...
+[00:01] Background Loader: [MercenaryPack.esm] Loading file
+[00:01] Background Loader: [MercenaryPack.esm] File loaded (CRC32:D377B2B9)
+[00:01] Background Loader: [MercenaryPack.esm] Start processing
+[00:01] Background Loader: [MercenaryPack.esm] Adding master "FalloutNV.esm"
+[00:01] Background Loader: [MercenaryPack.esm] Header processed. Expecting 14 records
+[00:01] Background Loader: <Note: 1stPreordGrenadeRifleTexture [TXST:001735DF] was injected into FalloutNV.esm>
+[00:01] Background Loader: [MercenaryPack.esm] GRUP Top "TXST" processed
+[00:01] Background Loader: <Note: VPreorderMercenarySCRIPT [SCPT:00172A24] was injected into FalloutNV.esm>
+[00:01] Background Loader: [MercenaryPack.esm] GRUP Top "SCPT" processed
+[00:01] Background Loader: <Note: PreordArmorMetal "Lightweight Metal Armor" [ARMO:001735E1] was injected into FalloutNV.esm>
+[00:01] Background Loader: [MercenaryPack.esm] GRUP Top "ARMO" processed
+[00:01] Background Loader: <Note: 1stPreordGrenadeRifle [STAT:001735DE] was injected into FalloutNV.esm>
+[00:01] Background Loader: [MercenaryPack.esm] GRUP Top "STAT" processed
+[00:01] Background Loader: <Note: WeapPreordGrenadeRifle "Mercenary's Grenade Rifle" [WEAP:001735E4] was injected into FalloutNV.esm>
+[00:01] Background Loader: [MercenaryPack.esm] GRUP Top "WEAP" processed
+[00:01] Background Loader: <Note: VPreorderMercenary [QUST:00172A1D] was injected into FalloutNV.esm>
+[00:01] Background Loader: [MercenaryPack.esm] GRUP Top "QUST" processed
+[00:01] Background Loader: <Note: PreorderMessageInventoryMercenary "Mercenary Pack" [MESG:00174776] was injected into FalloutNV.esm>
+[00:01] Background Loader: [MercenaryPack.esm] GRUP Top "MESG" processed
+[00:01] Background Loader: [MercenaryPack.esm] Building FormID index
+[00:01] Background Loader: [MercenaryPack.esm] FormID index built
+[00:01] Background Loader: [MercenaryPack.esm] Building string indices
+[00:01] Background Loader: [MercenaryPack.esm] String indices built
+[00:01] Background Loader: [MercenaryPack.esm] Processing completed
+[00:01] Background Loader: loading "ClassicPack.esm"...
+[00:01] Background Loader: [ClassicPack.esm] Loading file
+[00:01] Background Loader: [ClassicPack.esm] File loaded (CRC32:41F95714)
+[00:01] Background Loader: [ClassicPack.esm] Start processing
+[00:01] Background Loader: [ClassicPack.esm] Adding master "FalloutNV.esm"
+[00:01] Background Loader: [ClassicPack.esm] Header processed. Expecting 28 records
+[00:01] Background Loader: <Note: 1stPreord10mmPistol [TXST:001735D0] was injected into FalloutNV.esm>
+[00:01] Background Loader: [ClassicPack.esm] GRUP Top "TXST" processed
+[00:01] Background Loader: <Note: PreordVault13CanteenScript [SCPT:00174091] was injected into FalloutNV.esm>
+[00:01] Background Loader: <Note: VPreorderClassicSCRIPT [SCPT:00172A27] was injected into FalloutNV.esm>
+[00:01] Background Loader: [ClassicPack.esm] GRUP Top "SCPT" processed
+[00:01] Background Loader: <Note: PreordVault13CanteenHeal "Vault 13 Canteen Effect" [SPEL:00174092] was injected into FalloutNV.esm>
+[00:01] Background Loader: [ClassicPack.esm] GRUP Top "SPEL" processed
+[00:01] Background Loader: <Note: PreordArmorVault13Armored "Armored Vault 13 Jumpsuit" [ARMO:001735D1] was injected into FalloutNV.esm>
+[00:01] Background Loader: [ClassicPack.esm] GRUP Top "ARMO" processed
+[00:01] Background Loader: <Note: PreordVaultCanteen "Vault 13 Canteen" [MISC:001735D2] was injected into FalloutNV.esm>
+[00:01] Background Loader: [ClassicPack.esm] GRUP Top "MISC" processed
+[00:01] Background Loader: <Note: 1stPreord10mmpistolTexture [STAT:001735D3] was injected into FalloutNV.esm>
+[00:01] Background Loader: <Note: 1stPreord10mmPistolSilencedLaserSight [STAT:001735DB] was injected into FalloutNV.esm>
+[00:01] Background Loader: <Note: 1stPreord10mmPistolSilencedExtendedMag [STAT:001735DA] was injected into FalloutNV.esm>
+[00:01] Background Loader: <Note: 1stPreord10mmPistolSilenced [STAT:001735D9] was injected into FalloutNV.esm>
+[00:01] Background Loader: <Note: 1stPreord10mmPistolLaserSight [STAT:001735D8] was injected into FalloutNV.esm>
+[00:01] Background Loader: <Note: 1stPreord10mmPistolExtendedMagLaserSight [STAT:001735D7] was injected into FalloutNV.esm>
+[00:01] Background Loader: <Note: 1stPreord10mmPistolExtendedMag [STAT:001735D6] was injected into FalloutNV.esm>
+[00:01] Background Loader: <Note: 1stPreord10mmPistolAllMods [STAT:001735D5] was injected into FalloutNV.esm>
+[00:01] Background Loader: [ClassicPack.esm] GRUP Top "STAT" processed
+[00:01] Background Loader: <Note: WeapPreord10mmPistol "Weathered 10mm Pistol" [WEAP:001735D4] was injected into FalloutNV.esm>
+[00:01] Background Loader: [ClassicPack.esm] GRUP Top "WEAP" processed
+[00:01] Background Loader: <Note: PreordVault13CanteenQuest "PreordVault13CanteenQuest" [QUST:00174095] was injected into FalloutNV.esm>
+[00:01] Background Loader: <Note: VPreorderClassic [QUST:001674D4] was injected into FalloutNV.esm>
+[00:01] Background Loader: [ClassicPack.esm] GRUP Top "QUST" processed
+[00:01] Background Loader: <Note: PreorderMessageInventoryClassic "Classic Pack" [MESG:00174777] was injected into FalloutNV.esm>
+[00:01] Background Loader: <Note: PreordVault13Canteen [MESG:00174096] was injected into FalloutNV.esm>
+[00:01] Background Loader: [ClassicPack.esm] GRUP Top "MESG" processed
+[00:01] Background Loader: [ClassicPack.esm] Building FormID index
+[00:01] Background Loader: [ClassicPack.esm] FormID index built
+[00:01] Background Loader: [ClassicPack.esm] Building string indices
+[00:01] Background Loader: [ClassicPack.esm] String indices built
+[00:01] Background Loader: [ClassicPack.esm] Processing completed
+[00:01] Background Loader: loading "CaravanPack.esm"...
+[00:01] Background Loader: [CaravanPack.esm] Loading file
+[00:01] Background Loader: [CaravanPack.esm] File loaded (CRC32:228740D1)
+[00:01] Background Loader: [CaravanPack.esm] Start processing
+[00:01] Background Loader: [CaravanPack.esm] Adding master "FalloutNV.esm"
+[00:01] Background Loader: [CaravanPack.esm] Header processed. Expecting 14 records
+[00:01] Background Loader: <Note: 1stPreordCaravanShotgunTexture [TXST:001735DD] was injected into FalloutNV.esm>
+[00:01] Background Loader: [CaravanPack.esm] GRUP Top "TXST" processed
+[00:01] Background Loader: <Note: VPreorderCaravanSCRIPT [SCPT:00172A25] was injected into FalloutNV.esm>
+[00:01] Background Loader: [CaravanPack.esm] GRUP Top "SCPT" processed
+[00:01] Background Loader: <Note: PreordArmorLeather "Lightweight Leather Armor" [ARMO:001735E0] was injected into FalloutNV.esm>
+[00:01] Background Loader: [CaravanPack.esm] GRUP Top "ARMO" processed
+[00:01] Background Loader: <Note: 1stPreordCaravanShotgun [STAT:001735DC] was injected into FalloutNV.esm>
+[00:01] Background Loader: [CaravanPack.esm] GRUP Top "STAT" processed
+[00:01] Background Loader: <Note: WeapPreordCaravanShotgun "Sturdy Caravan Shotgun" [WEAP:001735E3] was injected into FalloutNV.esm>
+[00:01] Background Loader: [CaravanPack.esm] GRUP Top "WEAP" processed
+[00:01] Background Loader: <Note: VPreorderCaravan [QUST:00172A1E] was injected into FalloutNV.esm>
+[00:01] Background Loader: [CaravanPack.esm] GRUP Top "QUST" processed
+[00:01] Background Loader: <Note: PreorderMessageInventoryCaravan "Caravan Pack" [MESG:00174775] was injected into FalloutNV.esm>
+[00:01] Background Loader: [CaravanPack.esm] GRUP Top "MESG" processed
+[00:01] Background Loader: [CaravanPack.esm] Building FormID index
+[00:01] Background Loader: [CaravanPack.esm] FormID index built
+[00:01] Background Loader: [CaravanPack.esm] Building string indices
+[00:01] Background Loader: [CaravanPack.esm] String indices built
+[00:01] Background Loader: [CaravanPack.esm] Processing completed
+[00:01] Background Loader: loading "GunRunnersArsenal.esm"...
+[00:01] Background Loader: [GunRunnersArsenal.esm] Loading file
+[00:01] Background Loader: [GunRunnersArsenal.esm] File loaded (CRC32:0AAC938D)
+[00:01] Background Loader: [GunRunnersArsenal.esm] Start processing
+[00:01] Background Loader: [GunRunnersArsenal.esm] Adding master "FalloutNV.esm"
+[00:01] Background Loader: [GunRunnersArsenal.esm] Header processed. Expecting 829 records
+[00:01] Background Loader: [GunRunnersArsenal.esm] GRUP Top "TXST" processed
+[00:01] Background Loader: [GunRunnersArsenal.esm] GRUP Top "FACT" processed
+[00:01] Background Loader: [GunRunnersArsenal.esm] GRUP Top "SOUN" processed
+[00:01] Background Loader: [GunRunnersArsenal.esm] GRUP Top "MGEF" processed
+[00:01] Background Loader: [GunRunnersArsenal.esm] GRUP Top "SCPT" processed
+[00:01] Background Loader: [GunRunnersArsenal.esm] GRUP Top "ENCH" processed
+[00:01] Background Loader: [GunRunnersArsenal.esm] GRUP Top "SPEL" processed
+[00:01] Background Loader: [GunRunnersArsenal.esm] GRUP Top "ARMO" processed
+[00:01] Background Loader: [GunRunnersArsenal.esm] GRUP Top "CONT" processed
+[00:01] Background Loader: [GunRunnersArsenal.esm] GRUP Top "MISC" processed
+[00:01] Background Loader: [GunRunnersArsenal.esm] GRUP Top "IMOD" processed
+[00:01] Background Loader: [GunRunnersArsenal.esm] GRUP Top "STAT" processed
+[00:01] Background Loader: [GunRunnersArsenal.esm] GRUP Top "WEAP" processed
+[00:01] Background Loader: [GunRunnersArsenal.esm] GRUP Top "AMMO" processed
+[00:01] Background Loader: [GunRunnersArsenal.esm] GRUP Top "PROJ" processed
+[00:01] Background Loader: [GunRunnersArsenal.esm] GRUP Top "LVLI" processed
+[00:01] Background Loader: [GunRunnersArsenal.esm] GRUP Top "NAVI" processed
+[00:01] Background Loader: [GunRunnersArsenal.esm] GRUP Top "CELL" processed
+[00:01] Background Loader: [GunRunnersArsenal.esm] GRUP Top "DIAL" processed
+[00:01] Background Loader: [GunRunnersArsenal.esm] GRUP Top "QUST" processed
+[00:01] Background Loader: [GunRunnersArsenal.esm] GRUP Top "EXPL" processed
+[00:01] Background Loader: [GunRunnersArsenal.esm] GRUP Top "FLST" processed
+[00:01] Background Loader: [GunRunnersArsenal.esm] GRUP Top "PERK" processed
+[00:01] Background Loader: [GunRunnersArsenal.esm] GRUP Top "ADDN" processed
+[00:01] Background Loader: [GunRunnersArsenal.esm] GRUP Top "ARMA" processed
+[00:01] Background Loader: [GunRunnersArsenal.esm] GRUP Top "MESG" processed
+[00:01] Background Loader: [GunRunnersArsenal.esm] GRUP Top "RCPE" processed
+[00:01] Background Loader: [GunRunnersArsenal.esm] GRUP Top "CHAL" processed
+[00:01] Background Loader: [GunRunnersArsenal.esm] GRUP Top "AMEF" processed
+[00:01] Background Loader: [GunRunnersArsenal.esm] Building FormID index
+[00:01] Background Loader: [GunRunnersArsenal.esm] FormID index built
+[00:01] Background Loader: [GunRunnersArsenal.esm] Building string indices
+[00:01] Background Loader: [GunRunnersArsenal.esm] String indices built
+[00:01] Background Loader: [GunRunnersArsenal.esm] Warning: File contains empty top level group: GRUP Top "MISC"
+[00:01] Background Loader: [GunRunnersArsenal.esm] Removed empty group: GRUP Top "MISC"
+[00:01] Background Loader: [GunRunnersArsenal.esm] Warning: File contains empty top level group: GRUP Top "ARMO"
+[00:01] Background Loader: [GunRunnersArsenal.esm] Removed empty group: GRUP Top "ARMO"
+[00:01] Background Loader: [GunRunnersArsenal.esm] Processing completed
+[00:01] Background Loader: loading "PerkOverhaul.esp"...
+[00:01] Background Loader: [PerkOverhaul.esp] Loading file
+[00:01] Background Loader: [PerkOverhaul.esp] File loaded (CRC32:2420B1FF)
+[00:01] Background Loader: [PerkOverhaul.esp] Start processing
+[00:01] Background Loader: [PerkOverhaul.esp] Adding master "FalloutNV.esm"
+[00:01] Background Loader: [PerkOverhaul.esp] Header processed. Expecting 81 records
+[00:01] Background Loader: [PerkOverhaul.esp] GRUP Top "PERK" processed
+[00:01] Background Loader: [PerkOverhaul.esp] Building FormID index
+[00:01] Background Loader: [PerkOverhaul.esp] FormID index built
+[00:01] Background Loader: [PerkOverhaul.esp] Building string indices
+[00:01] Background Loader: [PerkOverhaul.esp] String indices built
+[00:01] Background Loader: [PerkOverhaul.esp] Processing completed
+[00:01] Background Loader: loading "PopulationDensity.esp"...
+[00:01] Background Loader: [PopulationDensity.esp] Loading file
+[00:01] Background Loader: [PopulationDensity.esp] File loaded (CRC32:2FA9A2A4)
+[00:01] Background Loader: [PopulationDensity.esp] Start processing
+[00:01] Background Loader: [PopulationDensity.esp] Adding master "FalloutNV.esm"
+[00:01] Background Loader: [PopulationDensity.esp] Header processed. Expecting 132 records
+[00:01] Background Loader: [PopulationDensity.esp] GRUP Top "CREA" processed
+[00:01] Background Loader: [PopulationDensity.esp] GRUP Top "LVLC" processed
+[00:01] Background Loader: [PopulationDensity.esp] GRUP Top "LVLN" processed
+[00:01] Background Loader: [PopulationDensity.esp] Building FormID index
+[00:01] Background Loader: [PopulationDensity.esp] FormID index built
+[00:01] Background Loader: [PopulationDensity.esp] Building string indices
+[00:01] Background Loader: [PopulationDensity.esp] String indices built
+[00:01] Background Loader: [PopulationDensity.esp] Processing completed
+[00:01] Background Loader: loading "MnehmosMojave.esp"...
+[00:01] Background Loader: [MnehmosMojave.esp] Loading file
+[00:01] Background Loader: [MnehmosMojave.esp] File loaded (CRC32:2DA16CE0)
+[00:01] Background Loader: [MnehmosMojave.esp] Start processing
+[00:01] Background Loader: [MnehmosMojave.esp] Adding master "FalloutNV.esm"
+[00:01] Background Loader: [MnehmosMojave.esp] Header processed. Expecting 51 records
+[00:01] Background Loader: [MnehmosMojave.esp] GRUP Top "ENCH" processed
+[00:01] Background Loader: [MnehmosMojave.esp] GRUP Top "ARMO" processed
+[00:01] Background Loader: [MnehmosMojave.esp] GRUP Top "WEAP" processed
+[00:01] Background Loader: [MnehmosMojave.esp] GRUP Top "LVLI" processed
+[00:01] Background Loader: [MnehmosMojave.esp] Building FormID index
+[00:01] Background Loader: [MnehmosMojave.esp] FormID index built
+[00:01] Background Loader: [MnehmosMojave.esp] Building string indices
+[00:01] Background Loader: [MnehmosMojave.esp] String indices built
+[00:01] Background Loader: [MnehmosMojave.esp] Processing completed
+[00:01] Background Loader: [FalloutNV.esm] Start loading or building reference info.
+[00:01] Background Loader: [FalloutNV.exe] Start loading or building reference info.
+[00:01] Background Loader: [PopulationDensity.esp] Start loading or building reference info.
+[00:01] Background Loader: [HonestHearts.esm] Start loading or building reference info.
+[00:01] Background Loader: [LonesomeRoad.esm] Start loading or building reference info.
+[00:01] Background Loader: [OldWorldBlues.esm] Start loading or building reference info.
+[00:01] Background Loader: [TribalPack.esm] Start loading or building reference info.
+[00:01] Background Loader: [MercenaryPack.esm] Start loading or building reference info.
+[00:01] Background Loader: [ClassicPack.esm] Start loading or building reference info.
+[00:01] Background Loader: [CaravanPack.esm] Start loading or building reference info.
+[00:01] Background Loader: [GunRunnersArsenal.esm] Start loading or building reference info.
+[00:01] Background Loader: [PerkOverhaul.esp] Start loading or building reference info.
+[00:01] Background Loader: [DeadMoney.esm] Start loading or building reference info.
+[00:01] Background Loader: [MnehmosMojave.esp] Start loading or building reference info.
+[00:01] Background Loader: [GunRunnersArsenal.esm] Done loading reference info.
+[00:01] Background Loader: [MercenaryPack.esm] Done building reference info.
+[00:01] Background Loader: [TribalPack.esm] Done building reference info.
+[00:01] Background Loader: [FalloutNV.exe] Done building reference info.
+[00:01] Background Loader: [ClassicPack.esm] Done building reference info.
+[00:01] Background Loader: [CaravanPack.esm] Done building reference info.
+[00:01] Background Loader: [HonestHearts.esm] Done loading reference info.
+[00:01] Background Loader: [DeadMoney.esm] Done loading reference info.
+[00:01] Background Loader: [PopulationDensity.esp] Done building reference info.
+[00:01] Background Loader: [OldWorldBlues.esm] Done loading reference info.
+[00:01] Background Loader: [PerkOverhaul.esp] Done building reference info.
+[00:01] Background Loader: [MnehmosMojave.esp] Done building reference info.
+[00:01] Background Loader: [LonesomeRoad.esm] Done loading reference info.
+[00:02] Background Loader: [FalloutNV.esm] Done loading reference info.
+[00:02] Background Loader: finished
