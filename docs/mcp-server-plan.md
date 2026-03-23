@@ -50,32 +50,45 @@ Claude → MCP Server (Node/Python)
 
 ---
 
-### 2. mnehmos.geck.mcp — GECK Construction Kit
+### 2. MnemoScript DSL + Compiler (REPLACES mnehmos.geck.mcp)
 
-**Priority: MEDIUM** — Needed for Phase 2+ (scripts, dialogue, NPCs).
+**Priority: HIGH** — Eliminates GECK dependency for scripted mods.
 
-**Approach:** The GECK has no CLI mode. Two strategies:
+**Status: BUILDING** — Bytecode format fully documented. Compiler in progress.
 
-**Strategy A: File-based bridge**
-- MCP server generates GECK-compatible script files (.gek/.txt)
-- User loads them manually into GECK
-- Semi-automated: Claude writes the scripts, user clicks "compile"
+**Approach:** Custom DSL that compiles directly to SCDA bytecode, producing complete SCPT records that slot into our ESP binary writer. No GECK needed.
 
-**Strategy B: OODA-based automation**
-- Use mnehmos.ooda.mcp (already installed) to control GECK via screen capture + keyboard/mouse automation
-- Find UI elements via OCR, click menus, type values
-- Fragile but fully automated
+**Architecture:**
+```
+MnemoScript Source (.mns)
+    ↓ Lexer
+Token Stream
+    ↓ Parser
+AST (Abstract Syntax Tree)
+    ↓ Bytecode Emitter
+SCPT Record (SCHR + SCDA + SLSD/SCVR + SCRO)
+    ↓ ESP Binary Writer
+Plugin File (.esp)
+```
 
-**Recommended: Start with Strategy A**, graduate to B for repetitive tasks.
+**What it supports:**
+- Variable declarations (int, float, ref)
+- Control flow (if/elseif/else, begin/end blocks)
+- All vanilla functions (GetAV, ModAV, AddItem, etc. — 533+ opcodes)
+- NVSE functions (Let, arrays, loops — 0x1400+ range)
+- JIP LN functions (GetWeaponAmmoCount, etc. — 0x2200+ range)
+- Reference calls (player.GetAV, ref.Enable, etc.)
+- RPN expression compilation (arithmetic, comparison, logical operators)
 
-**Tools to expose (Strategy A):**
+**Tools to expose (via fnvedit MCP):**
 | Tool | Description |
 |------|-------------|
-| `generate_script` | Generate a GECK script file (.gek) from a description |
-| `generate_dialogue` | Create dialogue tree structure as importable data |
-| `generate_quest` | Create quest stages and objectives as GECK-importable format |
-| `list_scripts` | List all scripts in a plugin |
-| `validate_script` | Syntax-check a GECK script without compiling |
+| `compile_script` | Compile MnemoScript source to SCPT record bytes |
+| `validate_script` | Parse and type-check without emitting bytecode |
+| `decompile_script` | Disassemble SCDA bytecode to readable pseudocode |
+| `inject_script` | Compile + inject SCPT into target ESP |
+
+**Bytecode Reference:** `docs/fnv-script-bytecode-format.md` (700+ lines, authoritative)
 
 ---
 
@@ -146,11 +159,11 @@ pip install pyffi
 ## Build Priority
 
 ```
-Phase 1 (NOW):    blender-mcp, gimp-mcp, audacity-mcp  ← Installing
-Phase 2 (NEXT):   mnehmos.fnvedit.mcp                  ← First custom build
-Phase 3 (LATER):  mnehmos.geck.mcp (Strategy A)        ← When we need scripts/dialogue
-Phase 4 (MAYBE):  mnehmos.nifskope.mcp (pyffi)         ← When we need custom assets
-Phase 5 (NICE):   mnehmos.mo2.mcp, mnehmos.loot.mcp    ← Testing automation
+Phase 1 (DONE):     blender-mcp, gimp-mcp, audacity-mcp     ← Installed
+Phase 2 (DONE):     mnehmos.fnvedit.mcp                      ← Binary parser + ESP writer + 25+ tools
+Phase 3 (BUILDING): MnemoScript DSL compiler                  ← Replaces GECK for scripting
+Phase 4 (MAYBE):    mnehmos.nifskope.mcp (pyffi)             ← When we need custom 3D assets
+Phase 5 (NICE):     mnehmos.mo2.mcp, mnehmos.loot.mcp        ← Testing automation
 ```
 
 ---

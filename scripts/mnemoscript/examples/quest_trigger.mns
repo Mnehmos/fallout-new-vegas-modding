@@ -1,0 +1,19 @@
+; MnemoScript: Quest trigger — activate container to start quest
+script MnArchivistCacheTrigger
+type object
+
+int iStage
+ref rSelf
+
+use player 0x00000014
+use MnArchivistQuest 0x01000800
+
+on OnActivate
+  set iStage to player.GetStage MnArchivistQuest
+  if iStage == 0
+    player.SetStage MnArchivistQuest 10
+    player.ShowMessage MnArchivistQuest
+  elseif iStage < 100
+    player.ShowMessage MnArchivistQuest
+  endif
+end

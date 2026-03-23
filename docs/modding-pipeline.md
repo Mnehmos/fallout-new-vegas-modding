@@ -7,18 +7,34 @@ This doc describes our end-to-end workflow from idea to playable mod.
 ## The Stack
 
 ```
-LLM (Claude/GPT)          ← Design decisions, code generation, analysis
+LLM (Claude/GPT)               ← Design decisions, code generation, analysis
     ↓
-Python Scripts            ← Automation, data processing, TTS
+MnemoScript DSL                 ← Our custom scripting language → SCPT bytecode
     ↓
-FNVEdit Pascal Scripts    ← Batch edits to ESP records
+Python Scripts                  ← Automation, data processing, TTS, ESP binary writer
     ↓
-GECK                      ← Complex scripting, dialogue, world edits
+FNVEdit Pascal Scripts          ← Batch edits to ESP records (overrides, cloning)
     ↓
-.ESP Plugin File          ← The actual mod artifact
+mnehmos.fnvedit.mcp             ← MCP server wrapping binary parser + ESP writer + xEdit
     ↓
-Mod Organizer 2           ← Testing and distribution
+.ESP Plugin File                ← The actual mod artifact
+    ↓
+Mod Organizer 2                 ← Testing and distribution
 ```
+
+### MnemoScript — Custom DSL for FNV Game Scripts
+
+MnemoScript is our custom domain-specific language that compiles to GECK-compatible SCDA bytecode.
+It replaces the GECK's unstable script editor entirely. The compiler:
+
+- Parses a clean, Python-like syntax designed for LLM authoring
+- Emits vanilla-compatible bytecode (SCHR + SCDA + SLSD/SCVR + SCRO)
+- Supports all vanilla opcodes (0x1000-0x1214) + NVSE (0x1400+) + JIP LN (0x2200+)
+- Produces SCPT records that slot directly into our ESP binary writer pipeline
+- Eliminates the GECK as a dependency for script-bearing mods
+
+See `docs/fnv-script-bytecode-format.md` for the bytecode spec.
+See `scripts/mnemoscript/` for the compiler implementation.
 
 ---
 
@@ -45,8 +61,15 @@ Mod Organizer 2           ← Testing and distribution
 4. Place DDS textures in `mods/{ModName}/assets/textures/`
 5. Reference in GECK
 
-### NVSE Scripting (Advanced)
-1. Write scripts in GECK script editor
+### NVSE Scripting (MnemoScript)
+1. Write scripts in MnemoScript DSL (`.mns` files in `scripts/mnemoscript/`)
+2. Compile: `python scripts/mnemoscript/compiler.py input.mns` → SCPT record bytes
+3. Inject into ESP via binary writer or xEdit import script
+4. All vanilla + NVSE + JIP LN functions available — no GECK dependency
+5. Reference: `docs/fnv-script-bytecode-format.md`
+
+### NVSE Scripting (Legacy GECK)
+1. Write scripts in GECK script editor (fallback for complex cases)
 2. Use NVSE functions for extended functionality
 3. Reference: GECK Wiki + NVSE docs
 

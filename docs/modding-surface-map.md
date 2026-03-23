@@ -108,7 +108,7 @@
 
 | Record | Name | Count | What It Controls | Modding Capability | Status |
 |--------|------|-------|-----------------|-------------------|--------|
-| SCPT | Script | 2,576 | Game scripts (compiled) | Read; cannot compile new scripts without GECK | **BLOCKED** |
+| SCPT | Script | 2,576 | Game scripts (compiled bytecode) | Read + compile via MnemoScript DSL → SCDA bytecode emitter | **READY** |
 | GLOB | Global Variable | 218 | Global game variables | Read + modify values | **READY** |
 | GMST | Game Setting | 648 | Engine settings (XP rates, carry weight, timescale, etc.) | Read + modify | **READY** |
 | FLST | Form List | 464 | Lists of FormIDs used by scripts/conditions | Read + modify | **READY** |
@@ -186,8 +186,8 @@
 | **READY** | AMMO, ALCH, MISC, BOOK, STAT, FURN, LIGH, ACTI, GLOB, GMST, FLST, CHAL, MESG, WTHR, CLMT, WATR, IMGS, RCPE, REPU, CSTY, ECZN, DEHY, HUNG, SLPD, RADS, AMEF, CLAS, LSCR, MSTT | 29 | Can modify but haven't shipped a mod with these |
 | **PARTIAL** | NPC_, QUST, DIAL, INFO, IMOD, FACT, BPTD, DOOR, TACT, REGN, IMAD, LGTM, TERM, PROJ, EXPL, MUSC, MSET, CAMS, CCRD, CDCK | 20 | Can read/partially modify, some fields need GECK |
 | **READ-ONLY** | RACE, HAIR, EYES, HDPT, VTYP, KEYM, TREE, GRAS, PWAT, SCOL, IDLE, IDLM, ANIO, TXST, LTEX, ARMA, ASPC, ALOC, DEBR, RGDL, CPTH, EFSH, IPCT, IPDS, ADDN, RCCT, CHIP, CMNY, MICN, DOBJ, LSCT, AVIF | 32 | Can read and analyze only |
-| **BLOCKED** | SCPT, PACK, ACHR/ACRE placement, NAVM, LAND, NAVI, CELL override | 7 | Requires GECK, NVSE, or unsolved format issues |
+| **BLOCKED** | PACK, ACHR/ACRE placement, NAVM, LAND, NAVI, CELL override | 6 | Requires GECK, NVSE, or unsolved format issues |
 
-### What We Can Build Reliably Today: 44 record types
-### What We'll Be Able To Build Soon: 64 record types (adding PARTIAL)
-### What Needs GECK Forever: 7 record types (scripts, AI packages, navmesh, landscape)
+### What We Can Build Reliably Today: 45 record types (SCPT moved from BLOCKED → READY via MnemoScript compiler)
+### What We'll Be Able To Build Soon: 65 record types (adding PARTIAL)
+### What Needs GECK Forever: 6 record types (AI packages, NPC/creature placement, navmesh, landscape)

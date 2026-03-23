@@ -1,0 +1,15 @@
+; MnemoScript: Last Round perk effect
+; Bonus damage when firing the last bullet in the magazine
+script MnGunLastRound
+type effect
+
+float fDmgBonus
+
+use player 0x00000014
+
+on ScriptEffectUpdate
+  if player.GetHealthPercentage > 0.0
+    set fDmgBonus to 0.50
+    player.ModAV DamageResist fDmgBonus
+  endif
+end

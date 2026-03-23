@@ -1,0 +1,14 @@
+; MnemoScript: Simple stat buff on equip/unequip
+; Gives +5 Luck when equipped, removes on unequip
+script MnLuckyCharm
+type object
+
+use player 0x00000014
+
+on OnEquip
+  player.ModAV Luck 5.0
+end
+
+on OnUnequip
+  player.ModAV Luck -5.0
+end
