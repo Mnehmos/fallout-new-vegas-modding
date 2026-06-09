@@ -68,3 +68,7 @@ desktop.ini
 .env.*
 secrets.json
 openai_key.txt
+
+# tool noise
+FNVEdit_log.txt
+*.backup.*
