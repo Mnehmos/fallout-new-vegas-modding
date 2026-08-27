@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Evidence-backed Fallout: New Vegas engine bug research and reverse-engineering wiki.">
+  <title>FNV Engine Bug Wiki</title>
+  <link rel="stylesheet" href="wiki.css">
+</head>
+<body>
+  <header class="site-header">
+    <div>
+      <p class="eyebrow">MNEHMOS · FALLOUT: NEW VEGAS</p>
+      <h1>Engine Bug Wiki</h1>
+      <p class="lede">A live, evidence-backed catalog of New Vegas engine bugs. Community reports are leads; reproduction, binary evidence, and runtime experiments decide what becomes fact.</p>
+    </div>
+    <nav>
+      <a class="active" href="index.html">Bug catalog</a>
+      <a href="methodology.html">Methodology</a>
+      <a href="../research/re/hypotheses/H1-encounter-spawn-resolution.md">RE notebook</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="stats" aria-label="catalog statistics">
+      <div class="stat"><strong id="total-count">—</strong><span>GECK remaining seeds</span></div>
+      <div class="stat"><strong id="active-count">—</strong><span>active investigations</span></div>
+      <div class="stat"><strong id="high-count">—</strong><span>priority 5 targets</span></div>
+      <div class="stat"><strong>0</strong><span>runtime-proven fixes</span></div>
+    </section>
+
+    <section class="callout">
+      <div>
+        <p class="eyebrow">CURRENT PROGRAM</p>
+        <h2>Turn old bug reports into reproducible engine knowledge.</h2>
+      </div>
+      <p>Each investigation moves through: report → source check → vanilla reproduction → static RE → root cause → minimal patch → runtime reproduction. Unsupported semantic claims stay provisional.</p>
+    </section>
+
+    <section class="controls" aria-label="filters">
+      <label>
+        <span>Search</span>
+        <input id="search" type="search" placeholder="VATS, inventory, AI, Havok…">
+      </label>
+      <label>
+        <span>Status</span>
+        <select id="status-filter"><option value="all">All statuses</option></select>
+      </label>
+      <label>
+        <span>Subsystem</span>
+        <select id="system-filter"><option value="all">All subsystems</option></select>
+      </label>
+      <label>
+        <span>Minimum priority</span>
+        <select id="priority-filter">
+          <option value="1">1+</option><option value="2">2+</option><option value="3" selected>3+</option><option value="4">4+</option><option value="5">5 only</option>
+        </select>
+      </label>
+    </section>
+
+    <section class="section-heading">
+      <div><p class="eyebrow">INVESTIGATION QUEUE</p><h2>Engine bugs</h2></div>
+      <p id="visible-count"></p>
+    </section>
+    <div id="bug-grid" class="bug-grid" aria-live="polite"></div>
+
+    <section class="source-note">
+      <h2>Seed source</h2>
+      <p>The initial backlog is transcribed from GECKWiki's <em>Engine Bugs (Fallout New Vegas)</em> “Bugs remaining” section. Being on that list does <strong>not</strong> make a bug confirmed-open in 2026. The purpose of this site is to verify, falsify, deduplicate, and ultimately explain those reports.</p>
+      <a href="https://geckwiki.com/index.php?title=Engine_Bugs_%28Fallout_New_Vegas%29">Open GECKWiki source ↗</a>
+    </section>
+  </main>
+
+  <footer>
+    <span>Evidence over lore.</span>
+    <a href="https://github.com/Mnehmos/fallout-new-vegas-modding">GitHub repository ↗</a>
+  </footer>
+  <script src="wiki.js"></script>
+</body>
+</html>
