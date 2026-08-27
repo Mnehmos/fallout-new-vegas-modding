@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Evidence-backed Fallout: New Vegas encounter-zone reverse-engineering investigations.">
+  <title>Research Desk - FNV Engine Bug Wiki</title>
+  <link rel="stylesheet" href="wiki.css">
+</head>
+<body>
+  <header class="site-header">
+    <div>
+      <p class="eyebrow">MNEHMOS - FNV RESEARCH</p>
+      <h1>Research desk</h1>
+      <p class="lede">Encounter-zone work is split at the evidence boundary: persistence/rebinding is one subsystem slice; gameplay consumption is a separate open investigation.</p>
+    </div>
+    <nav>
+      <a href="index.html">Bug catalog</a>
+      <a href="methodology.html">Methodology</a>
+      <a class="active" href="research.html">Research desk</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="callout">
+      <div>
+        <p class="eyebrow">H1 SPLIT</p>
+        <h2>Persistence is not spawning.</h2>
+      </div>
+      <p>A successful runtime test of <code>ExtraEncounterZone +0x0C</code> will validate save/load rebinding only. It will not validate encounter selection, leveled lists, actor levels, or spawn generation.</p>
+    </section>
+
+    <section class="source-note">
+      <h2>Explicit status boundary</h2>
+      <div class="research-grid">
+        <article class="method-card">
+          <div class="bug-top"><strong>H1-SL</strong><span class="badge active">Static complete</span></div>
+          <p><strong>Runtime:</strong> pending</p>
+          <p><strong>Gameplay relevance:</strong> persistence only</p>
+        </article>
+        <article class="method-card">
+          <div class="bug-top"><strong>H1-GP</strong><span class="badge seed">Static open</span></div>
+          <p><strong>Runtime:</strong> not ready</p>
+          <p><strong>Gameplay relevance:</strong> encounter-zone consumption and spawning</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="h1-sl" class="source-note">
+      <div class="bug-top"><h2>H1-SL / Encounter-zone save/load lifecycle</h2><span class="badge active">Static complete / runtime pending</span></div>
+      <p>The static chain is recovered from the plaintext GOG analysis artifact. The Steam runtime remains the verification target.</p>
+      <pre class="research-chain">serialized zone ID
+  -&gt; 0x00428150 ExtraDataList::LoadGame
+     -&gt; extra-data type 0x74
+     -&gt; 0x00432E60 ExtraEncounterZone construction/reuse
+     -&gt; 0x0040FF60 BaseExtraList::AddExtra candidate
+     -&gt; 0x008648A0 form-ID/load-buffer path candidate
+     -&gt; 0x004839C0 opaque form/handle lookup
+     -&gt; TESForm -&gt; BGSEncounterZone cast
+     -&gt; ExtraEncounterZone +0x0C
+     -&gt; 0x00416BE0 rebind or remove on failure</pre>
+      <div class="research-grid">
+        <article class="method-card">
+          <strong>WHAT IS ESTABLISHED</strong>
+          <p>The receiver is a BaseExtraList/ExtraDataList load context with a save-game buffer. The cast result is stored at the extra-data object's <code>+0x0C</code>; <code>0x00428150</code> returns void.</p>
+        </article>
+        <article class="method-card">
+          <strong>WHAT IS NOT ESTABLISHED</strong>
+          <p>No evidence from this chain reaches CELL encounter selection, leveled-list evaluation, actor level selection, or spawn generation. The exact <code>0x004839C0</code> return semantics remain open.</p>
+        </article>
+      </div>
+      <h3>Runtime prediction</h3>
+      <p>With an available ECZN, the saved identifier should resolve to a non-null <code>BGSEncounterZone*</code> in <code>+0x0C</code>. With the ECZN unavailable, lookup/cast should fail and the existing cleanup path should remove the extra data. The test is deliberately a persistence test.</p>
+      <p><a href="https://github.com/Mnehmos/fallout-new-vegas-modding/blob/master/research/re/hypotheses/H1-SL-encounter-zone-save-load-lifecycle.md">Open the H1-SL source notebook -&gt;</a></p>
+    </section>
+
+    <section id="h1-gp" class="callout">
+      <div>
+        <p class="eyebrow">OPEN INVESTIGATION</p>
+        <h2>H1-GP / Encounter-zone gameplay consumption</h2>
+        <span class="badge seed">Static open / runtime not ready</span>
+      </div>
+      <div>
+        <p>Find the separate path that turns a CELL/reference context into an effective encounter zone, reads zone properties, selects leveled actors/lists, and makes a spawn decision.</p>
+        <pre class="research-chain">BGSEncounterZone readers  ---------+
+                                   +--&gt; shared consumer/context
+spawn and leveled-list callers ----+</pre>
+        <p>Search from both ends. On the ECZN side, follow non-save/load reads of <code>BGSEncounterZone +0x18</code> and uses of <code>ExtraEncounterZone +0x0C</code>. On the spawn side, work backward from leveled-actor/list selection and actor-level functions. Promote names only when the evidence supports them.</p>
+        <p><strong>First pass:</strong> form-type and string anchors identify the search frontier, but the recovered artifacts do not yet expose a verified ECZN-reader/leveled-selection intersection. This is an open coverage gap, not evidence that no gameplay consumer exists.</p>
+        <p><a href="https://github.com/Mnehmos/fallout-new-vegas-modding/blob/master/research/re/hypotheses/H1-GP-encounter-zone-gameplay-consumption.md">Open the H1-GP source notebook -&gt;</a></p>
+      </div>
+    </section>
+
+    <section class="source-note">
+      <h2>Research boundary</h2>
+      <p>Known ECZN record parsing at <code>0x00525D40</code>, owner-form initialization at <code>0x00525F00</code>, worldspace initialization at <code>0x005845E0</code>, and the <code>0x00432E90</code> comparator are useful anchors, but none is currently a proven gameplay-spawn consumer.</p>
+      <p>The detailed correction ledger remains available in <a href="https://github.com/Mnehmos/fallout-new-vegas-modding/blob/master/research/re/hypotheses/H1-encounter-spawn-resolution.md">the original H1 source notebook -&gt;</a>.</p>
+    </section>
+
+    <section class="source-note">
+      <h2>Parallel investigation tracks</h2>
+      <p><code>H1-SL</code> save/load lifecycle -&gt; runtime verification</p>
+      <p><code>H1-GP</code> gameplay consumption -&gt; static discovery</p>
+      <p><code>BUG-001</code> VATS projectile 0% -&gt; causal runtime experiment</p>
+    </section>
+  </main>
+
+  <footer><span>Evidence over lore.</span><a href="https://github.com/Mnehmos/fallout-new-vegas-modding">GitHub repository -&gt;</a></footer>
+</body>
+</html>

@@ -17,7 +17,7 @@
     <nav>
       <a class="active" href="index.html">Bug catalog</a>
       <a href="methodology.html">Methodology</a>
-      <a href="../research/re/hypotheses/H1-encounter-spawn-resolution.md">RE notebook</a>
+      <a href="research.html">Research desk</a>
     </nav>
   </header>
 
@@ -36,6 +36,25 @@
       </div>
       <p>Each investigation moves through: report → source check → vanilla reproduction → static RE → root cause → minimal patch → runtime reproduction. Unsupported semantic claims stay provisional.</p>
     </section>
+
+    <section class="section-heading">
+      <div><p class="eyebrow">RESEARCH DESK</p><h2>Encounter zones</h2></div>
+      <a href="research.html">Open H1 desk -&gt;</a>
+    </section>
+    <div class="research-grid">
+      <article class="method-card">
+        <div class="bug-top"><strong>H1-SL</strong><span class="badge active">Runtime pending</span></div>
+        <h3>Encounter-zone save/load lifecycle</h3>
+        <p>The static chain recovers serialized zone-ID lookup, the TESForm-to-BGSEncounterZone cast, storage at ExtraEncounterZone +0x0C, and missing-zone cleanup.</p>
+        <a class="more" href="research.html#h1-sl">Read the lifecycle boundary -&gt;</a>
+      </article>
+      <article class="method-card">
+        <div class="bug-top"><strong>H1-GP</strong><span class="badge seed">Open</span></div>
+        <h3>Encounter-zone gameplay consumption</h3>
+        <p>Separate search: CELL/reference context, effective zone, zone properties, leveled actor/list selection, and spawn decision.</p>
+        <a class="more" href="research.html#h1-gp">Read the open question -&gt;</a>
+      </article>
+    </div>
 
     <section class="controls" aria-label="filters">
       <label>
