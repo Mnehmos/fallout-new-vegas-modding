@@ -1,0 +1,9 @@
+{
+  "candidate_name": "RegistryAccessor_ByOrdinal_WithSingleton",
+  "build_id": "fnv-gog-1.4.0.525",
+  "function_va": "0x0043A590",
+  "sha256_source": "89e7020487e80f20ddc92ea641c4433b2c6839a82f45a076e414d167d11dd0fe",
+  "ida_signature": "55 8B EC 83 EC 0C 89 4D F8 8B 45 F8 8B 08 89 4D FC 6A FF 8B 4D 08 E8 ?? ?? ?? ?? 50 8D 55 FC 52 E8 ?? ?? ?? ?? 83 C4 08 6A 00 68 CC 41 18 01 68 28 30 18 01 8B 45 FC 50 E8 ?? ?? ?? ?? 83 C4 04 6A 00 50 E8 ?? ?? ?? ?? 83 C4 14 8B 4D F8 89 01 8B 55 F8 83 3A 00 75 18 8B 45 FC 50 48",
+  "mnemonic_hash": "c94fcb8471cefe70",
+  "notes": "Singleton-getter pattern (call 0x7AF430 -> call 0x401170) then imul 0xC indexing into form-type registry 0x01187004. Pushes 0x01183028 (DataHandler-region candidate) and 0x011841CC — connects registry to the DataHandler region candidates from nvse_xrefs.json."
+}

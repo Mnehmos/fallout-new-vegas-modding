@@ -72,3 +72,14 @@ openai_key.txt
 # tool noise
 FNVEdit_log.txt
 *.backup.*
+
+# --- RE layer: bulk derived artifacts stay local (regenerable; see docs/re-pipeline.md) ---
+research/re/strings_all.txt
+research/re/functions/decompiled/
+tools/re/ghidra/projects/
+.repowise/
+.vscode/
+research/re/functions/calls.json
+research/re/functions/functions.json
+research/re/functions/strings.json
+research/re/functions/decompiled/

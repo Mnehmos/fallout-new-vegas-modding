@@ -4,3 +4,7 @@ requests>=2.31.0
 python-dotenv>=1.0.0
 rich>=13.0.0
 typer>=0.9.0
+
+# reverse-engineering layer (scripts/re/)
+pefile>=2023.2.7
+capstone>=5.0.0

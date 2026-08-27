@@ -1,0 +1,9 @@
+{
+  "candidate_name": "FormTypeRegistry_4CCToOrdinal_Lookup",
+  "build_id": "fnv-gog-1.4.0.525",
+  "function_va": "0x00483370",
+  "sha256_source": "89e7020487e80f20ddc92ea641c4433b2c6839a82f45a076e414d167d11dd0fe",
+  "ida_signature": "55 8B EC 6A FF 68 AB EF EE 00 64 A1 00 00 00 00 50 83 EC 10 A1 BC 16 1C 01 33 C5 50 8D 45 F4 64 A3 00 00 00 00 89 4D E4 8B 4D E4 E8 ?? ?? ?? ?? 8B 45 E4 C7 00 94 C7 01 01 8B 4D E4 83 C1 10 E8 ?? ?? ?? ?? C7 45 FC 00 00 00 00 83 3D BC 54 1C 01 00 75 05 E8 ?? ?? ?? ?? 8B 0D BC 54 1C 01",
+  "mnemonic_hash": "5d6a51c716990309",
+  "notes": "Loop bound 0x79 (121) == form-type registry entry count. Reads [0x01187004 + i*12] and byte-packs descriptor[0..3] into an int for 4CC comparison. Reference decode: research/re/form_type_registry.json."
+}

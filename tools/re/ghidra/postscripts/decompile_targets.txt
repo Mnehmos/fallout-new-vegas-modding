@@ -1,0 +1,36 @@
+# One address per line. Each is resolved to its CONTAINING function and
+# decompiled to research/re/functions/decompiled/.
+# --- ECZN lifecycle (H1) ---
+0x00525D40
+0x00525E70
+0x00525F00
+0x00525D00
+0x0043A590
+0x00483370
+0x00416DC1
+0x00503210
+0x004D9780
+0x0040F700
+# --- visitor cluster (ownership graph) ---
+0x00432E90
+0x00432DD0
+0x00432CE0
+0x00432E60
+0x0041B680
+# --- BGSEncounterZone / ExtraEncounterZone RTTI cast sites ---
+0x00417D3C
+0x00429F12
+0x00525FAC
+0x0052600C
+0x005847A3
+0x005B213E
+0x00432E9C
+
+# --- zone-resolution bridge + parents ---
+0x00428150
+0x004BEE00
+0x005623D0
+0x00421CC9
+0x0040FF60
+0x004839C0
+0x008648A0

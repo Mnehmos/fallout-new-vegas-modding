@@ -1,0 +1,393 @@
+{
+  "schema": 2,
+  "comment": "Recovered-symbol knowledge base. Schema v2: symbols are per-build and RVA-first. Confidence is governed by research/re/confidence-policy.md \u2014 evidence classes are mechanical, LLM judgment caps at 0.60.",
+  "confidence_policy": "research/re/confidence-policy.md",
+  "builds": {
+    "fnv-steam-1.4.0.525": {
+      "product": "FalloutNV",
+      "distribution": "steam",
+      "role": "runtime-validation-target",
+      "warning": "CEG-wrapped: .text encrypted at rest (entropy 8.0), decryptor stub in .bind. Data sections plaintext. Static CODE analysis impossible on this image.",
+      "file": "FalloutNV.exe",
+      "sha256": "518c87f58a6c4d9826e9ef8fbb7f4213882fa70822675610d45aea2464502a57",
+      "md5": "50c70408a000acade2ed257c87cecbc2",
+      "pe_timestamp": "0x4E0D50ED",
+      "image_base": "0x00400000",
+      "size_of_image": "0x107B000",
+      "machine": "i386"
+    },
+    "fnv-steam-backup": {
+      "product": "FalloutNV",
+      "distribution": "steam",
+      "role": "unverified-duplicate",
+      "warning": "identical layout/timestamp to Steam exe, different bytes; entry also in .bind \u2014 also wrapped",
+      "file": "FalloutNV_backup.exe",
+      "sha256": "3a87f92f011e5dc9179ddf733cf08be2b39ea6e5b7a8a9e3a9a72dafcc1b104d",
+      "pe_timestamp": "0x4E0D50ED",
+      "image_base": "0x00400000",
+      "size_of_image": "0x107B000",
+      "machine": "i386"
+    },
+    "fnv-gog-1.4.0.525": {
+      "product": "FalloutNV",
+      "distribution": "gog",
+      "role": "canonical-static-analysis-target",
+      "note": "VERIFIED 2026-08-27: .text entropy 6.561 (plaintext), no .bind section, entry inside .text. Same section layout as Steam build (same lineage, wrapper removed).",
+      "file": "FalloutNV.exe",
+      "sha256": "89e7020487e80f20ddc92ea641c4433b2c6839a82f45a076e414d167d11dd0fe",
+      "md5": "0f374bae0d6c34b754d3a487d49486ba",
+      "pe_timestamp": "0x4E0D50ED",
+      "image_base": "0x00400000",
+      "size_of_image": "0x10089E4",
+      "machine": "i386"
+    },
+    "nvse-1.4-runtime": {
+      "product": "NVSE",
+      "distribution": "nvse",
+      "role": "semantic-annotation-layer",
+      "note": "plaintext code (.text entropy 6.6); ships with nvse_1_4.pdb (17 MB, private symbols). Contains hardcoded FalloutNV.exe addresses -> nvse_semantic_reference provenance.",
+      "file": "nvse_1_4.dll",
+      "pdb": "nvse_1_4.pdb",
+      "pdb_sha256": "f604251900f8ee6a27c5c11c9501bc600449917ab278654d3e5518db1ebba492",
+      "sha256": "ef9d0712d1f6e3ca3c0d7ca4c0654e303d911c8ce119bfcc21efe0ad6d3d5449",
+      "pe_timestamp": "0x698CE4BD",
+      "image_base": "0x10000000",
+      "size_of_image": "0x152000",
+      "machine": "i386"
+    },
+    "nvse-1.4-editor": {
+      "product": "NVSE",
+      "distribution": "nvse",
+      "role": "equivalence-test-target",
+      "note": "shares large portions of code with runtime DLL \u2014 used to validate match_functions.py",
+      "file": "nvse_editor_1_4.dll",
+      "sha256": "371fe3c76024ef4d4d144e100e71388c50aeaa84fbefd41470002a937141891f",
+      "pe_timestamp": "0x698CE4C7",
+      "image_base": "0x10000000",
+      "size_of_image": "0xB7000",
+      "machine": "i386"
+    },
+    "nvse-loader": {
+      "product": "NVSE",
+      "distribution": "nvse",
+      "file": "nvse_loader.exe",
+      "sha256": "962779b834ea43642099e2189351e13c9220256348544fe32bf908b297e4c452",
+      "pe_timestamp": "0x698CE4BE",
+      "image_base": "0x00400000",
+      "size_of_image": "0x2B000",
+      "machine": "i386"
+    }
+  },
+  "symbols": [
+    {
+      "name": "engine RTTI dynamic-cast helper (__RTDynamicCast family) \u2014 NVSE top candidate",
+      "build_id": "fnv-steam-1.4.0.525",
+      "rva": "0x00EC43FB",
+      "va": "0x00EC43FB",
+      "region": ".text",
+      "provenance": [
+        "nvse_semantic_reference",
+        "nvse_hardcoded_reference",
+        "structural-analysis"
+      ],
+      "confidence": 0.6,
+      "evidence": [
+        {
+          "class": "nvse_semantic_reference",
+          "detail": "mov_imm + call eax (ThisStdCall idiom) from Cmd_GetFactionRank_Eval / Cmd_ModFactionRank_Execute / Cmd_ar_CustomSort_Execute and others \u2014 highest-evidence engine address in nvse_xrefs.json (score 857)",
+          "source": "research/re/nvse_xrefs.json (mine_pdb.py, nvse-1.4-runtime PDB)"
+        },
+        {
+          "class": "structural-analysis",
+          "detail": "GOG fnv-gog-1.4.0.525: call site 0x00432EA5 pushes {0, EEZ_desc 0x1184CF4, BSExtraData_desc 0x1183B2C, 0, object} \u2014 five-arg __RTDynamicCast signature (obj, vtoff, srcDesc, dstDesc, isRef). Role identified: runtime type cast primitive",
+          "source": "disassembly 0x00432E90-0x00432EEB"
+        }
+      ],
+      "equivalences": {
+        "fnv-gog-1.4.0.525": "0x00EC43FB (same VA \u2014 code region byte-identical builds expected, verify via match_functions when GOG fnprints exist)"
+      },
+      "status": "candidate",
+      "added": "2026-08-27",
+      "updated": "2026-08-27 \u2014 role identified via GOG call-site signature; 0.40 -> 0.60"
+    },
+    {
+      "name": "extra-data visitor predicate \u2014 casts entry to ExtraEncounterZone (vtable 0x01015C54 slot 1)",
+      "build_id": "fnv-gog-1.4.0.525",
+      "rva": "0x00032E90",
+      "va": "0x00432E90",
+      "region": ".text",
+      "provenance": [
+        "structural-analysis"
+      ],
+      "confidence": 0.4,
+      "evidence": [
+        {
+          "class": "structural-analysis",
+          "detail": "MEASURED: casts arg (BSExtraData desc 0x1183B2C) to ExtraEncounterZone (desc 0x1184CF4) via 0xEC43FB; null -> true; helper 0x40F700(this,arg); compares [+0xC] handles via 0x4D9780. ADDRESS-TAKEN at 0x01015C58 = slot 1 of vtable 0x01015C54 (ctor 0x00432E60, class size 0x74). AMBIGUOUS (not forced): the 0x01015C30-0x01015C9C region is a cluster of visitor-class vtables interleaved with extra-data COLs (EEZ COL @ 0x01104474, RagDoll @ 0x01104428, UsedMarkers @ 0x011044C0); which visitor row this predicate belongs to is unresolved pending Ghidra. EARLIER CLAIM CORRECTED: not confirmed as the EEZ get/attach path.",
+          "source": "disassembly 0x00432E90-0x00432EEB + registry/vtable dump 0x01015C30-0x01015CA8"
+        }
+      ],
+      "notes": "Neighboring handler 0x00432DD0 casts to ExtraRagDollData (0x1184CD4) \u2014 per-type match functions in the same cluster. Visitor registration/dispatch semantics = first Ghidra decompile target.",
+      "equivalences": {},
+      "status": "candidate",
+      "added": "2026-08-27",
+      "updated": "2026-08-27 \u2014 reframed: visitor-cluster member, row attribution retracted"
+    },
+    {
+      "name": "BGSEncounterZone::Save (candidate \u2014 DATA write symmetric to Load)",
+      "build_id": "fnv-gog-1.4.0.525",
+      "rva": "0x00125E70",
+      "va": "0x00525E70",
+      "region": ".text",
+      "provenance": [
+        "source_atlas_candidate",
+        "structural-analysis"
+      ],
+      "confidence": 0.6,
+      "evidence": [
+        {
+          "class": "source_atlas_candidate",
+          "detail": "atlas vtable slot 11 (BGSEncounterZone::Save, targets=1)",
+          "source": "research/re/structures/bgsencounterzone-vtable.json"
+        },
+        {
+          "class": "structural-analysis",
+          "detail": "WriteSubrecord('DATA', this+0x18, 8) via call 0x485990 \u2014 exact write symmetric to Load's 8-byte read; also null-checked transform of [this+0x18] via 0x84E3A0 before write",
+          "source": "disassembly 0x00525E70-0x00525EF6"
+        }
+      ],
+      "equivalences": {},
+      "status": "candidate",
+      "added": "2026-08-27"
+    },
+    {
+      "name": "TESForm RTTI type descriptor (RETRACTED: previously mislabeled 'DataHandler-region global')",
+      "build_id": "fnv-gog-1.4.0.525",
+      "rva": "0x01143028",
+      "va": "0x01183028",
+      "region": ".data",
+      "provenance": [
+        "nvse_semantic_reference",
+        "nvse_hardcoded_reference",
+        "structural-analysis"
+      ],
+      "confidence": 0.6,
+      "evidence": [
+        {
+          "class": "structural-analysis",
+          "detail": "name field at descriptor+8 reads '.?AVTESForm@@' \u2014 measured identity. NVSE faction commands push this address as the SRC descriptor of RTTI casts (TESForm* -> target), explaining all nvse_xrefs pushes without any DataHandler interpretation. GOG: 0x00429F16 pushes it as srcDesc casting to BGSEncounterZone (0x00428150's zone-resolution region).",
+          "source": "descriptor name decode 2026-08-27 + disassembly 0x00429F0F-0x00429F2F"
+        }
+      ],
+      "equivalences": {
+        "fnv-steam-1.4.0.525": "0x01183028"
+      },
+      "status": "accepted-structure",
+      "added": "2026-08-27",
+      "updated": "2026-08-27 \u2014 RETRACTED 'DataHandler-region global' label (0.60 entry replaced); push-evidence was RTTI cast idiom, not data reference"
+    },
+    {
+      "name": "form-type registry (ordinal -> record descriptor, 121 entries)",
+      "build_id": "fnv-gog-1.4.0.525",
+      "rva": "0x01147004",
+      "va": "0x01187004",
+      "region": ".data",
+      "provenance": [
+        "record_descriptor_xref",
+        "structural-analysis"
+      ],
+      "confidence": 0.6,
+      "evidence": [
+        {
+          "class": "record_descriptor_xref",
+          "detail": "stride-12 array {descriptor_ptr, 0, ordinal}, ordinals 0..120; full ordinal\u21924CC decode matches form semantics (2:TES4 ... 98:ECZN ... 120:HUNG); research/re/form_type_registry.json",
+          "source": "scripts/re/correlate_records.py + registry walk 2026-08-27"
+        },
+        {
+          "class": "structural-analysis",
+          "detail": "lookup loop bound 0x79 (121) at 0x00483407 matches independently walked entry count; MSVC RTTI type descriptors (.?AVTESLevItem@@...) adjacent in .data corroborate the descriptor/class linkage",
+          "source": "disassembly window 0x004833F0-0x00483500"
+        }
+      ],
+      "equivalences": {
+        "fnv-steam-1.4.0.525": "0x01187004 (data layer byte-identical)"
+      },
+      "status": "accepted-structure",
+      "added": "2026-08-27"
+    },
+    {
+      "name": "BGSEncounterZone vtable (class surface, 78 slots)",
+      "build_id": "fnv-gog-1.4.0.525",
+      "rva": "0x00FCBBBC",
+      "va": "0x0102CBBC",
+      "region": ".rdata",
+      "provenance": [
+        "structural-analysis",
+        "source_atlas_candidate"
+      ],
+      "confidence": 0.6,
+      "evidence": [
+        {
+          "class": "structural-analysis",
+          "detail": "RTTI type descriptor .?AVBGSEncounterZone@@ @ 0x011840DC; COL @ 0x0110CB40 (sig=0, typeDesc match); vtable[-1]=COL at 0x0102CBB8; slot dump = 78 .text pointers",
+          "source": "research/re/structures/bgsencounterzone-vtable.json"
+        },
+        {
+          "class": "source_atlas_candidate",
+          "detail": "fnv-source-atlas v0.5.0 independently aligns Xbox BGSEncounterZone vftable 0x8202632C (debug PDB) to PC 0x102CBBC, observed_slot_count 78 \u2014 unassessed candidate, no cross-platform identity accepted",
+          "source": "fnv_atlas class BGSEncounterZone --exact --json"
+        }
+      ],
+      "equivalences": {
+        "xbox360-fallout-release-memdebug": "0x8202632C (vftable symbol)"
+      },
+      "status": "accepted-structure",
+      "added": "2026-08-27"
+    },
+    {
+      "name": "BGSEncounterZone::Load (H1.1 ECZN record parser)",
+      "build_id": "fnv-gog-1.4.0.525",
+      "rva": "0x00125D40",
+      "va": "0x00525D40",
+      "region": ".text",
+      "provenance": [
+        "source_atlas_candidate",
+        "structural-analysis"
+      ],
+      "confidence": 0.6,
+      "evidence": [
+        {
+          "class": "source_atlas_candidate",
+          "detail": "atlas vtable slot 8 (BGSEncounterZone::Load, targets=1 unambiguous Xbox function) aligned to PC vtable 0x0102CBBC",
+          "source": "research/re/structures/bgsencounterzone-vtable.json"
+        },
+        {
+          "class": "structural-analysis",
+          "detail": "independent disassembly concurrence: subrecord loop switching on 'DATA'(0x41544144)/'EDID'(0x44494445)/'OBND'(0x444E424F) \u2014 exactly matching plugin ground truth (ECZN = EDID+DATA(8B), OBND inherited from TESObject); DATA branch reads 8 bytes into this+0x18; EDID branch reads <=0x200 bytes -> virtual vtable+0x134; record-tag 'a' check at entry; loop via stream-has-more call 0x4726f0",
+          "source": "disassembly 0x00525D40-0x00525E5A + ECZN ground truth from FalloutNV.esm (17 records, all EDID+DATA(8B)) via mnehmos.fnvedit.mcp parser"
+        }
+      ],
+      "recovered_fields": {
+        "this+0x18": "DATA storage: Save writes it out as the 8-byte DATA subrecord; [this+0x18] dword A is a nullable handle/pointer (vanilla always 0) transformed by 0x84E3A0 before write and passed into lookup machinery by InitItem 0x00525F00; dword B = flags"
+      },
+      "related_candidates": {
+        "InitializeData": "0x00525D00",
+        "Save": "0x00525E70",
+        "SaveGame": "0x00526410",
+        "LoadGame": "0x005264A0",
+        "Revert": "0x00526570",
+        "InitItem": "0x00525F00",
+        "Copy": "0x00525FA0",
+        "Compare": "0x00526000"
+      },
+      "equivalences": {
+        "xbox360-fallout-release-memdebug": "slot 8 of vftable 0x8202632C"
+      },
+      "status": "candidate",
+      "added": "2026-08-27",
+      "updated": "2026-08-27 \u2014 0.40 -> 0.60: independent disassembly concurrence (subrecord semantics match plugin bytes)"
+    },
+    {
+      "name": "FormTypeRegistry_4CCToOrdinal_Lookup (candidate)",
+      "build_id": "fnv-gog-1.4.0.525",
+      "rva": "0x00083370",
+      "va": "0x00483370",
+      "region": ".text",
+      "provenance": [
+        "structural-analysis"
+      ],
+      "confidence": 0.6,
+      "evidence": [
+        {
+          "class": "structural-analysis",
+          "detail": "loop i < 0x79 reading [0x01187004 + i*12], byte-packing descriptor[0..3] into an int \u2014 semantics exactly a 4CC\u2192ordinal lookup; fully consistent with the independently decoded registry",
+          "source": "research/re/signatures/fnv-gog-1.4.0.525_0x00483370_formtype-4cc-lookup.json"
+        },
+        {
+          "class": "string_xref",
+          "detail": "fp/logs pending Ghidra pass; current consistency is between two independent measurements (registry walk vs instruction semantics)",
+          "source": "disassembly window 0x004833F0-0x00483500"
+        }
+      ],
+      "equivalences": {},
+      "status": "candidate",
+      "added": "2026-08-27"
+    },
+    {
+      "name": "RegistryAccessor_ByOrdinal_WithSingleton (candidate)",
+      "build_id": "fnv-gog-1.4.0.525",
+      "rva": "0x0003A590",
+      "va": "0x0043A590",
+      "region": ".text",
+      "provenance": [
+        "structural-analysis"
+      ],
+      "confidence": 0.4,
+      "evidence": [
+        {
+          "class": "structural-analysis",
+          "detail": "singleton-getter preamble (call 0x7AF430 -> call 0x401170) then imul 0xC registry indexing; pushes 0x01183028 (DataHandler candidate) and 0x011841CC",
+          "source": "research/re/signatures/fnv-gog-1.4.0.525_0x0043A590_registry-accessor.json"
+        }
+      ],
+      "equivalences": {},
+      "status": "candidate",
+      "added": "2026-08-27"
+    },
+    {
+      "name": "record-type descriptor table (SLPD..TES4 contiguous block; ECZN entry)",
+      "build_id": "fnv-gog-1.4.0.525",
+      "rva": "0x0101C2AC",
+      "va": "0x0101C2AC",
+      "region": ".rdata",
+      "provenance": [
+        "record_descriptor_xref"
+      ],
+      "confidence": 0.6,
+      "evidence": [
+        {
+          "class": "record_descriptor_xref",
+          "detail": "descriptor block spans ~0x0101C2AC-0x0101C664 on BOTH builds at identical VAs (data layer byte-identical); ECZN at 0x0101C364; registry ordinals decode against it end-to-end",
+          "source": "correlate_records.py runs on both exes + form_type_registry.json"
+        },
+        {
+          "class": "structural-analysis",
+          "detail": ".data stride-12 registry pointers land exactly on the descriptor block entries (127 data-layer pointer hits)",
+          "source": "registry walk 2026-08-27"
+        }
+      ],
+      "equivalences": {
+        "fnv-steam-1.4.0.525": "0x0101C2AC"
+      },
+      "status": "accepted-structure",
+      "added": "2026-08-27",
+      "updated": "2026-08-27 \u2014 verified on GOG build; upgraded with second evidence class"
+    },
+    {
+      "name": "ExtraDataList::LoadGame",
+      "build_id": "fnv-gog-1.4.0.525",
+      "rva": "0x00028150",
+      "va": "0x00428150",
+      "provenance": [
+        "string_xref",
+        "structural-analysis"
+      ],
+      "confidence": 0.6,
+      "evidence": [
+        {
+          "class": "string_xref",
+          "detail": "function's own default-case error string: 'Unknown extra data type %i found in ExtraDataList::LoadGame' \u2014 self-identifying",
+          "source": "Ghidra decompile FUN_00428150"
+        },
+        {
+          "class": "structural-analysis",
+          "detail": "switch over extra-data type codes (0x0D, 0x16-0x2E) from a savegame stream (std::_Fiopen); case 0x0D = formID read -> 0x4839C0 lookup -> ___RTDynamicCast to BGSEncounterZone (desc 0x11840DC) -> stored at extra+0xC \u2014 the savegame restore of ExtraEncounterZone attachments",
+          "source": "research/re/functions/decompiled/FUN_00428150_00428150.c"
+        }
+      ],
+      "equivalences": {},
+      "status": "accepted-structure",
+      "added": "2026-08-27"
+    }
+  ]
+}

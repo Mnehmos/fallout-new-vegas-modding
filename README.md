@@ -46,6 +46,7 @@ See [mods/PopulationDensity/docs/design-brief.md](mods/PopulationDensity/docs/de
 | Mod Organizer 2 | Installed | Virtual filesystem mod management |
 | NVSE + JIP LN + JohnnyGuitar | Installed | Script extender stack |
 | lStewieAl's Tweaks | Staged | Engine fixes and QOL |
+| RE layer (Ghidra/capstone/pefile) | Scaffolded | Binary archaeology on FalloutNV.exe + NVSE DLLs — see [docs/re-pipeline.md](docs/re-pipeline.md) |
 
 ## Quick Links
 
@@ -53,6 +54,7 @@ See [mods/PopulationDensity/docs/design-brief.md](mods/PopulationDensity/docs/de
 - [PopulationDensity Design Doc](mods/PopulationDensity/docs/design-brief.md)
 - [Tool Setup Guide](docs/tool-setup.md)
 - [Modding Pipeline](docs/modding-pipeline.md)
+- [RE Pipeline](docs/re-pipeline.md)
 - [MCP Server Plan](docs/mcp-server-plan.md)
 - [Perk Database](research/perks/perk-database.md)
 - [Perk Tier Framework](research/perks/perk-tier-framework.md)
@@ -64,12 +66,16 @@ mods/PerkOverhaul/         <- Complete — v1.0 perk rebalance
 mods/PopulationDensity/    <- Next — encounter density mod
 research/perks/            <- Perk analysis and tier ratings
 research/population/       <- Encounter zone research
+research/re/               <- RE knowledge base (symbols, hypotheses, signatures)
 tools/FNVEdit/             <- FNVEdit 4.1.5f + custom Edit Scripts
 tools/LOOT/                <- Load order optimization
 tools/NifSkope/            <- Mesh viewer
+tools/re/                  <- Binary RE toolchain (Ghidra, rizin, LLVM, capa, FLOSS)
 tools/xedit-scripts/       <- Custom Pascal scripts for batch edits
 tools/staging/             <- NVSE plugin staging (JIP, JohnnyGuitar, Stewie)
+scripts/re/                <- PE inspection / xref / callgraph / Ghidra CLI tools
 scripts/tts/               <- OpenAI TTS dialogue generator
+mcp/reverse-engineering/   <- RE MCP server tool-surface design
 docs/                      <- Tooling and pipeline documentation
 audio/tts/                 <- Dialogue scripts and generated audio
 ```

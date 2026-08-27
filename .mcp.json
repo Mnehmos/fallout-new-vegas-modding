@@ -1,0 +1,28 @@
+{
+  "mcpServers": {
+    "repowise": {
+      "command": "repowise",
+      "args": [
+        "mcp",
+        "F:/Github/Fallout New Vegas Modding",
+        "--transport",
+        "stdio"
+      ],
+      "description": "repowise: codebase intelligence — docs, graph, git signals, dead code, decisions"
+    },
+    "mnehmos-re": {
+      "command": "python",
+      "args": [
+        "F:/Github/Fallout New Vegas Modding/mcp/reverse-engineering/server.py"
+      ],
+      "description": "mnehmos.re: RE evidence engine — PE inspection, strings, xrefs, callgraph, PDB mining, atlas queries, policy-gated symbol KB"
+    },
+    "fnvedit": {
+      "command": "python",
+      "args": [
+        "F:/Github/Fallout New Vegas Modding/mcp/fnvedit-bridge.py"
+      ],
+      "description": "mnehmos.fnvedit.mcp: ESM/ESP record layer — plugin reading, ESP generation, perk analysis"
+    }
+  }
+}
