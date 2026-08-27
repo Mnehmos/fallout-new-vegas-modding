@@ -92,7 +92,7 @@
     "related": {
       "ExtraEncounterZone_type_descriptor": "0x01184CF4",
       "ExtraEncounterZone_cast_site": "0x00432E9C",
-      "note": "ExtraEncounterZone = extra-data binding of a zone to a CELL/reference — H1.2 mechanism"
+      "note": "ExtraEncounterZone is the save/load binding object restored by 0x00428150; its +0x0C slot holds the resolved zone pointer/handle and 0x00432E90 is a comparator candidate. A gameplay CELL/reference resolver is not established."
     }
   }
 }

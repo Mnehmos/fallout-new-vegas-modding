@@ -111,29 +111,6 @@
       "updated": "2026-08-27 \u2014 role identified via GOG call-site signature; 0.40 -> 0.60"
     },
     {
-      "name": "extra-data visitor predicate \u2014 casts entry to ExtraEncounterZone (vtable 0x01015C54 slot 1)",
-      "build_id": "fnv-gog-1.4.0.525",
-      "rva": "0x00032E90",
-      "va": "0x00432E90",
-      "region": ".text",
-      "provenance": [
-        "structural-analysis"
-      ],
-      "confidence": 0.4,
-      "evidence": [
-        {
-          "class": "structural-analysis",
-          "detail": "MEASURED: casts arg (BSExtraData desc 0x1183B2C) to ExtraEncounterZone (desc 0x1184CF4) via 0xEC43FB; null -> true; helper 0x40F700(this,arg); compares [+0xC] handles via 0x4D9780. ADDRESS-TAKEN at 0x01015C58 = slot 1 of vtable 0x01015C54 (ctor 0x00432E60, class size 0x74). AMBIGUOUS (not forced): the 0x01015C30-0x01015C9C region is a cluster of visitor-class vtables interleaved with extra-data COLs (EEZ COL @ 0x01104474, RagDoll @ 0x01104428, UsedMarkers @ 0x011044C0); which visitor row this predicate belongs to is unresolved pending Ghidra. EARLIER CLAIM CORRECTED: not confirmed as the EEZ get/attach path.",
-          "source": "disassembly 0x00432E90-0x00432EEB + registry/vtable dump 0x01015C30-0x01015CA8"
-        }
-      ],
-      "notes": "Neighboring handler 0x00432DD0 casts to ExtraRagDollData (0x1184CD4) \u2014 per-type match functions in the same cluster. Visitor registration/dispatch semantics = first Ghidra decompile target.",
-      "equivalences": {},
-      "status": "candidate",
-      "added": "2026-08-27",
-      "updated": "2026-08-27 \u2014 reframed: visitor-cluster member, row attribution retracted"
-    },
-    {
       "name": "BGSEncounterZone::Save (candidate \u2014 DATA write symmetric to Load)",
       "build_id": "fnv-gog-1.4.0.525",
       "rva": "0x00125E70",
@@ -175,8 +152,8 @@
       "evidence": [
         {
           "class": "structural-analysis",
-          "detail": "name field at descriptor+8 reads '.?AVTESForm@@' \u2014 measured identity. NVSE faction commands push this address as the SRC descriptor of RTTI casts (TESForm* -> target), explaining all nvse_xrefs pushes without any DataHandler interpretation. GOG: 0x00429F16 pushes it as srcDesc casting to BGSEncounterZone (0x00428150's zone-resolution region).",
-          "source": "descriptor name decode 2026-08-27 + disassembly 0x00429F0F-0x00429F2F"
+          "detail": "name field at descriptor+8 reads '.?AVTESForm@@' \u2014 measured identity. NVSE faction commands push this address as the SRC descriptor of RTTI casts (TESForm* -> target), explaining all nvse_xrefs pushes without any DataHandler interpretation. The 0x00428150 case 0x74 passes it as the source descriptor for the BGSEncounterZone cast.",
+           "source": "descriptor name decode 2026-08-27 + research/re/decompiled/FUN_00428150_00428150.c"
         }
       ],
       "equivalences": {
@@ -376,18 +353,94 @@
       "evidence": [
         {
           "class": "string_xref",
-          "detail": "function's own default-case error string: 'Unknown extra data type %i found in ExtraDataList::LoadGame' \u2014 self-identifying",
-          "source": "Ghidra decompile FUN_00428150"
+          "detail": "Function's own default-case error string identifies ExtraDataList::LoadGame: 'Unknown extra data type %i found in ExtraDataList::LoadGame'.",
+           "source": "research/re/decompiled/FUN_00428150_00428150.c"
         },
         {
           "class": "structural-analysis",
-          "detail": "switch over extra-data type codes (0x0D, 0x16-0x2E) from a savegame stream (std::_Fiopen); case 0x0D = formID read -> 0x4839C0 lookup -> ___RTDynamicCast to BGSEncounterZone (desc 0x11840DC) -> stored at extra+0xC \u2014 the savegame restore of ExtraEncounterZone attachments",
-          "source": "research/re/functions/decompiled/FUN_00428150_00428150.c"
+          "detail": "The function is void and restores serialized extra-data entries. In case 0x74 it constructs or reuses the 0x74-byte ExtraEncounterZone object via 0x00432E60 (vtable 0x01015C54), reads a serialized form identifier through 0x008648A0 and the opaque lookup/handle path 0x004839C0, casts TESForm descriptor 0x01183028 to BGSEncounterZone descriptor 0x011840DC, and stores the result at the extra object plus 0x0C. This is save/load restoration, not a gameplay resolver.",
+           "source": "research/re/decompiled/FUN_00428150_00428150.c; research/re/decompiled/FUN_00432E60_00432E60.c; research/re/decompiled/FUN_008648A0_008648A0.c; research/re/decompiled/FUN_004839C0_004839C0.c"
         }
       ],
       "equivalences": {},
       "status": "accepted-structure",
+      "added": "2026-08-27",
+      "updated": "2026-08-27",
+      "previous_confidence": 0.6
+    },
+    {
+      "name": "ExtraEncounterZone::Compare (candidate)",
+      "build_id": "fnv-gog-1.4.0.525",
+      "rva": "0x00032E90",
+      "va": "0x00432E90",
+      "provenance": [
+        "source_atlas_candidate",
+        "structural-analysis"
+      ],
+      "confidence": 0.6,
+      "evidence": [
+        {
+          "class": "source_atlas_candidate",
+          "detail": "PC atlas labels 0x00432E90 vt_ExtraEncounterZone::Compare, size 97; atlas names are candidate mappings and explicitly not semantic truth.",
+          "source": "fnv-source-atlas pc 0x00432E90"
+        },
+        {
+          "class": "structural-analysis",
+          "detail": "The address is vtable slot 1 for the object constructed at 0x00432E60 with vtable 0x01015C54. The body performs RTDynamicCast from BSExtraData descriptor 0x01183B2C to ExtraEncounterZone descriptor 0x01184CF4 and compares plus 0x0C. The exported call graph has no direct callers, consistent with virtual dispatch; it is not established as a zone resolver.",
+           "source": "research/re/decompiled/FUN_00432E60_00432E60.c; research/re/decompiled/FUN_00432E90_00432E90.c; research/re/calls.json"
+        }
+      ],
+      "equivalences": {},
+      "status": "candidate",
       "added": "2026-08-27"
+    },
+    {
+      "name": "TESObjectREFR::LoadGame (candidate)",
+      "build_id": "fnv-gog-1.4.0.525",
+      "rva": "0x001623D0",
+      "va": "0x005623D0",
+      "provenance": [
+        "source_atlas_candidate",
+        "structural-analysis"
+      ],
+      "confidence": 0.6,
+      "evidence": [
+        {
+          "class": "source_atlas_candidate",
+          "detail": "PC atlas labels 0x005623D0 vt_TESObjectREFR::LoadGame, size 648; atlas names are candidate mappings and explicitly not semantic truth.",
+          "source": "fnv-source-atlas pc 0x005623D0"
+        },
+        {
+          "class": "structural-analysis",
+          "detail": "The decompilation begins with a base-load call at 0x00484DA0, gates the 0x00428150 ExtraDataList::LoadGame call on a load flag, and finishes with reference virtual calls. The exported call graph records the direct 0x005623D0 -> 0x00428150 edge.",
+           "source": "research/re/decompiled/FUN_005623D0_005623D0.c; research/re/calls.json"
+        }
+      ],
+      "equivalences": {},
+      "status": "candidate",
+      "added": "2026-08-27"
+    },
+    {
+      "name": "extra-data visitor predicate \u2014 casts entry to ExtraEncounterZone (vtable 0x01015C54 slot 1)",
+      "build_id": "fnv-gog-1.4.0.525",
+      "rva": "0x00032E90",
+      "va": "0x00432E90",
+      "provenance": [
+        "structural-analysis"
+      ],
+      "confidence": 0.4,
+      "evidence": [
+        {
+          "class": "structural-analysis",
+          "detail": "RETRACTED semantic role. 0x00432E60 constructs the 0x74-byte object with vtable 0x01015C54, and 0x00432E90 is address-taken at vtable slot 1. Its body casts BSExtraData to ExtraEncounterZone and compares the objects at plus 0x0C; the adjacent 0x00432DD0 function has the same per-extra-type comparison pattern for ExtraRagDollData. No direct caller or resolver/visitor walk was established.",
+           "source": "research/re/decompiled/FUN_00432E60_00432E60.c; research/re/decompiled/FUN_00432E90_00432E90.c; research/re/decompiled/FUN_00432DD0_00432DD0.c; research/re/calls.json"
+        }
+      ],
+      "equivalences": {},
+      "status": "retracted",
+      "added": "2026-08-27",
+      "updated": "2026-08-27",
+      "previous_confidence": 0.4
     }
   ]
 }
