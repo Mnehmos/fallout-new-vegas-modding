@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Methodology for evidence-backed Fallout: New Vegas engine bug research.">
+  <title>Methodology · FNV Engine Bug Wiki</title>
+  <link rel="stylesheet" href="wiki.css">
+</head>
+<body>
+  <header class="site-header">
+    <div>
+      <p class="eyebrow">MNEHMOS · FNV ENGINE BUG WIKI</p>
+      <h1>Methodology</h1>
+      <p class="lede">The wiki separates reports, hypotheses, measured binary facts, and runtime proof. A plausible explanation is not a verified engine fact.</p>
+    </div>
+    <nav><a href="index.html">Bug catalog</a><a class="active" href="methodology.html">Methodology</a><a href="../research/re/hypotheses/H1-encounter-spawn-resolution.md">RE notebook</a></nav>
+  </header>
+  <main>
+    <section class="callout">
+      <div><p class="eyebrow">CORE RULE</p><h2>Community reports are leads, not truth.</h2></div>
+      <p>GECKWiki, Nexus posts, plugin changelogs, source-atlas, NVSE symbols, and model interpretations can all point us toward an answer. None of them substitutes for measured PC evidence and, for high-confidence behavioral claims, a runtime experiment.</p>
+    </section>
+
+    <section class="section-heading"><div><p class="eyebrow">PIPELINE</p><h2>Seven gates</h2></div></section>
+    <div class="method-grid">
+      <div class="method-card"><strong>01 · REPORT</strong><h3>Capture the claim</h3><p>Record the exact reported behavior, source, platform, date, and any claimed workaround. Do not silently rewrite the report into a root-cause theory.</p></div>
+      <div class="method-card"><strong>02 · TRIAGE</strong><h3>Check current status</h3><p>Look for maintained fixes in JIP LN, lStewieAl's Tweaks, JohnnyGuitar, YUP, TTW, kNVSE, ShowOff and other active projects. Classify duplicates and partial fixes.</p></div>
+      <div class="method-card"><strong>03 · REPRODUCE</strong><h3>Make it deterministic</h3><p>Build the smallest vanilla test that produces the bug. Record build identity, load order, save state, inputs, expected result and observed result.</p></div>
+      <div class="method-card"><strong>04 · TRACE</strong><h3>Find the engine path</h3><p>Use <code>mnehmos.re</code>, Ghidra, xrefs, call graphs, NVSE PDB context, source-atlas candidates and FNVEdit record truth to locate the responsible path.</p></div>
+      <div class="method-card"><strong>05 · EXPLAIN</strong><h3>State the narrowest cause</h3><p>Promote only what the evidence supports. Preserve alternative explanations and retractions. Semantic names remain provisional until independently supported.</p></div>
+      <div class="method-card"><strong>06 · PATCH</strong><h3>Change as little as possible</h3><p>Prefer a minimal NVSE hook, branch correction, missing lifecycle call, or data fix. Keep the patch separable from the explanation.</p></div>
+      <div class="method-card"><strong>07 · VERIFY</strong><h3>Try to falsify the fix</h3><p>Repeat the original reproduction, negative controls and neighboring cases. High-confidence claims require cited runtime artifacts under the RE confidence policy.</p></div>
+    </div>
+
+    <section class="source-note">
+      <h2>Status vocabulary</h2>
+      <p><strong>Seed</strong>: listed by a source; not independently reproduced. <strong>Investigating</strong>: current evidence/reproduction work is active. <strong>Partially mitigated</strong>: an existing fix addresses some but not all reported cases. Future states will include reproduced, root-caused, patched, runtime-verified, fixed-upstream, debunked and intended-behavior.</p>
+    </section>
+
+    <section class="source-note">
+      <h2>Confidence discipline</h2>
+      <p>The engine KB is stricter than the public bug catalog. Model judgment or community naming alone cannot justify high confidence. Static concurrence can support medium confidence; runtime evidence is required for high-confidence behavioral claims. If later evidence contradicts an interpretation, the semantic claim is retracted while the underlying measurements remain in the audit trail.</p>
+    </section>
+  </main>
+  <footer><span>Observation ≠ interpretation.</span><a href="https://github.com/Mnehmos/fallout-new-vegas-modding">GitHub repository ↗</a></footer>
+</body>
+</html>
