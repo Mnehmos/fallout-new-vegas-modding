@@ -121,3 +121,38 @@ Random movement between waypoints
 Will approach player if nearby and say a line
 Moves toward nearest settlement over 2â€“3 in-game days then disappears (package: travel to ref, then disable)
 ```
+
+---
+
+## Engine Internals (RE) — Population Levers (mapped 2026-08-28)
+
+RE-verified via the BUG-001 toolchain (see ../re/encounter_zone_subsystem.md).
+Live values read from the running GOG 1.4.0.525 process; reader code sites located.
+
+### Actor-density levers (the engine's own population knobs)
+
+| Setting (console: setgs <name> <val>) | Live default | Function | Reader sites |
+|---|---|---|---|
+| iNumberActorsInCombatPlayer | 20 | max actors allowed in combat with the player simultaneously | 0x43D4CB, 0x40C14B, 0x4049FB |
+| iNumberActorsAllowedToFollowPlayer | 6 | max actors that follow the player through transitions | 0x43D4CB (x8 sites) |
+| iAINumberActorsComplexScene | 20 | max actors in complex scenes | 0x43D4CB, 0x40C14B, 0x4049FB |
+| iNumberActorsGoThroughLoadDoorInCombat | 2 | max combat actors that pursue through load doors | 0x40C14B, 0x4049FB |
+
+Setting objects (live addresses, base 0x00400000): 0x11CCFFC, 0x11CDAD0, 0x11CDE2C, 0x11D129C.
+Layout: {type/vtable ptr, inline value (+4), name ptr (+8)}.
+
+Mod usage: console setgs iNumberActorsInCombatPlayer 64 for instant testing;
+permanent via plugin patch or Stewie's Tweaks equivalents.
+
+### Encounter-zone attachment chain (RE-verified)
+
+- TESWorldspace+0xD0 -> BGSEncounterZone* (savegame subrecord 'XZEN')
+- BGSEncounterZone+0x18: owner formID -> resolved TESForm* at InitItem (FUN_00525F00)
+- References: ExtraEncounterZone extra-data (consumer FUN_00432A70)
+- Full map: ../re/encounter_zone_subsystem.md
+
+### Spawn-tick (open)
+
+The runtime consumer that reads encounter zones to scale/level spawns is not yet
+located; leads: the 11 form-registry-reader functions (0x43A190..0x858330) and the
+VATSMenu entry-builder cluster (0x7E9000-0x7F7000, 255 menu-global refs).
