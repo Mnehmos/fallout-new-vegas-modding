@@ -70,7 +70,26 @@
    "verified": "Live test: chance 0.0 -> 0.5 stuck (no overwrite), VATS displayed 50%, attack queued and executed. Poller reapplies after every VATS re-entry/rebuild.",
    "limitation": "Static 50% — not the modeled distance+skill formula (v3)"
   },
-  "v3_design": "Replace the flat 0.5 in the poller with the intended formula recovered from FUN_00646F70's thrown branch: chance = (rangeOdds + skillCalc) * mult * 100, where rangeOdds = 1 - |targetDist - SETTING_B| / (weaponMaxRange * fVATSThrownWeaponRangeMult - SETTING_A). Target world position is available in the poller at struct+0x08; player position via the PC (known NVSE/global). Skill term needs the actor's weapon skill — via NVSE interface functions now that xNVSE 6.4.8 is deployed."
+  "v3_design": "Replace the flat 0.5 in the poller with the intended formula recovered from FUN_00646F70's thrown branch: chance = (rangeOdds + skillCalc) * mult * 100, where rangeOdds = 1 - |targetDist - SETTING_B| / (weaponMaxRange * fVATSThrownWeaponRangeMult - SETTING_A). Target world position is available in the poller at struct+0x08; player position via the PC (known NVSE/global). Skill term needs the actor's weapon skill — via NVSE interface functions now that xNVSE 6.4.8 is deployed.",
+  "recovered_intended_formula": {
+   "source": "FUN_00646F70 thrown-weapon branch (0x006471A1-0x00647330), decompiled instruction-exact. This function is DEAD CODE on PC (zero callers/refs) - the implementation was completed but never wired into the live VATS scan. The bug is a missing call, not broken math.",
+   "settings_live_values": {
+    "fVATSGrenadeRangeMult": 2.0,
+    "fVATSGrenadeRangeMin": 128.0,
+    "fCrippledArm1HSpreadPenalty": 0.2,
+    "fVATSGrenadeSkillFactor": 0.4,
+    "fVATSSkillFactor": 1.0,
+    "fVATSGrenadeChanceMult": 1.0
+   },
+   "formula": "\nmaxRange    = weapon->maxRange                        // FUN_00646F50 reads this+0x124\nmult        = fVATSGrenadeRangeMult                   // 2.0\nif (maxRange * mult <= targetDistance)                 // 0x006471C1 gate\n    return 0.0;                                        // \"Target out of thrown weapon range\"\n\nmodMaxRange = maxRange * mult\nrangeGap    = modMaxRange - fVATSGrenadeRangeMin      // falloff measured from the 128-unit ideal arc\ndistDelta   = |targetDistance - fVATSGrenadeRangeMin| // distance FROM the sweet spot\nrangeOdds   = 1.0 - distDelta / rangeGap              // 0..1, =1 at the sweet spot\n\nskillArg    = target ? FUN_00446390(...) : 0\nskill1      = FUN_00646880(attacker, skillArg)        // per-attacker skill term\nif (skill1 <= 0)\n    armCondition = 1.0\nelse\n    armCondition = 1.0 - fCrippledArm1HSpreadPenalty  // crippled arm: 0.8\n\nFUN_008D85E0();\nskill2      = FUN_0066EF50(actor)                     // __thiscall actor skill query\nt           = fVATSGrenadeSkillFactor * skill2 / 100  // 0.4 * skill2/100\nskillTerm   = ((1.0 - fVATSSkillFactor) + t) * armCondition\n\nchance      = (rangeOdds + skillTerm) * fVATSGrenadeChanceMult * 100.0   // 1.0 * 100\n// for destructible/grenade targets: chance *= 100 again, clamp: if (0 < chance < 1) chance = 1\n",
+   "skill_functions": {
+    "FUN_00646880": "SkillCalc1(attackerContext, skillArg) - per-attacker skill term",
+    "FUN_0066EF50": "__thiscall SkillCalc2(actor) - vtable+0xC query then FUN_0066F190 transform",
+    "FUN_00446390": "skillArg derivation from target context",
+    "FUN_004C0BF0": "FUN_004C0C30() && !FUN_004C0C60() - thrown-weapon classification"
+   },
+   "bug_classification": "NOT a broken formula. The complete grenade-target chance implementation exists in the PC binary but is unreferenced (dead code) - the live VATS target scan writes 0.0 without calling it. Root cause: missing integration call in the live target-scan path. Xbox comparison via atlas: FUN_00646F70 has no Xbox candidate in the atlas - the Xbox call-wiring question remains open pending the live-scan writer identification."
+  }
  },
  {
   "id": "FNV-BUG-002",
