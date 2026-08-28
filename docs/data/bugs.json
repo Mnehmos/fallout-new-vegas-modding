@@ -2,64 +2,30 @@
  {
   "id": "FNV-BUG-001",
   "title": "VATS-targetable grenades always show 0% hit chance on PC",
-  "status": "static mechanism proven / runtime causality pending",
+  "status": "runtime causality proven / chance-formula root cause pending",
   "subsystem": "VATS / projectiles",
   "priority": 5,
   "platform": "PC; reported working on Xbox 360 and PS3",
-  "summary": "Thrown projectiles marked VATS-targetable can be selected, but GECKWiki reports a 0% hit chance on PC while consoles work.",
-  "hypothesis": "MEASURED: FUN_00646F70 (VATS hit-chance calc, 0x00646F70) returns 0.0 in the thrown-weapon branch when (projectile+0x124 float) * fVATSThrownWeaponRangeMult < target_distance. BGSProjectile vtable at 0x10251AC; Load (slot 8, 0x4FD6F0) reads 84 bytes of DATA into this+0x18—this+0x6C; +0x124 is past the DATA blob. The +0x124 setter is unresolved. Why +0x124 is zero — lifecycle corruption, missing init, or classification omission — requires the runtime watchpoint to distinguish.",
-  "static_conclusion": "Failure mechanism proven: projectile+0x124 == 0 causes the thrown-weapon range gate to always fail. Why the field is zero needs the runtime lifecycle trace.",
-  "runtime_protocol": {
-   "goal": "Establish whether projectile+0x124 is causally responsible for the VATS 0% result, then determine why the field is zero.",
-   "baseline": [
-    "1. Spawn/throw a VATS-targetable grenade.",
-    "2. Enter VATS at a fixed target distance.",
-    "3. Record projectile+0x124.",
-    "4. Record displayed hit chance.",
-    "Expected: +0x124 == 0, hit chance == 0%, thrown-range gate path taken."
-   ],
-   "causal_manipulation": [
-    "Patch the same live projectile:",
-    "  A. +0x124 = 100.0",
-    "  B. +0x124 = 500.0",
-    "  C. +0x124 = 1000.0",
-    "For each: keep fVATSThrownWeaponRangeMult unchanged; measure target distance; enter VATS; record displayed hit chance; record whether gate fires."
-   ],
-   "prediction": "The gate should follow: (+0x124 * fVATSThrownWeaponRangeMult) < target_distance. Below threshold: 0%. Above: normal VATS hit-chance formula.",
-   "strong_pass_criterion": "Changing only +0x124 causes the 0% result to disappear at the exact distance threshold predicted by the recovered formula.",
-   "lifecycle_watchpoint": [
-    "Place a write watchpoint on live projectile+0x124 and trace:",
-    "  constructor → initialization → spawn → world insertion → VATS target acquisition → hit-chance calculation",
-    "",
-    "Classify outcome:",
-    "  1. Written non-zero, later becomes zero → lifecycle overwrite/corruption",
-    "  2. Zero from construction and never written → missing initialization",
-    "  3. Written only through a conditional path thrown projectiles never enter → classification/branch omission"
-   ],
-   "controls": [
-    "repeat without patch; at multiple distances; ordinary non-targetable grenade; another VATS-targetable projectile type if available; verify normal projectile flight/explosion unchanged."
-   ],
-   "do_not_claim_yet": [
-    "exact intended meaning/source of +0x124; missing setter as root cause; Xbox/PC initialization divergence; final patch location.",
-    "Those require the watchpoint and PC↔Xbox comparison."
-   ]
-  },
+  "summary": "Thrown projectiles marked VATS-targetable can be selected, but their computed chance is exactly 0.0, which the VATS menu treats as unqueueable (0% shown, click blocked).",
+  "measured": "VATS menu gate: at 0x007EEA2D the selected entry's chance field (entry+0x28) is read; if it equals 0.0, 0x007EEA5B displays sVATSMessageZeroChance and the attack cannot be queued. The airborne grenade entry's chance is exactly 0.0 (not a rounded display value). RUNTIME PROOF: writing 0.5 to the selected entry's chance field (selected+0x28) while VATS was open changed the display to 50% and unblocked the queue - single-field causality confirmed. The initial +0x124 max-range hypothesis was falsified: FUN_00646F50 reads the equipped weapon's max range, not the airborne grenade projectile's range.",
+  "root_cause_pending": "The chance FORMULA for airborne grenade targets returns exactly 0.0. The formula inputs (distance term, skill term, or a thrown-weapon classification branch) must be traced to find which input is zero on PC and nonzero on console.",
+  "fix_direction": "Stewie's Tweaks 'Allow targeting projectiles in VATS' applies a distance-and-skill-based percentage to grenade targets - confirming the vanilla formula returns 0 by omission, not by a corrupted value. The vanilla fix is to give grenade targets the same distance+skill chance computation that actors receive.",
   "sources": [
    {
     "label": "GECKWiki engine bugs",
     "url": "https://geckwiki.com/index.php?title=Engine_Bugs_%28Fallout_New_Vegas%29"
    },
    {
-    "label": "Decompiled: FUN_00646F70 (VATS hit-chance calc)",
-    "file": "research/re/decompiled/FUN_00646f70_00646f70.c"
+    "label": "VATS menu zero-chance gate",
+    "detail": "0x007EEA2D reads entry+0x28; 0x007EEA5B blocks queue on 0.0"
    },
    {
-    "label": "Decompiled: FUN_00646F50 (thrown range field +0x124)",
-    "file": "research/re/decompiled/FUN_00646f50_00646f50.c"
+    "label": "Runtime causality proof",
+    "detail": "selected+0x28 := 0.5 while VATS open -> 50% displayed, queue unblocked"
    },
    {
-    "label": "Decompiled: BGSProjectile::Load (0x4FD6F0)",
-    "file": "research/re/decompiled/FUN_004fd6f0_004fd6f0.c"
+    "label": "Falsified hypothesis",
+    "detail": "FUN_00646F50 (+0x124 max-range) is weapon range, not projectile range - irrelevant to this bug"
    }
   ]
  },
