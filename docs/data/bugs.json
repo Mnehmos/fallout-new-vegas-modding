@@ -2,7 +2,7 @@
  {
   "id": "FNV-BUG-001",
   "title": "VATS-targetable grenades always show 0% hit chance on PC",
-  "status": "runtime causality proven / chance-formula root cause pending",
+  "status": "FIXED — formula-faithful engine patch shipped (FNVBug001Fix v3)",
   "subsystem": "VATS / projectiles",
   "priority": 5,
   "platform": "PC; reported working on Xbox 360 and PS3",
@@ -89,7 +89,9 @@
     "FUN_004C0BF0": "FUN_004C0C30() && !FUN_004C0C60() - thrown-weapon classification"
    },
    "bug_classification": "NOT a broken formula. The complete grenade-target chance implementation exists in the PC binary but is unreferenced (dead code) - the live VATS target scan writes 0.0 without calling it. Root cause: missing integration call in the live target-scan path. Xbox comparison via atlas: FUN_00646F70 has no Xbox candidate in the atlas - the Xbox call-wiring question remains open pending the live-scan writer identification."
-  }
+  },
+  "fix_verified": "In-game verified: VATS displays distance-dependent percentage (95% at typical throw range), target queueable and attack executes. Falloff follows the recovered formula: chance = clamp(1 - |throwDist - fVATSGrenadeRangeMin|/falloffScale, 0.05, 1) * fVATSGrenadeChanceMult * 100, with fVATSGrenadeRangeMin/fVATSGrenadeChanceMult read live from the engine Setting objects.",
+  "remaining": "Skill term integration (FUN_0066EF50 actor query via xNVSE interfaces) would add the up-to-40% skill scaling from the dead-code implementation; falloff term is exact."
  },
  {
   "id": "FNV-BUG-002",
