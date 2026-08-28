@@ -45,7 +45,32 @@
     "lesson": "The displayed 0% itself is what blocks targeting — the fix must change the computed chance value, not the gate"
    }
   ],
-  "next": "1. Dump the live VATS entry object from memory (menu global 0x011DB0D4 -> +0x100 -> entry); read its vtable pointer and decode the entry class RTTI. 2. The entry class methods include the chance computation/writer. 3. VATSMenu subsystem spans 0x7E9000-0x7F7000 (255 refs to menu global 0x011DB0D4). 4. Atlas PC<->Xbox comparison once the writer is found. 5. Runtime experiment from the protocol remains the closure gate."
+  "next": "1. Dump the live VATS entry object from memory (menu global 0x011DB0D4 -> +0x100 -> entry); read its vtable pointer and decode the entry class RTTI. 2. The entry class methods include the chance computation/writer. 3. VATSMenu subsystem spans 0x7E9000-0x7F7000 (255 refs to menu global 0x011DB0D4). 4. Atlas PC<->Xbox comparison once the writer is found. 5. Runtime experiment from the protocol remains the closure gate.",
+  "atlas_findings": {
+   "vatsmenu_class": "RTTI-confirmed on PC: .?AVVATSMenu@@ (COL @ 0x01118558, typeDesc 0x0119F3E8, vtable 0x10700D4)",
+   "xbox_pdb_vtable_names": {
+    "slot_0": "VATSMenu::`scalar deleting destructor'",
+    "slot_1": "VATSMenu::AttachTileByID",
+    "slot_2": "Menu::DoEnter (inherited)",
+    "slot_3": "VATSMenu::DoClick",
+    "slot_4": "VATSMenu::DoEnter",
+    "slot_5": "VATSMenu::DoLeave",
+    "slot_6_7": "vt_Actor::UseSkill (atlas candidates)",
+    "slot_8": "VATSMenu::DoStillDown",
+    "slot_10": "VATSMenu::DoWheelMove",
+    "slot_11": "VATSMenu::DoIdle"
+   },
+   "pc_alignment": "PC FUN_007EC810 (contains the zero-chance gate) aligns to vtable slot 11 = Xbox VATSMenu::DoIdle",
+   "implication": "The patched gate lives in DoIdle (per-frame). The click/queue path is DoClick (PC 0x7EECB0) which contains no direct chance-field access — the block happens deeper in the attack-execution chain"
+  },
+  "dead_code_finding": "FUN_00646F70 (VATS target resolver with complete grenade-chance formula + debug strings) and FUN_007F52C0 (destructible/grenade scan, 5458 bytes) are BOTH dead on PC: zero direct callers, zero data references, runtime patches invisible. The complete intended chance formula exists in FUN_00646F70's thrown branch but was never wired into the live path — consistent with 'engine bug: feature not implemented on PC'. The live VATSTargetData struct (screen+world coords, chance@+0x28, targetPtr@+0x30) is filled by a separate silent per-frame function; the chance field is never computed.",
+  "shipped_fix": {
+   "form": "NVSE plugin FNVBug001Fix (mcp/debugger/FNVBug001Fix.cpp)",
+   "mechanism": "v2: background poller (250ms). While VATS is open (menu global 0x011DB0D4 non-null), if the selected target's chance field (target+0x28) is exactly 0.0, write 0.5. Plus the DoIdle gate neutralization (test ah,0x44 -> test ah,0x00 at 0x007EEA46).",
+   "verified": "Live test: chance 0.0 -> 0.5 stuck (no overwrite), VATS displayed 50%, attack queued and executed. Poller reapplies after every VATS re-entry/rebuild.",
+   "limitation": "Static 50% — not the modeled distance+skill formula (v3)"
+  },
+  "v3_design": "Replace the flat 0.5 in the poller with the intended formula recovered from FUN_00646F70's thrown branch: chance = (rangeOdds + skillCalc) * mult * 100, where rangeOdds = 1 - |targetDist - SETTING_B| / (weaponMaxRange * fVATSThrownWeaponRangeMult - SETTING_A). Target world position is available in the poller at struct+0x08; player position via the PC (known NVSE/global). Skill term needs the actor's weapon skill — via NVSE interface functions now that xNVSE 6.4.8 is deployed."
  },
  {
   "id": "FNV-BUG-002",
