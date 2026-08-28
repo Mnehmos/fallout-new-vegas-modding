@@ -27,7 +27,25 @@
     "label": "Falsified hypothesis",
     "detail": "FUN_00646F50 (+0x124 max-range) is weapon range, not projectile range - irrelevant to this bug"
    }
-  ]
+  ],
+  "falsification_trail": [
+   {
+    "hypothesis": "FUN_00646F50 (+0x124 weapon max range) controls the displayed chance",
+    "result": "FALSIFIED by runtime patch — returning 500.0 changed nothing",
+    "lesson": "FUN_00646F50 is the equipped weapon's max-range accessor, not the projectile range"
+   },
+   {
+    "hypothesis": "FUN_00646F70 (VATS target resolver with grenade branch + 'destructible/grenade target chance' debug string) computes the displayed chance",
+    "result": "FALSIFIED by static analysis — zero direct callers, zero data references in the entire image; the function is dead code on PC (likely an Xbox/debug-build chance calculator)",
+    "lesson": "Runtime patch (return 1.0 always) also changed nothing — confirming the function never executes"
+   },
+   {
+    "hypothesis": "The zero-chance gate at 0x007EEA46 controls queueing",
+    "result": "PATCH APPLIED (test ah,0x44 -> test ah,0x00) but targeting still blocked",
+    "lesson": "The displayed 0% itself is what blocks targeting — the fix must change the computed chance value, not the gate"
+   }
+  ],
+  "next": "1. Dump the live VATS entry object from memory (menu global 0x011DB0D4 -> +0x100 -> entry); read its vtable pointer and decode the entry class RTTI. 2. The entry class methods include the chance computation/writer. 3. VATSMenu subsystem spans 0x7E9000-0x7F7000 (255 refs to menu global 0x011DB0D4). 4. Atlas PC<->Xbox comparison once the writer is found. 5. Runtime experiment from the protocol remains the closure gate."
  },
  {
   "id": "FNV-BUG-002",
