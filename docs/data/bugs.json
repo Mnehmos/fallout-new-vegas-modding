@@ -158,11 +158,12 @@
  {
   "id": "FNV-BUG-004",
   "title": "NPC armor enchantments stack again every time the NPC loads",
-  "status": "active",
+  "status": "remapped",
   "subsystem": "Magic effects / actor load",
   "priority": 5,
   "platform": "PC",
   "summary": "GECKWiki reports that enchantments on NPC-worn armor can be reapplied on each load and stack indefinitely.",
+  "re_findings": "2026-09-04 anchors: RTTI '.?AVEnchantmentItem@@' TypeDescriptor @0x118359C (the per-actor active-equipment-enchantment manager class); supporting strings sCanNotEquipWornEnchantment @0x105FDD0, 'SAVELOAD: Enchantable item %08X with no enchantment exists in the created base objects list' @0x1081C60, MASTERFILE enchanting-owner diagnostics @0x101AF00+. The reapply-without-recovery-flag behavior is expected in the actor-load path that constructs EnchantmentItem entries; TD->COL->vtable recovery is the next step.",
   "hypothesis": "Actor load/equipment restoration reapplies the armor effect without checking for an existing equivalent active effect or without restoring the effect as recovered state.",
   "next": "Create an NPC with a measurable armor enchant, cycle unload/reload repeatedly, log actor values, then trace armor restoration and magic-effect application calls.",
   "sources": [
@@ -193,11 +194,12 @@
  {
   "id": "FNV-BUG-006",
   "title": "AI packages fail to process correctly while the player is away",
-  "status": "active",
+  "status": "remapped",
   "subsystem": "AI / packages",
   "priority": 4,
   "platform": "New Vegas; reported working in Fallout 3",
   "summary": "Sleep, find, patrol and eat packages may fail to advance unless the player enters the cell, crosses a load door, or fast-travels, even when low-level processing should apply.",
+  "re_findings": "2026-09-04 anchor: RTTI '.?AVExtraProcessMiddleLow@@' TypeDescriptor @0x1183C64 - the extra-data object that carries an actor's middle/low process assignment. The wiki's 'wrong process level chosen' theory maps directly onto how this extra is (re)evaluated for off-screen actors; recover COL/vtable + the scheduler that reads it. Full extra-class RTTI index now in glossary 3.6 for the neighboring classes (ExtraHavok for BUG-010/020/021/026, ExtraWorn/ExtraWornLeft for BUG-003 fix design).",
   "hypothesis": "New Vegas selects the wrong process level or skips package ticks for unloaded actors under some package categories.",
   "next": "Construct deterministic patrol/sleep actors with timestamps, compare same-cell and off-cell progress, identify process-level selection and package scheduler functions.",
   "sources": [

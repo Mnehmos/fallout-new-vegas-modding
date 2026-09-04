@@ -29,6 +29,8 @@ Last updated: 2026-09-04
 | FNV-BUG-011 | Loop sounds survive transitions | ExtraActivateLoopSound vtable 0x1015F18 recovered |
 | FNV-BUG-019 | Aggro radius suppresses packages | Violation check @0x5A4FF2 with debug strings |
 | FNV-BUG-030 | Disabled loop-sound objects play | Shares ExtraActivateLoopSound with BUG-011 |
+| FNV-BUG-004 | NPC enchant stacking on load | EnchantmentItem TD @0x118359C; vtable recovery next |
+| FNV-BUG-006 | AI off-screen package processing | ExtraProcessMiddleLow TD @0x1183C64 - the process-level extra itself |
 
 ## RESEARCH IN FLIGHT — 4 web-research batches (all 29 open bugs covered)
 

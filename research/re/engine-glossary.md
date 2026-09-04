@@ -281,7 +281,26 @@ the 0x575400→0x8248E0→0x804210 teardown sequence, re-run the repro.
 | BUG-017 (pass 4) | ExtraSayTopicInfoOnceADay ctor pair 0x437440/0x437510: extra type **0x73**, vtable 0x1015F3C, per-day state = heap obj at +0xC; vtable slot1 = stub `return 0` | consult site = whoever GetExtraData(0x73)s; check FUN_00428150 (ExtraDataList::LoadGame, already in corpus) for the 0x73 load branch |
 | BUG-009 (pass 4) | ballistic picker decompiled = FUN_009A6E90 (contains the sole reader 0x9A7141) | read next: water-material branch in its collision sampling |
 
-### 3.6 Prior subsystem maps (do not re-derive)
+### 3.6 Extra-data RTTI index (TypeDescriptor addresses; name string at TD+0x8)
+
+Recover class vtables via: xref TD → COL (TD ref in .rdata) → xref COL → vtable
+(COL ref at [vtable−4]). Verified on ExtraSayTopicInfoOnceADay and
+ExtraActivateLoopSound.
+
+Key classes for open bugs:
+- ExtraProcessMiddleLow @0x1183C64 (BUG-006 process-level selection)
+- EnchantmentItem @0x118359C (BUG-004 enchant stacking on NPC load)
+- ExtraActivateLoopSound @0x11851A8 (BUG-011/030)
+- ExtraSayTopicInfoOnceADay @0x1185214 (BUG-017)
+- ExtraHavok @0x1183B50 (BUG-010/020/021/026 Havok state)
+- ExtraWorn @0x1184C4C / ExtraWornLeft @0x1184C64 (BUG-003 equipped-state extras)
+- ExtraContainerChanges @0x1184BE4 (BUG-003 inventory container)
+- ExtraLeveledCreature @0x1184BA4 / ExtraLeveledItem @0x1184688 (BUG-005)
+- ExtraPackageData @0x1184390 / ExtraTresPassPackage @0x11844DC (BUG-007/016 family)
+- ExtraSayTopicInfoOnceADay neighbors in .data 0x11852xx region include other
+  dialogue extras (see full RTTI sweep, 152 classes matched 2026-09-04)
+
+### 3.7 Prior subsystem maps (do not re-derive)
 
 - Encounter zones: `research/re/encounter_zone_subsystem.md` (BGSEncounterZone layout,
   XZEN link, registry readers).
