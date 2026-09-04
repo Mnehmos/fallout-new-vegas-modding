@@ -16,4 +16,6 @@ Fallout New Vegas modding workspace: PerkOverhaul (done), PopulationDensity (act
 - `research/re/encounter_zone_subsystem.md` — encounter-zone engine map
 - `research/population/encounter-zones.md` — PopulationDensity design + engine levers
 - `docs/data/bugs.json` — engine bug wiki (FNV-BUG-001 closed)
+- `docs/bug-kanban.md` — kanban board for the engine-bug investigation (current column per bug)
+- `research/re/engine-glossary.md` — engine RE glossary: binaries, tool quirks, confirmed addresses/functions/settings
 - `mcp/debugger/FNVBug001Fix.cpp` — shipped NVSE fix plugin

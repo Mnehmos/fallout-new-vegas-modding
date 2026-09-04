@@ -2,18 +2,24 @@
  {
   "id": "FNV-BUG-001",
   "title": "VATS-targetable grenades always show 0% hit chance on PC",
-  "status": "FIXED — formula-faithful engine patch shipped (FNVBug001Fix v3)",
+  "status": "fix-shipped",
+  "status_note": "Runtime-verified for the temporary in-session hook; FNVBug001Fix v4 installed, pending restart verification that the xNVSE-loaded module owns the two patches and one queued grenade shot executes.",
   "subsystem": "VATS / projectiles",
   "priority": 5,
   "platform": "PC; reported working on Xbox 360 and PS3",
-  "summary": "Thrown projectiles marked VATS-targetable can be selected, but their computed chance is exactly 0.0, which the VATS menu treats as unqueueable (0% shown, click blocked).",
-  "measured": "VATS menu gate: at 0x007EEA2D the selected entry's chance field (entry+0x28) is read; if it equals 0.0, 0x007EEA5B displays sVATSMessageZeroChance and the attack cannot be queued. The airborne grenade entry's chance is exactly 0.0 (not a rounded display value). RUNTIME PROOF: writing 0.5 to the selected entry's chance field (selected+0x28) while VATS was open changed the display to 50% and unblocked the queue - single-field causality confirmed. The initial +0x124 max-range hypothesis was falsified: FUN_00646F50 reads the equipped weapon's max range, not the airborne grenade projectile's range.",
-  "root_cause_pending": "The chance FORMULA for airborne grenade targets returns exactly 0.0. The formula inputs (distance term, skill term, or a thrown-weapon classification branch) must be traced to find which input is zero on PC and nonzero on console.",
-  "fix_direction": "Stewie's Tweaks 'Allow targeting projectiles in VATS' applies a distance-and-skill-based percentage to grenade targets - confirming the vanilla formula returns 0 by omission, not by a corrupted value. The vanilla fix is to give grenade targets the same distance+skill chance computation that actors receive.",
+  "summary": "Vanilla creates a VATS entry for an airborne grenade with body-part index -1. Its highlight/body-part lookup fails, so the live update path skips FUN_007F1290 and leaves entry+0x28 at exactly 0.0; the grenade shows 0% and cannot be preselected. The v4 hook accepts grenade targets at that failed lookup and lets the existing vanilla chance resolver run.",
+  "hypothesis": "CONFIRMED: at 0x007F4544, FUN_00800A00 rejects the grenade's body-part index -1; the branch at 0x007F454E then skips the live chance call at 0x007F45C7. FUN_00646F70 is not globally dead: FUN_007F1290 calls it at 0x007F158E. The omission is target-type-specific.",
+  "measured": "Clean vanilla runtime: selected grenade entry+0x28 remained 0.0 and repeated clicks never reached the downstream click/chance probe. With the exact two-site Stewie-equivalent hook active, one selected grenade stored 0.098696 (displayed 9%) and exposed Accept. Repeated tests with three airborne dynamites produced distinct, reasonable percentages; sampled internal values included 0.086298, 0.098696, 0.153444, 0.186391, 0.295660, 0.316435, 0.394239, 0.423925 and 0.482302.",
+  "root_cause": "The grenade-target entry exists and the vanilla resolver exists, but the live update path rejects the grenade before calling it. The missing integration is the body-part/highlight fallback for a target whose body-part index is -1.",
+  "fix_direction": "Match lStewieAl's bTargetProjectilesInVATS implementation: detour the call at 0x007F4544 so a failed normal lookup succeeds when currentTarget's vtable+0x224 predicate identifies a grenade, and redirect FUN_00800A00's fallback float operand at 0x00800A7D from 0x01012054 to a plugin-owned 0.2f. Do not poll entry memory or bypass the zero-chance gate.",
   "sources": [
    {
     "label": "GECKWiki engine bugs",
     "url": "https://geckwiki.com/index.php?title=Engine_Bugs_%28Fallout_New_Vegas%29"
+   },
+   {
+    "label": "lStewieAl's Tweaks and Engine Fixes",
+    "url": "https://www.nexusmods.com/newvegas/mods/66347"
    },
    {
     "label": "VATS menu zero-chance gate",
@@ -36,8 +42,8 @@
    },
    {
     "hypothesis": "FUN_00646F70 (VATS target resolver with grenade branch + 'destructible/grenade target chance' debug string) computes the displayed chance",
-    "result": "FALSIFIED by static analysis — zero direct callers, zero data references in the entire image; the function is dead code on PC (likely an Xbox/debug-build chance calculator)",
-    "lesson": "Runtime patch (return 1.0 always) also changed nothing — confirming the function never executes"
+    "result": "RETRACTED after live-path recovery — FUN_007F1290 calls it at 0x007F158E. The earlier callgraph export was incomplete, and forcing its return changed nothing only because the grenade path never reached FUN_007F1290.",
+    "lesson": "Distinguish a target-specific skipped caller from globally dead code; capture call-site execution before promoting a zero-xref result."
    },
    {
     "hypothesis": "The zero-chance gate at 0x007EEA46 controls queueing",
@@ -45,7 +51,7 @@
     "lesson": "The displayed 0% itself is what blocks targeting — the fix must change the computed chance value, not the gate"
    }
   ],
-  "next": "1. Dump the live VATS entry object from memory (menu global 0x011DB0D4 -> +0x100 -> entry); read its vtable pointer and decode the entry class RTTI. 2. The entry class methods include the chance computation/writer. 3. VATSMenu subsystem spans 0x7E9000-0x7F7000 (255 refs to menu global 0x011DB0D4). 4. Atlas PC<->Xbox comparison once the writer is found. 5. Runtime experiment from the protocol remains the closure gate.",
+  "next": "Restart through xNVSE and verify FNVBug001Fix v4 is loaded and owns the two expected runtime patches; then queue and fire one computed low-percentage grenade shot. The temporary live hook already passed preselection, clickability, and multi-distance chance variation.",
   "atlas_findings": {
    "vatsmenu_class": "RTTI-confirmed on PC: .?AVVATSMenu@@ (COL @ 0x01118558, typeDesc 0x0119F3E8, vtable 0x10700D4)",
    "xbox_pdb_vtable_names": {
@@ -63,16 +69,16 @@
    "pc_alignment": "PC FUN_007EC810 (contains the zero-chance gate) aligns to vtable slot 11 = Xbox VATSMenu::DoIdle",
    "implication": "The patched gate lives in DoIdle (per-frame). The click/queue path is DoClick (PC 0x7EECB0) which contains no direct chance-field access — the block happens deeper in the attack-execution chain"
   },
-  "dead_code_finding": "FUN_00646F70 (VATS target resolver with complete grenade-chance formula + debug strings) and FUN_007F52C0 (destructible/grenade scan, 5458 bytes) are BOTH dead on PC: zero direct callers, zero data references, runtime patches invisible. The complete intended chance formula exists in FUN_00646F70's thrown branch but was never wired into the live path — consistent with 'engine bug: feature not implemented on PC'. The live VATSTargetData struct (screen+world coords, chance@+0x28, targetPtr@+0x30) is filled by a separate silent per-frame function; the chance field is never computed.",
+  "dead_code_finding": "SUPERSEDED: FUN_007F52C0 creates live grenade target entries, and FUN_007F1290 calls FUN_00646F70 at 0x007F158E. Runtime capture showed grenade targets alone miss that call because FUN_00800A00 rejects body-part index -1 at 0x007F4544/0x007F454E.",
   "shipped_fix": {
    "form": "NVSE plugin FNVBug001Fix (mcp/debugger/FNVBug001Fix.cpp)",
-   "mechanism": "v2: background poller (250ms). While VATS is open (menu global 0x011DB0D4 non-null), if the selected target's chance field (target+0x28) is exactly 0.0, write 0.5. Plus the DoIdle gate neutralization (test ah,0x44 -> test ah,0x00 at 0x007EEA46).",
-   "verified": "Live test: chance 0.0 -> 0.5 stuck (no overwrite), VATS displayed 50%, attack queued and executed. Poller reapplies after every VATS re-entry/rebuild.",
-   "limitation": "Static 50% — not the modeled distance+skill formula (v3)"
+   "mechanism": "v4: PDB-matched two-site engine hook. The call at 0x007F4544 is detoured to accept grenade targets after a failed normal body-part lookup, and the fallback multiplier pointer at 0x00800A7D is redirected to 0.2f. Vanilla then continues to FUN_007F1290/FUN_00646F70.",
+   "verified": "Temporary in-process copy of the exact hook produced a 9% selectable grenade with Accept enabled, followed by three airborne dynamites with different reasonable percentages. The permanent x86 DLL builds warning-clean and is installed for the next xNVSE launch.",
+   "limitation": "Permanent next-launch module/patch ownership and a queued-shot execution still require post-restart verification. The prior v3 flat/fabricated-distance DLL is retained only as FNVBug001Fix.dll.disabled."
   },
-  "v3_design": "Replace the flat 0.5 in the poller with the intended formula recovered from FUN_00646F70's thrown branch: chance = (rangeOdds + skillCalc) * mult * 100, where rangeOdds = 1 - |targetDist - SETTING_B| / (weaponMaxRange * fVATSThrownWeaponRangeMult - SETTING_A). Target world position is available in the poller at struct+0x08; player position via the PC (known NVSE/global). Skill term needs the actor's weapon skill — via NVSE interface functions now that xNVSE 6.4.8 is deployed.",
-  "recovered_intended_formula": {
-   "source": "FUN_00646F70 thrown-weapon branch (0x006471A1-0x00647330), decompiled instruction-exact. This function is DEAD CODE on PC (zero callers/refs) - the implementation was completed but never wired into the live VATS scan. The bug is a missing call, not broken math.",
+  "v3_design": "SUPERSEDED: the poller used unproven VATSTargetData coordinate fields and a fabricated 50000-unit falloff, causing flat 95% behavior. It is not the fix.",
+  "superseded_thrown_weapon_analysis": {
+   "source": "FUN_00646F70 thrown-weapon branch (0x006471A1-0x00647330), decompiled instruction-exact. This branch describes the player using a thrown weapon; it is not the airborne-grenade target branch for a currently equipped gun.",
    "settings_live_values": {
     "fVATSGrenadeRangeMult": 2.0,
     "fVATSGrenadeRangeMin": 128.0,
@@ -88,21 +94,22 @@
     "FUN_00446390": "skillArg derivation from target context",
     "FUN_004C0BF0": "FUN_004C0C30() && !FUN_004C0C60() - thrown-weapon classification"
    },
-   "bug_classification": "NOT a broken formula. The complete grenade-target chance implementation exists in the PC binary but is unreferenced (dead code) - the live VATS target scan writes 0.0 without calling it. Root cause: missing integration call in the live target-scan path. Xbox comparison via atlas: FUN_00646F70 has no Xbox candidate in the atlas - the Xbox call-wiring question remains open pending the live-scan writer identification."
+   "bug_classification": "Historical misattribution retained for auditability. The formula is valid for thrown-weapon use, but the BUG-001 target path is repaired earlier at the VATS body-part/highlight lookup."
   },
-  "fix_verified": "In-game verified: VATS displays distance-dependent percentage (95% at typical throw range), target queueable and attack executes. Falloff follows the recovered formula: chance = clamp(1 - |throwDist - fVATSGrenadeRangeMin|/falloffScale, 0.05, 1) * fVATSGrenadeChanceMult * 100, with fVATSGrenadeRangeMin/fVATSGrenadeChanceMult read live from the engine Setting objects.",
-  "remaining": "Skill term integration (FUN_0066EF50 actor query via xNVSE interfaces) would add the up-to-40% skill scaling from the dead-code implementation; falloff term is exact."
+  "fix_verified": "Runtime-verified for the temporary exact hook: 0%/unselectable became computed 9%/selectable, and three airborne dynamites produced different reasonable chances. This validates preselection, clickability, and non-flat computation without a gate bypass.",
+  "remaining": "Verify the installed v4 DLL after a fresh xNVSE launch and execute one queued grenade shot; do not describe the installed artifact as startup-verified until then."
  },
  {
   "id": "FNV-BUG-002",
   "title": "iSneakLevelBonus can invert the intended sneak modifier",
-  "status": "active",
+  "status": "remapped",
   "subsystem": "AI / detection",
   "priority": 5,
   "platform": "PC",
   "summary": "When the player is above an actor's level, the level modifier can become negative and make sneaking harder. GECKWiki points directly at engine address 0x642ED0. YUP has documented the behavior and ultimately reverted its own gamesetting workaround because the underlying calculation remains bugged for some actors.",
-  "hypothesis": "Signed arithmetic or ordering around the level-difference multiplication allows the bonus term to become a penalty.",
-  "next": "Decompile 0x642ED0 and its enclosing detection function, map the gamesetting read, reproduce with controlled actor/player levels, then test a minimal arithmetic patch.",
+  "hypothesis": "PARTIALLY CONFIRMED by static analysis (2026-09-04): 0x642ED0 is the sneak detection-value accumulator. It adds (arg24 - arg23) * iSneakLevelBonus at 0x642F10-0x642F1C with a signed, UNCLAMPED integer multiply - the only level term in the function without a max(0, ...) clamp (the neighboring iSneakStartBonus term is clamped via max helper 0x647B70 at 0x642F3D). When the player out-levels the actor, this term goes negative, matching GECKWiki's 'multiplication results in a negative modifier'. Settings confirmed via ctor thunks: iSneakLevelBonus=obj 0x11CD13C (default 5), iSneakStartBonus=0x11CD8C0 (50), iSneakStartBonusLevelPen=0x11CD4C0 (10), fSneakBaseValue=0x11CD7E4 (-25.0), fSneakAmbushTargetMod=0x11CDBF8, fSneakAmbushNonTargetMod=0x11CD1E0, fSneakPerceptionSkillMin=0x11CDF04, fSneakPerceptionSkillMax=0x11CDD9C.",
+  "re_findings": "Sole caller: call site 0x8A152D in a large detection updater (true function start not yet located; CFG estimate 0x8A152D-0x8A16A6 is mid-function tail). Accumulator seeded from arg2, perception-skill scale and ambush/lighting factor tail confirmed instruction-exact. Candidate fixes: (1) swap the sub operands at 0x642F10/0x642F13, or (2) clamp the term to >= 0 like the start-bonus term. Decision requires mapping arg23/arg24 to player/actor levels and a runtime A/B test. Full working notes in research/re/engine-glossary.md section 3.1.",
+  "next": "Map the 25-argument push sequence at 0x8A14E0-0x8A152D to the caller's locals to bind arg23/arg24 to player/actor levels; locate the caller's true prologue; then runtime A/B test the two candidate patches (operand swap vs clamp).",
   "sources": [
    {
     "label": "GECKWiki engine bugs",
