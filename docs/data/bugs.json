@@ -165,7 +165,7 @@
   "priority": 5,
   "platform": "PC",
   "summary": "GECKWiki reports that enchantments on NPC-worn armor can be reapplied on each load and stack indefinitely.",
-  "re_findings": "2026-09-04 ROOT-CAUSE PASS: equipped-chain walker FUN_008249d0 decompiled - iterates the actor's equipped list, type-checks entries via vtable+0x18 (slots 0/2/3/7/8 take the direct visual-update path), and for enchanted items does RTDynamicCast to EnchantmentItem (TD 0x1183594) then gates the update on FUN_005F36F0(...) == 0. That gate is the candidate 'has effect already' check - its exact semantics (and whether the actor-load path bypasses it) is the final question; FUN_005F36F0 is queued for decompile. Supporting anchors: sCanNotEquipWornEnchantment @0x105FDD0, 'SAVELOAD: Enchantable item...' @0x1081C60, 7 total RTDynamicCast sites on the class.",
+  "re_findings": "2026-09-04: equipped-walker FUN_008249d0's enchant gate resolved - FUN_005f36f0 is a PLAIN FIELD GETTER returning [EnchantmentItem+0x34]; the walker updates visuals only when that field is 0. The stacking defect is upstream: whoever ADDS EnchantmentItem entries on actor load (equip-restore path) does not dedupe. Next: identify +0x34 semantics in xNVSE GameMagicForms.h EnchantmentItem layout and trace the actor-load equip-restore add path for the missing has-equivalent check.",
   "hypothesis": "Actor load/equipment restoration reapplies the armor effect without checking for an existing equivalent active effect or without restoring the effect as recovered state.",
   "next": "Create an NPC with a measurable armor enchant, cycle unload/reload repeatedly, log actor values, then trace armor restoration and magic-effect application calls.",
   "sources": [
@@ -198,21 +198,22 @@
  {
   "id": "FNV-BUG-006",
   "title": "AI packages fail to process correctly while the player is away",
-  "status": "remapped",
+  "status": "root-caused",
   "subsystem": "AI / packages",
   "priority": 4,
   "platform": "New Vegas; reported working in Fallout 3",
   "summary": "Sleep, find, patrol and eat packages may fail to advance unless the player enters the cell, crosses a load door, or fast-travels, even when low-level processing should apply.",
-  "re_findings": "2026-09-04 ROOT-CAUSE PASS: process-swap dispatcher FUN_008d0660 decompiled and fully identified - it takes (oldProcess, newProcess), RTDynamicCasts both against all four process classes (HighProcess TD 0x118A6D4, MiddleHighProcess 0x118C64C, MiddleLowProcess 0x11A3668, LowProcess 0x11A364C; all confirmed by the xNVSE symbol table), flushes pending work via vtable+0x1E0 (has-work check) -> +0x214 and +0x12C when active, then routes each level pair to a dedicated migration handler: High FUN_008d9fa0, MiddleHigh FUN_00914c60, MiddleLow FUN_0092ca70, Low FUN_00907510 (all queued for decompile). The 'wrong process level chosen' decision is made by FUN_008d0660's callers - next hop; the state migration during re-bucketing is in the four handlers.",
+  "re_findings": "Swap dispatcher FUN_008d0660 + all four migration handlers decompiled: High 0x8D9FA0 (~20 fields + 2 lists), MiddleHigh 0x914C60 (177 lines, incl. dialogue cleanup FUN_00496080), MiddleLow 0x92CA70 (9 lines - the defect), Low 0x907510 (32 lines). Process classes RTTI-confirmed via xNVSE symbol table (High 0x118A6D4, MiddleHigh 0x118C64C, MiddleLow 0x11A3668, Low 0x11A364C).",
   "hypothesis": "New Vegas selects the wrong process level or skips package ticks for unloaded actors under some package categories.",
-  "next": "Construct deterministic patrol/sleep actors with timestamps, compare same-cell and off-cell progress, identify process-level selection and package scheduler functions.",
+  "next": "Runtime verify: patrol/sleep actor observed off-cell before/after a re-bucket trigger, package timestamps; then enumerate the missing field set for FUN_0092ca70 vs siblings and prototype the extended migration.",
   "sources": [
    {
     "label": "GECKWiki engine bugs",
     "url": "https://geckwiki.com/index.php?title=Engine_Bugs_%28Fallout_New_Vegas%29"
    }
   ],
-  "research": "No fix for the core bug. The process hierarchy is fully named in xNVSE GameProcess.h: BaseProcess::processLevel at +0x28 (High/MiddleHigh/MiddleLow/Low), ActorProcessManager buckets middleHighActors/lowActors0C/lowActors18/highActors, MobileObject+0x87 holds the inverse of NoLowLevelProcessing, baseProcess at +0x68. Community theory matches ours: freshly loaded actors left in the wrong bucket until a cell transition forces re-bucketing."
+  "research": "No fix for the core bug. The process hierarchy is fully named in xNVSE GameProcess.h: BaseProcess::processLevel at +0x28 (High/MiddleHigh/MiddleLow/Low), ActorProcessManager buckets middleHighActors/lowActors0C/lowActors18/highActors, MobileObject+0x87 holds the inverse of NoLowLevelProcessing, baseProcess at +0x68. Community theory matches ours: freshly loaded actors left in the wrong bucket until a cell transition forces re-bucketing.",
+  "root_cause": "ROOT CAUSE (static, 2026-09-04): the process-swap dispatcher FUN_008d0660 routes each level pair to a dedicated migration handler. High->High (FUN_008d9fa0) migrates ~20 state fields plus two lists; MiddleHigh->MiddleHigh (FUN_00914c60, 177 lines) migrates extensive package/dialogue state; but MiddleLow->MiddleLow (FUN_0092ca70) is NINE LINES - it copies one dword at +0xB4 and migrates a single list at +0xB8, dropping everything else. Middle-low is exactly the level where off-screen actors run sleep/find/patatrol/eat packages; when an actor is re-bucketed (spawn, cell attach, load) into middle-low, its package/timer state is not carried over, so packages stall until a cell transition forces higher-level processing. Fix direction: extend FUN_0092ca70 to migrate the same state family the sibling handlers carry (field-level list to be enumerated against FUN_00914c60/FUN_008d9fa0)."
  },
  {
   "id": "FNV-BUG-007",
@@ -314,7 +315,7 @@
   "priority": 3,
   "platform": "PC",
   "summary": "SayToDone reportedly does not fire for an actor outside the player's current cell regardless of persistence/quest status. Related Say/SayTo package-result calls can hang when the player is elsewhere.",
-  "re_findings": "2026-09-04 anchors: SayTo console exec = 0x5C9100 (command struct name-slot 0x1191130); SayToDone exec = 0x5CA950 with predicate 0x5CA1C0 (topic/speaker availability check returning 1.0f/0.0f). The speech-completion event machinery that fails off-cell is downstream of the SayTo initiation path - next hop is the audio/conversation completion consumer.",
+  "re_findings": "2026-09-04 ROOT-CAUSE CANDIDATE: SayTo exec FUN_005c9100 decompiled. The speech-queue branch (FUN_00934250 path) is gated at line ~87 on actor vtable+0x22C returning true and audio-owner 0x8D8520 being non-null; when the speaker is outside the player's cell this gate fails and the SayTo request is silently dropped - the completion event (SayToDone condition 0x5CA1C0/0x5CA950) is never armed. OnAdd exec FUN_005ca200 identified as a thin poll of the same shared event-predicate family. Remaining: identify vtable+0x22C (expected = in-player-cell / 3D-loaded predicate) and confirm which caller arms the completion flag.",
   "hypothesis": "Dialogue completion notification is tied to the high-process actor/audio update path rather than persistent script/event state.",
   "next": "Build two-cell scripted dialogue repro, compare event dispatch with NVSE's SayToDone event handling, then trace completion notification ownership across actor process levels.",
   "sources": [
@@ -564,7 +565,7 @@
   "priority": 2,
   "platform": "PC",
   "summary": "Creatures hit by automatic weapons can spam dialogue sounds continuously because the line/sound path lacks a cooldown.",
-  "re_findings": "2026-09-04 anchors: GetHit console exec = 0x5D5630 (command struct name-slot 0x1194628); more importantly the runtime reference to 'GetHit' pushed at 0x5D566C - that is the engine's hit->dialogue trigger site, i.e. exactly where a cooldown check would live (and is absent). Second GetHit code reference at 0x46D820 for the condition-function side.",
+  "re_findings": "2026-09-04 CORRECTED: GetHit console exec FUN_005d5630 is a DEBUG command (prints 'GetHitLocation >> %%0.2f' via 0x703C00); the runtime 'GetHit' string push at 0x5D566C is inside this same debug function, NOT the hit->dialogue trigger. Retracted that anchor. The real BUG-027 site is the damage->combat-dialogue event dispatcher - the same machinery JIP LN NVSE patched for 'Player/NPC hit dialogue does not work' (wiki Bugs Fixed list). Next anchor: locate JIP's hit-dialogue patch sites in JIP-LN-NVSE source (internal/hooks.h) and map back to the vanilla dispatcher; the missing cooldown is in the topic-selection call there.",
   "sources": [
    {
     "label": "GECKWiki engine bugs",

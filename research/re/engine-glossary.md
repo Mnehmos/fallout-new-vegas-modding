@@ -364,3 +364,21 @@ Struct offsets (xNVSE headers, for field-level patching):
   calls 0x7700F0(actor, playerSingleton 0x11DEA3C)->float. This is the leveled-actor
   value-vs-player computation Stewie referenced. The template-bias defect is in the
   selection upstream, reached from PlaceLeveledActorAtMe exec 0x5D9810.
+
+### 3.10 Pass-7 root-cause results (2026-09-04)
+
+- BUG-006 ROOT CAUSE: MiddleLow migration handler FUN_0092ca70 is 9 lines (copies
+  +0xB4, migrates list at +0xB8) vs High FUN_008d9fa0 (~20 fields + 2 lists) and
+  MiddleHigh FUN_00914c60 (177 lines). Middle-low = off-screen actor level where
+  sleep/find/patrol/eat run; state dropped on re-bucket -> packages stall until
+  cell transition. Fix: extend 0x92CA70's migration set.
+- BUG-004: FUN_005f36f0 = plain getter [EnchantmentItem+0x34]; walker gate semantics
+  tied to that field; dedupe must be added in the actor-load equip-restore path.
+- BUG-012 candidate gate: SayTo exec FUN_005c9100 speech-queue branch requires actor
+  vtable+0x22C true + audio owner 0x8D8520 non-null; off-cell speakers fail the gate.
+- BUG-027 correction: GetHit exec is a debug command; hit-dialogue dispatcher is the
+  JIP-patched family - anchor via JIP hooks.h next.
+- Detection helper FUN_007700f0 (used by 0x7701E0): reads AV 0x4C via actor+0xA4
+  vtable+0xC, then opposing AV reads 0x3A(a->b) and 0x38(b->a) via getter 0x5E58F0,
+  returns clamped result - the pairwise detection-value calculator.
+- FUN_0044ddc0 = list-head getter [p+8]; FUN_00937160 = list-move helper.
