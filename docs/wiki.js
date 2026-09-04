@@ -34,6 +34,10 @@ function card(b){
   </article>`;
 }
 
+// Pipeline stage order for grouping and the status dropdown.
+const STAGE_ORDER = ['verified-closed','fix-shipped','root-caused','remapped','partial','active','seed'];
+const stageRank = s => { const i = STAGE_ORDER.indexOf(s); return i === -1 ? STAGE_ORDER.length : i; };
+
 async function catalogPage(){
   const grid=document.querySelector('#bug-grid');
   if(!grid) return;
@@ -42,24 +46,35 @@ async function catalogPage(){
   const status=document.querySelector('#status-filter');
   const system=document.querySelector('#system-filter');
   const priority=document.querySelector('#priority-filter');
-  [...new Set(bugs.map(b=>b.status))].sort().forEach(v=>status.insertAdjacentHTML('beforeend',`<option value="${escapeHtml(v)}">${escapeHtml(statusLabel(v))}</option>`));
+  const sortOrder=document.querySelector('#sort-order');
+  [...new Set(bugs.map(b=>b.status))]
+    .sort((a,b)=>stageRank(a)-stageRank(b)||a.localeCompare(b))
+    .forEach(v=>status.insertAdjacentHTML('beforeend',`<option value="${escapeHtml(v)}">${escapeHtml(statusLabel(v))}</option>`));
   [...new Set(bugs.map(b=>b.subsystem))].sort().forEach(v=>system.insertAdjacentHTML('beforeend',`<option value="${escapeHtml(v)}">${escapeHtml(v)}</option>`));
   document.querySelector('#total-count').textContent=bugs.length;
   document.querySelector('#active-count').textContent=bugs.filter(b=>b.status==='active'||b.status==='remapped').length;
   document.querySelector('#high-count').textContent=bugs.filter(b=>b.priority===5).length;
   const fixed=document.querySelector('#fixed-count');
   if(fixed) fixed.textContent=bugs.filter(b=>isFixed(b.status)).length;
+  const num = id => { const m = /(\d+)$/.exec(id||''); return m ? +m[1] : 1e9; };
+  const sorters = {
+    number: (a,b)=>num(a.id)-num(b.id),
+    stage: (a,b)=>stageRank(a.status)-stageRank(b.status)||num(a.id)-num(b.id),
+    priority: (a,b)=>b.priority-a.priority||num(a.id)-num(b.id),
+    subsystem: (a,b)=>String(a.subsystem||'').localeCompare(String(b.subsystem||''))||num(a.id)-num(b.id),
+  };
   function render(){
     const q=search.value.trim().toLowerCase();
     const min=Number(priority.value);
+    const sort=sorters[sortOrder.value]||sorters.number;
     const out=bugs.filter(b=>{
       const hay=[b.id,b.title,b.summary,b.subsystem,b.platform,b.hypothesis,b.re_findings,b.root_cause,b.next].join(' ').toLowerCase();
       return (!q||hay.includes(q)) && (status.value==='all'||b.status===status.value) && (system.value==='all'||b.subsystem===system.value) && b.priority>=min;
-    }).sort((a,b)=>b.priority-a.priority||a.id.localeCompare(b.id));
+    }).sort(sort);
     grid.innerHTML=out.map(card).join('') || '<p>No investigations match these filters.</p>';
     document.querySelector('#visible-count').textContent=`${out.length} shown`;
   }
-  [search,status,system,priority].forEach(x=>x.addEventListener('input',render));
+  [search,status,system,priority,sortOrder].forEach(x=>x.addEventListener('input',render));
   render();
 }
 
