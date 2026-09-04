@@ -135,6 +135,21 @@ function is 26 params, `__cdecl`-style). The return value is
   finalize, but the *defect* (missing clamp on the level-difference term) is now
   CONFIRMED at instruction and decompiled-C level.
 
+**DIRECTION RESOLVED (caller FUN_008a0d10 decompiled, 2026-09-04):**
+- `param_1_00` = the detecting NPC (`this`); confirmed at line 278 `param_1_00 == DAT_011dea3c`
+  is tested against the player singleton (so param_1_00 is the NPC observer, param_2 the
+  player target being sneaked-by).
+- NPC level: `local_60 = (*(int*)(param_1_00 + 0xa4))->vtable[+0x28]()` masked to 16 bits.
+- Player level: `local_2c = (*(int*)(param_2 + 0xa4))->vtable[+0x28]()` masked to 16 bits.
+- Both packed via `FUN_00ec62c0(...)` into a 6-float result buffer, then passed to the
+  19-arg `FUN_00642ed0`. The signed `(param_24 - param_23)` therefore encodes
+  **(NPC_level - Player_level)** (order to be re-confirmed against the exact arg index at
+  the 0x642F10 sub, but the two level sources and the player/NPC roles are now fixed).
+- When the player OUT-levels the NPC, NPC_level - Player_level < 0 -> iSneakLevelBonus
+  becomes a negative sneak modifier -> harder to sneak. This is the exact reported symptom.
+- Final runtime confirmation still recommended, but the static evidence now fully supports
+  the causal chain end-to-end.
+
 **Reusable engine anchors discovered here:**
 - Player singleton pointer stored at `0x11DEA3C` (used by the actor-variable getter's
   player-redirect path).
@@ -197,9 +212,26 @@ mov ecx,obj; call ctor; push sectionStr; call 0xEC658F; ret` fragments.
 - Alternatively, patch RemoveAllItems' parser 0x5B1570 to loop through equipped items
   and emit UnequipItem calls per item before calling the bulk remove.
 
-**Next (runtime verification):** craft an armor with a measurable OnUnequip block + a
-permanent magic effect, equip it on the player, then RemoveAllItems. Verify the
-OnUnequip block never fires and the effect remains. After a patch, verify both run.
+**Next steps after pass 2 (identity corrections, 2026-09-04):**
+- 0x575400 CONFIRMED `IsEquipped(refr, item)` — resolves equipment via 0x4BF220 and
+  tests presence via 0x4BFDA0(item, 0); guarded by 0x55D310 (container non-null check).
+- 0x8248E0(item, 1) is RemoveItem's equipped-entry teardown loop: walks a linked list
+  (vtable+0x8) and calls 0x804210(flag) per matching node — the OnUnequip/effect path
+  lives below 0x804210; that is the next trace hop for the fix design.
+- 0x4CE340 is a THIN WRAPPER → 0x4CE380 (the real bulk primitive; next hop).
+- 0x41AB70 is NOT the unequip core — it toggles an extra-data/type-0x3E marker
+  (0x40FE80/0x410140/0x40FF60 family, cf. the encounter-zone extra work). Correction to
+  the earlier note above.
+- SayToDone: 0x5CA950 exec → resolver 0x5ACCB0 + 0x5CA1C0; 0x5CA1C0 is only a
+  topic/speaker availability predicate (returns 1.0f/0.0f). The speech-completion event
+  firing mechanism is still un-anchored — next hop is what consumes the script event
+  queue (search for the 'DoneTalking'/Say topic completion strings and the audio
+  conversation owner class).
+
+**Runtime verification owed (BUG-003 family):** craft an armor with a measurable
+OnUnequip block + a permanent magic effect, equip it on the player, then RemoveAllItems;
+assert the OnUnequip block never fires and the effect remains. After a patch mirroring
+the 0x575400→0x8248E0→0x804210 teardown sequence, re-run the repro.
 
 - All four command structs share layout: +0x0 name ptr, +0x4 alt ptr (0x01011584 = empty),
   +0x8 id (0x10AD/0x1249/0x1052/0x10EF), +0xC help (empty), +0x10 params ptr, +0x14
