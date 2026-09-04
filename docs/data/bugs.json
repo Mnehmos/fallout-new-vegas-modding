@@ -376,7 +376,7 @@
   "priority": 2,
   "platform": "New Vegas; reported working in Fallout 3",
   "summary": "SetTalkingActivatorActor references reportedly ignore distance attenuation. GECKWiki notes this may be intentional in New Vegas.",
-  "re_findings": "2026-09-04 anchor: SetTalkingActivatorActor console exec = 0x5D4CC0 (command struct name-slot 0x11942B8, id 0x1171). The attenuation behavior (or its absence) for the activator's voice follows from how the set actor is consumed by the dialogue audio path - trace forward from this handler.",
+  "re_findings": "2026-09-04 exec decompiled (FUN_005d4cc0): resolve args (0x5ACCB0) -> FUN_007AF430 (activator context, also used by inventory primitive 0x4CE380) -> form-type gate == 0x16 (ACTI) -> FUN_004FF0E0(actor) performs the assignment. The missing attenuation is downstream in the activator's voice playback path (consumers of the assigned actor) - trace from FUN_004FF0E0's storage onward. Wiki notes this may be intended NV behavior; fix would be feature-style (selectable attenuation).",
   "sources": [
    {
     "label": "GECKWiki engine bugs",
