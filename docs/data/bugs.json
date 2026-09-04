@@ -186,7 +186,7 @@
   "priority": 5,
   "platform": "New Vegas; reported working in Fallout 3",
   "summary": "GECKWiki reports that if an actor template is itself in a leveled list, it is almost always chosen. The Fallout 3 comparison makes this another useful engine-differential target.",
-  "re_findings": "2026-09-04 anchors: PlaceLeveledActorAtMe console exec = 0x5D9810 (command struct name-slot 0x11951B8). 0x7701E0 confirmed as a real function (0x128 frame, security cookie): __thiscall(actor) reading actor+0xA4 vtable slots +0x0/+0x8 as int->float and calling 0x7700F0(actor, playerSingleton) -> float - this is the leveled-actor value-vs-player computation Stewie referenced ('code looks fine' = the DT display consumer at 0x7701E0); the template-bias defect is in the SELECTION upstream, reached from PlaceLeveledActorAtMe. Settings: fLeveledActorMultEasy/Medium/Hard/Boss @0x1016214+, iLevCreaLevelDifferenceMax @0x10289EC; diagnostics @0x10382B0/0x1038358.",
+  "re_findings": "2026-09-04 pass 10: PlaceLeveledActorAtMe exec FUN_005d9810 decompiled - resolves args, dispatches by form type 0x2A (TESLevCharacter, 0x1C8-byte ctx via FUN_008D1D30) vs 0x2B (TESLevCreature, 0x1C0-byte ctx); the spawn/selection logic is downstream of the dispatch. Selection-defect trace continues from the 0x2A/0x2B branches; 0x7701E0 is the level-vs-player consumer.",
   "hypothesis": "The New Vegas leveled-actor selection path treats template entries differently during eligibility filtering or random weighting.",
   "next": "Build a controlled LVLC/LVLN test with equal-weight template and non-template candidates, gather selection frequencies, then trace the leveled actor picker and compare against Fallout 3/Xbox evidence where available.",
   "sources": [
@@ -349,7 +349,7 @@
   "priority": 2,
   "platform": "PC",
   "summary": "GECKWiki remaining-bug seed; independent 2026 verification pending.",
-  "re_findings": "2026-09-04 anchor: EGM path construction at 0x6535A3-0x6535ED (sprintf '%s%s.egm' @0x6535B5 / '%s.egm' @0x6535D7 into 0x104-byte buffers, race-directory table indexed at [edx*4+0x119B734]) inside the BSFaceGenManager load path (module path strings D:\\...BSFaceGenManager.cpp nearby). The loose-vs-BSA resolution decision follows this build - inspect the file-open call after 0x6535F0 for the archive-only behavior.",
+  "re_findings": "2026-09-04 pass 10: FUN_00559450 is only a pointer getter (dead end); the actual EGM file load is in a CALLER of path-builder FUN_00653520 - xref 0x653520 callers next. bLoadFaceGenHeadEGTFiles Setting @0x11D5ADC (bool @0x11D5AE0) remains the config anchor.",
   "sources": [
    {
     "label": "GECKWiki engine bugs",
@@ -533,7 +533,7 @@
   "priority": 3,
   "platform": "PC",
   "summary": "Creature attacks are reportedly classified as neither melee nor unarmed for Stonewall's damage reduction test.",
-  "re_findings": "2026-09-04 anchors: the perk entry-point infrastructure is fully named in diagnostics - BGSEntryPointFunction::CheckFunctionArguments strings @0x10460E8+, BGSEntryPointPerkEntry::CheckConditionFilters @0x1046D48, RTTI BGSEntryPointPerkEntry TD @0x1197598 plus the BGSEntryPointFunctionData* family (0x1197418-0x11974D4). Stonewall's 'Mod Incoming Damage' entry rides this machinery; the melee/unarmed attack-classification check that excludes creatures is a filter inside the damage-modulation entry handler.",
+  "re_findings": "2026-09-04 pass 10: BGSEntryPointFunction::CheckFunctionArguments = FUN_005e5b80, validating against the entry-point registry table @0x1197400 (per-function expected-arg-count array). This table + the apply path that consumes validated entries is the BUG-024 route to the Mod-Incoming-Damage handler and its melee/unarmed classification test (which fallout.wiki says checks the wrong actor's weapon - display-vs-applied confusion).",
   "sources": [
    {
     "label": "GECKWiki engine bugs",
