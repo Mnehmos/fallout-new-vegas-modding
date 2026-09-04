@@ -349,7 +349,7 @@
   "priority": 2,
   "platform": "PC",
   "summary": "GECKWiki remaining-bug seed; independent 2026 verification pending.",
-  "re_findings": "2026-09-04 pass 10: FUN_00559450 is only a pointer getter (dead end); the actual EGM file load is in a CALLER of path-builder FUN_00653520 - xref 0x653520 callers next. bLoadFaceGenHeadEGTFiles Setting @0x11D5ADC (bool @0x11D5AE0) remains the config anchor.",
+  "re_findings": "2026-09-04 FULL CHAIN MAPPED: facegen caller FUN_00654720 -> path builder FUN_00653520 ('.egm' sprintf) -> EGM load orchestrator FUN_00651b50 (BSFaceGenManager.cpp line 0x3E5, per embedded source string) -> open wrapper FUN_00650200 (success flag stored at ctx+0x20) -> file open FUN_006c62d0. The BSA-vs-loose resolution is inside 0x6C62D0 - the final hop for this bug. Config anchor bLoadFaceGenHeadEGTFiles @0x11D5ADC.",
   "sources": [
    {
     "label": "GECKWiki engine bugs",
