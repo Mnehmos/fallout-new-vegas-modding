@@ -315,3 +315,16 @@ Key classes for open bugs:
   prefer its names over FUN_XXXXXX in all future notes.
 - Xbox 360 PDB-derived vtable names were used in BUG-001 (`atlas_findings` in
   bugs.json); the source of those names should be captured here when batch A reports.
+
+### 3.7 Round-4 anchors (2026-09-04)
+
+| Bug | Anchor | Meaning |
+|-----|--------|---------|
+| BUG-018 | PickIdle exec **0x5CB0C0** (struct slot 0x11918B0) | forced idle selection entry |
+| BUG-008 | OnAdd exec **0x5CA200** (struct slot 0x118E368; adjacent to SayToDone struct) | crafted-item event path |
+| BUG-027 | GetHit exec 0x5D5630 (slot 0x1194628); runtime 'GetHit' push **0x5D566C** = hit->dialogue trigger site; second ref 0x46D820 | cooldown-absent site |
+| BUG-024 | BGSEntryPointPerkEntry TD @0x1197598 + FunctionData family 0x1197418-0x11974D4; plaintext diagnostics BGSEntryPointFunction::CheckFunctionArguments @0x10460E8+ | perk entry-point machinery |
+| BUG-010/020/021/026 | bFindContactPointsOnAdd:HAVOK @0x10C42EB; fCharControllerWarpDistSqr:HAVOK @0x10C4AF4; fHavokTauRatio @0x10561F0; ExtraHavok TD @0x1183B50 | Havok warp/bounds/restitution cluster |
+| BUG-011 supplement | ExtraWeaponIdleSound TD @0x1185164 | weapon loop-sound extra (distinct from ExtraActivateLoopSound) |
+
+### 3.8 Prior subsystem maps (do not re-derive)

@@ -230,11 +230,12 @@
  {
   "id": "FNV-BUG-008",
   "title": "GameMode scripts on crafted items do not run until drop + pickup",
-  "status": "active",
+  "status": "remapped",
   "subsystem": "Scripting / inventory",
   "priority": 4,
   "platform": "PC",
   "summary": "GECKWiki reports that crafted scripted items do not begin running GameMode blocks until the item is dropped and picked up.",
+  "re_findings": "2026-09-04 anchors: OnAdd console/script event exec = 0x5CA200 (command struct name-slot 0x118E368 - adjacent to SayToDone's struct, same command block); ShowRecipeMenu command name @0x103E074 for the crafting output path. JIP's fixed OnAdd-on-crafted bug (wiki Bugs Fixed list) and this GameMode variant share the crafted-item insertion path - diff the recipe-menu output insertion against normal AddItem insertion starting from these anchors.",
   "hypothesis": "Crafting creates the inventory entry without the initialization/event path that attaches or activates the object script instance.",
   "next": "Craft a minimal scripted item with an incrementing variable, compare AddItem vs crafting vs drop/pickup, then trace recipe-menu output insertion against normal inventory insertion.",
   "sources": [
@@ -265,11 +266,12 @@
  {
   "id": "FNV-BUG-010",
   "title": "Moveable objects can warp to worldspace coordinates (0,0)",
-  "status": "active",
+  "status": "remapped",
   "subsystem": "World / Havok",
   "priority": 4,
   "platform": "PC",
   "summary": "Mostly frag mines are reported to warp to worldspace (0,0) when cells two grids away are loaded for the first time.",
+  "re_findings": "2026-09-04 anchors: Havok warp machinery - ini keys 'fCharControllerWarpDistSqr:HAVOK' @0x10C4AF4 and 'bFindContactPointsOnAdd:HAVOK' @0x10C42EB (the latter is the OnAdd contact-point path implicated when cells first load), fHavokTauRatio gamesetting @0x10561F0, ExtraHavok RTTI TD @0x1183B50. The (0,0) warp is an uninitialized world transform during first-load boundary registration - these are the candidate code owners.",
   "hypothesis": "A cell-transition or Havok handoff uses an uninitialized/default world transform during first-load boundary registration.",
   "next": "Build a reproducible exterior grid setup with logged reference positions, find the first-load transition that changes the transform, then inspect cell/Havok registration code.",
   "sources": [
@@ -405,11 +407,12 @@
  {
   "id": "FNV-BUG-018",
   "title": "Idle manager repeatedly selects the same idle",
-  "status": "seed",
+  "status": "remapped",
   "subsystem": "AI / animation",
   "priority": 2,
   "platform": "PC",
   "summary": "GECKWiki suspects a condition/selection issue. Needs controlled idle-set reproduction.",
+  "re_findings": "2026-09-04 anchor: PickIdle console exec = 0x5CB0C0 (command struct name-slot 0x11918B0) - the forced idle-selection entry point; the idle manager's automatic selection shares the condition-evaluation machinery reached from there.",
   "sources": [
    {
     "label": "GECKWiki engine bugs",
@@ -436,11 +439,12 @@
  {
   "id": "FNV-BUG-020",
   "title": "Havok items can teleport when cell/mesh bounds are exceeded",
-  "status": "seed",
+  "status": "remapped",
   "subsystem": "World / Havok",
   "priority": 3,
   "platform": "Fallout 3 and New Vegas",
   "summary": "Reported when both cell Havok bounds and mesh bounds are exceeded or with certain enable-state setups.",
+  "re_findings": "2026-09-04 anchors: shares the Havok cluster with FNV-BUG-010 - ExtraHavok TD @0x1183B50, bFindContactPointsOnAdd:HAVOK @0x10C42EB, fCharControllerWarpDistSqr:HAVOK @0x10C4AF4, fHavokTauRatio @0x10561F0.",
   "sources": [
    {
     "label": "GECKWiki engine bugs",
@@ -451,11 +455,12 @@
  {
   "id": "FNV-BUG-021",
   "title": "Actors/projectiles can ignore Havok when culled or during initial cell load",
-  "status": "seed",
+  "status": "remapped",
   "subsystem": "World / Havok",
   "priority": 3,
   "platform": "PC",
   "summary": "Potential simulation/culling lifecycle bug; independent reproduction pending.",
+  "re_findings": "2026-09-04 anchors: Havok cluster (ExtraHavok TD 0x1183B50, bFindContactPointsOnAdd:HAVOK, fCharControllerWarpDistSqr:HAVOK) - the cull/load lifecycle that drops simulation shares these owners with FNV-BUG-010/020.",
   "sources": [
    {
     "label": "GECKWiki engine bugs",
@@ -496,11 +501,12 @@
  {
   "id": "FNV-BUG-024",
   "title": "Stonewall does not reduce creature attack damage",
-  "status": "seed",
+  "status": "remapped",
   "subsystem": "Combat / perks",
   "priority": 3,
   "platform": "PC",
   "summary": "Creature attacks are reportedly classified as neither melee nor unarmed for Stonewall's damage reduction test.",
+  "re_findings": "2026-09-04 anchors: the perk entry-point infrastructure is fully named in diagnostics - BGSEntryPointFunction::CheckFunctionArguments strings @0x10460E8+, BGSEntryPointPerkEntry::CheckConditionFilters @0x1046D48, RTTI BGSEntryPointPerkEntry TD @0x1197598 plus the BGSEntryPointFunctionData* family (0x1197418-0x11974D4). Stonewall's 'Mod Incoming Damage' entry rides this machinery; the melee/unarmed attack-classification check that excludes creatures is a filter inside the damage-modulation entry handler.",
   "sources": [
    {
     "label": "GECKWiki engine bugs",
@@ -526,11 +532,12 @@
  {
   "id": "FNV-BUG-026",
   "title": "Havok restitution produces almost no reliable bounce",
-  "status": "seed",
+  "status": "remapped",
   "subsystem": "Physics / Havok",
   "priority": 2,
   "platform": "New Vegas; reported working in Fallout 3",
   "summary": "NIF restitution reportedly produces bounce only on rare contact geometries, making nominally bouncy objects behave like rocks.",
+  "re_findings": "2026-09-04 anchors: Havok cluster (ExtraHavok TD 0x1183B50, fHavokTauRatio @0x10561F0). The FO3-works/NV-broken restitution delta is a Havok-world/NIF-collision remap difference; needs the NIF collision-loading code (bFindContactPointsOnAdd neighborhood) rather than gameplay code.",
   "sources": [
    {
     "label": "GECKWiki engine bugs",
@@ -541,11 +548,12 @@
  {
   "id": "FNV-BUG-027",
   "title": "Dialogue hit sounds have no cooldown",
-  "status": "seed",
+  "status": "remapped",
   "subsystem": "Audio / dialogue",
   "priority": 2,
   "platform": "PC",
   "summary": "Creatures hit by automatic weapons can spam dialogue sounds continuously because the line/sound path lacks a cooldown.",
+  "re_findings": "2026-09-04 anchors: GetHit console exec = 0x5D5630 (command struct name-slot 0x1194628); more importantly the runtime reference to 'GetHit' pushed at 0x5D566C - that is the engine's hit->dialogue trigger site, i.e. exactly where a cooldown check would live (and is absent). Second GetHit code reference at 0x46D820 for the condition-function side.",
   "sources": [
    {
     "label": "GECKWiki engine bugs",
