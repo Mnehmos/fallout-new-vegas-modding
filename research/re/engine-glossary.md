@@ -405,3 +405,11 @@ Struct offsets (xNVSE headers, for field-level patching):
 - bLoadFaceGenHeadEGTFiles Setting @0x11D5ADC (bool @0x11D5AE0).
 - BSGameSound: kFlag_Loop=0x10, kState_IsLooping=0x20000, SetIsLooping vt+0x14,
   StopAllSoundsWithFlags request 0x2A, staticAttenuation +0x18, kFlag_2DRadius.
+
+### 3.13 Pass-15 (2026-09-04)
+- BUG-024: validator callers resolved to wrapper pair FUN_005e5c70 (18 lines) /
+  FUN_005e61b0 (29 lines) - the full apply dispatcher is the region 0x5E5C00-0x5E62xx;
+  next hop is reading the dispatcher's per-entry switch arms for Mod Incoming Damage.
+- BUG-013: FUN_00650ba0 ruled out as map insert - it is the two-queue facegen retry
+  processor (queues 0/1, aging +10). Insertion-site hunt remains open; candidate
+  approach: scan writes near the bucket array of the map object used by 0x6C62D0.
