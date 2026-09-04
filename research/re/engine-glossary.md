@@ -394,3 +394,14 @@ Struct offsets (xNVSE headers, for field-level patching):
   float2 transform write.
 - BUG-022: Collision Sphere Hider NVSE (Nexus 95387) = dedicated community workaround;
   engine target remains the visibility-bit write on primitive nodes.
+
+### 3.12 Batch D anchors (2026-09-04)
+- ScriptEventList::MarkEvent = 0x5AC750 (hook ret 0x5AC756); Say completion @0x5791C1;
+  kEvent_SayToDone = 0x40000; SayToDone blocktype opcode 07.
+- Combat-dialogue cooldown GMST family w/ addresses (JIP settings_enum.h):
+  Attack Min 0x11CFB20 / Max 0x11CE4C8; Flee 0x11CEBA4/0x11CE248; FireExplosive
+  0x11CED40/0x11CFCBC; AvoidThreat 0x11CF858/0x11CF898; Detection 0x11CF0B0/0x11CFA4C;
+  DetectionIdle 0x11CF24C/0x11CE35C. NO Hit pair exists - BUG-027's defect.
+- bLoadFaceGenHeadEGTFiles Setting @0x11D5ADC (bool @0x11D5AE0).
+- BSGameSound: kFlag_Loop=0x10, kState_IsLooping=0x20000, SetIsLooping vt+0x14,
+  StopAllSoundsWithFlags request 0x2A, staticAttenuation +0x18, kFlag_2DRadius.

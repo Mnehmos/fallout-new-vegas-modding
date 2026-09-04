@@ -309,7 +309,8 @@
     "label": "GECKWiki engine bugs",
     "url": "https://geckwiki.com/index.php?title=Engine_Bugs_%28Fallout_New_Vegas%29"
    }
-  ]
+  ],
+  "research": "Death-load ghost loop: no public fix (sibling spin-weapon loop fixed by Stewie's bSpinWeaponsSoundFix at engine level). Audio internals from JIP GameSound.h: BSGameSound kFlag_Loop=0x10, kState_IsLooping=0x20000, SetIsLooping vtable+0x14, kRequestType_StopAllSoundsWithFlags=0x2A. Theory: loop handle owned by audio manager survives death-load because the load path issues no stop for orphaned loops; second load's teardown reaches it."
  },
  {
   "id": "FNV-BUG-012",
@@ -335,7 +336,8 @@
     "label": "GECKWiki SayTo",
     "url": "https://geckwiki.com/index.php?title=SayTo"
    }
-  ]
+  ],
+  "research": "No fix for the cross-cell gate (NVSE saytodone event is the workaround). Engine anchors from JG/xNVSE source: ScriptEventList::MarkEvent=0x5AC750 (hook return 0x5AC756), Say completion code at 0x5791C1 (SayToTopicInfo), kEvent_SayToDone=0x40000, blocktype opcode 07. Community theory converges with our static finding: off-cell actors are not high-processed so the say-completion callback never runs - matches the vtable+0x22C gate we located in SayTo's exec."
  },
  {
   "id": "FNV-BUG-013",
@@ -351,7 +353,8 @@
     "label": "GECKWiki engine bugs",
     "url": "https://geckwiki.com/index.php?title=Engine_Bugs_%28Fallout_New_Vegas%29"
    }
-  ]
+  ],
+  "research": "No dedicated fix; practice is packing EGMs into BSAs. Engine anchor: bLoadFaceGenHeadEGTFiles INI Setting @0x11D5ADC, runtime bool @0x11D5AE0 (JG source reads/restores it around fixes). TESNPC FaceGenData +0x134, BSFaceGenNiNode +0x1C4. Theory: EGM/EGT resolution goes through the BSA handler/cached first-load result; loose EGMs shadowed or ignored."
  },
  {
   "id": "FNV-BUG-014",
@@ -384,7 +387,8 @@
     "label": "GECKWiki engine bugs",
     "url": "https://geckwiki.com/index.php?title=Engine_Bugs_%28Fallout_New_Vegas%29"
    }
-  ]
+  ],
+  "research": "No fix; SECOND NV defect documented: IsTalkingActivatorActor always returns false for script-swapped activators. Command opcode 0x1171. Attenuation plumbing exists (BSGameSound staticAttenuation +0x18, min/max distance, kFlag_2DRadius=0x8000000); theory: scripted swap path restarts voice without binding to the 3D emitter/attenuation chain."
  },
  {
   "id": "FNV-BUG-016",
@@ -516,7 +520,8 @@
     "label": "GECKWiki engine bugs",
     "url": "https://geckwiki.com/index.php?title=Engine_Bugs_%28Fallout_New_Vegas%29"
    }
-  ]
+  ],
+  "research": "No public fix. Voice audio path anchors: kFlag_IsVoice=4, Sound::SetNiNode, kRequestType_SoundAtPos=0x1E; xNVSE oncellattach/onrefunset3D hooks are ready-made anchors. Theory converges with BUG-030 on emitter-lifecycle teardown: low-process actors still tick idles while spatialization data is stale."
  },
  {
   "id": "FNV-BUG-024",
@@ -532,7 +537,8 @@
     "label": "GECKWiki engine bugs",
     "url": "https://geckwiki.com/index.php?title=Engine_Bugs_%28Fallout_New_Vegas%29"
    }
-  ]
+  ],
+  "research": "YUP fixed only the DISPLAY half (Pip-Boy shows +5 DT with melee/unarmed equipped; the applied DT correctly gates on attack type). Creature-attack DT half: no public fix. fallout.wiki detail: knockdown immunity DOES cover creature attacks while the DT entry does not - the DT entry's weapon-classification test (melee/unarmed) fails for creatures; display bug suggests the condition checks the PLAYER's equipped weapon instead of the attacker's - same 'whose weapon' confusion behind both symptoms."
  },
  {
   "id": "FNV-BUG-025",
@@ -547,7 +553,8 @@
     "label": "GECKWiki engine bugs",
     "url": "https://geckwiki.com/index.php?title=Engine_Bugs_%28Fallout_New_Vegas%29"
    }
-  ]
+  ],
+  "research": "No public fix. StartCombatResponse is a dialogue-function-table entry (FO3 DIAL table 0x80d81, used in vanilla DLC barks). Theory: response-selection never validates speaker candidacy of nearby actors. Anchors: 'StartCombatResponse' string in exe + the fCombatDialogue* GMST readers (shared processor with BUG-027)."
  },
  {
   "id": "FNV-BUG-026",
@@ -580,7 +587,8 @@
     "label": "GECKWiki engine bugs",
     "url": "https://geckwiki.com/index.php?title=Engine_Bugs_%28Fallout_New_Vegas%29"
    }
-  ]
+  ],
+  "research": "JIP v55.45 'Fixed dialogue combat reactions/comments, all of which were completely broken' is the adjacent public fix. DECISIVE EVIDENCE: JIP settings_enum.h enumerates the full combat-dialogue cooldown GMST family WITH addresses - Attack/Flee/FireExplosive/AvoidThreat/Detection pairs (e.g. fCombatDialogueAttackMinElapsedTime @0x11CFB20, Max @0x11CE4C8; fCombatDetectionDialogueMinElapsedTime @0x11CF0B0) - and TELLINGLY NO 'Hit' elapsed-time GMST exists in the family. The cooldown selector's switch has no hit arm: every qualifying hit re-triggers a Say. Also bDisableCombatDialogue [Combat] @0x11F1764 as a clean anchor."
  },
  {
   "id": "FNV-BUG-028",
@@ -634,6 +642,7 @@
     "label": "GECKWiki engine bugs",
     "url": "https://geckwiki.com/index.php?title=Engine_Bugs_%28Fallout_New_Vegas%29"
    }
-  ]
+  ],
+  "research": "No public fix; scripters stop sounds on NVSE onDisable events as workaround. Same BSGameSound internals as BUG-011; theory: Disable unlinks 3D (onRefUnset3D) but positional loop sounds are not stopped - teardown tied to sound-object destruction the disable path omits. Shares the ExtraActivateLoopSound class path we recovered."
  }
 ]
