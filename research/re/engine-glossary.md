@@ -219,6 +219,16 @@ mov ecx,obj; call ctor; push sectionStr; call 0xEC658F; ret` fragments.
   (vtable+0x8) and calls 0x804210(flag) per matching node — the OnUnequip/effect path
   lives below 0x804210; that is the next trace hop for the fix design.
 - 0x4CE340 is a THIN WRAPPER → 0x4CE380 (the real bulk primitive; next hop).
+- **0x4CE380 CLOSED (2026-09-04):** the 6,816-byte inventory-removal core (48 callees)
+  contains NO unequip machinery in its callee set (no 0x575400 / 0x8248E0 / 0x4BFDA0).
+  Its caller set includes 0x5B5690 (RemoveAllItems exec slot). Therefore: the bulk
+  primitive never unequips internally; RemoveItem (0x5B4E90) compensates by pre-running
+  IsEquipped→teardown, and the bulk handlers do not. Root cause is the ABSENCE of the
+  single-item pre-pass at the bulk call sites, not corruption inside 0x4CE380.
+- **Fix site decision:** patching the call sites (0x5B5690 / 0x5B55A0) to route equipped
+  entries through the 0x575400→0x8248E0 sequence first is safer than editing 0x4CE380,
+  which has three callers including engine paths (0x54B5B0) that may legitimately skip
+  unequipping. An NVSE-plugin approach (stewie-style) can hook the two console execs.
 - 0x41AB70 is NOT the unequip core — it toggles an extra-data/type-0x3E marker
   (0x40FE80/0x410140/0x40FF60 family, cf. the encounter-zone extra work). Correction to
   the earlier note above.
