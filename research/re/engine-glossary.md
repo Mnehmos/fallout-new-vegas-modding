@@ -382,3 +382,15 @@ Struct offsets (xNVSE headers, for field-level patching):
   vtable+0xC, then opposing AV reads 0x3A(a->b) and 0x38(b->a) via getter 0x5E58F0,
   returns clamped result - the pairwise detection-value calculator.
 - FUN_0044ddc0 = list-head getter [p+8]; FUN_00937160 = list-move helper.
+
+### 3.11 Batch C anchors (2026-09-04)
+- 'Old hkpRigidBody' string = Havok rigid-body serialization version warning; xref ->
+  body load/attach function (BUG-020/021/026 cluster anchor). Stewie INI exposes
+  bHavokErrors / bHavokOldRigidBodyErrors (suppressed engine error prints exist).
+- BUG-009: BGSImpactDataSet.impactDatas[materialID <= 11] (12 material slots incl.
+  water) documented in JIP source; GetProjectileRefImpactMaterial proves runtime
+  lookup; ballistic path fails to consume. JIP ProjectileImpact hook = diff point.
+- BUG-010: uGridsToLoad INI key = first-load attach path anchor; (0,0) = zero-init
+  float2 transform write.
+- BUG-022: Collision Sphere Hider NVSE (Nexus 95387) = dedicated community workaround;
+  engine target remains the visibility-bit write on primitive nodes.

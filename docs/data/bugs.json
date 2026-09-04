@@ -269,7 +269,8 @@
     "label": "GECKWiki engine bugs",
     "url": "https://geckwiki.com/index.php?title=Engine_Bugs_%28Fallout_New_Vegas%29"
    }
-  ]
+  ],
+  "research": "No public fix. JIP source documents the structures fully: BGSImpactData (model, effectOrientation, soundLevel, textureSet, decalInfo sub-struct) and BGSImpactDataSet.impactDatas[materialID <= 11] (12 material slots, water is one) plus runtime GetProjectileRefImpactMaterial - the material lookup and decal data exist and are runtime-mutable; only the ballistic flight path fails to consume them. JIP's hookable ProjectileImpact event gives the diff point vs the hitscan path."
  },
  {
   "id": "FNV-BUG-010",
@@ -287,7 +288,8 @@
     "label": "GECKWiki engine bugs",
     "url": "https://geckwiki.com/index.php?title=Engine_Bugs_%28Fallout_New_Vegas%29"
    }
-  ]
+  ],
+  "research": "No public fix (nothing in YUP/VNV/Stewie INI). The 'two grids' trigger matches the uGridsToLoad streaming ring - grep the exe for that INI key to reach the first-load attach path; the (0,0) target suggests a zero-initialized float2 world-transform write in cell attach. Mine state machine anchors: projFlags & 0x200 (armed), base flags (0x426)==0x26."
  },
  {
   "id": "FNV-BUG-011",
@@ -363,7 +365,8 @@
     "label": "GECKWiki engine bugs",
     "url": "https://geckwiki.com/index.php?title=Engine_Bugs_%28Fallout_New_Vegas%29"
    }
-  ]
+  ],
+  "research": "No fix for the multibound+vis-plane flicker; adjacent fixes are other root causes (LOD Flicker Fix, Alpha Rendering Tweaks, Mainframes 83076 for interpenetrating geometry). Community theory = culling-state oscillation per frame + alpha-sort instability; the cull-flag write in BSMultiBoundNode's cull-visit is the suspected oscillation point."
  },
  {
   "id": "FNV-BUG-015",
@@ -462,7 +465,8 @@
     "label": "GECKWiki engine bugs",
     "url": "https://geckwiki.com/index.php?title=Engine_Bugs_%28Fallout_New_Vegas%29"
    }
-  ]
+  ],
+  "research": "No fix; authoring-side guidance only (keep cells/meshes inside Havok bounds). Stewie's INI exposes bHavokErrors / bHavokOldRigidBodyErrors - the engine suppresses Havok serialization errors; 'Old hkpRigidBody' string is the anchor into body serialization. Theory: bodies outside the broadphase get a degenerate transform on reactivation via the enable-state/cell-attach path."
  },
  {
   "id": "FNV-BUG-021",
@@ -478,7 +482,8 @@
     "label": "GECKWiki engine bugs",
     "url": "https://geckwiki.com/index.php?title=Engine_Bugs_%28Fallout_New_Vegas%29"
    }
-  ]
+  ],
+  "research": "No fix. Same Havok cluster as BUG-020; sim-update scheduler skips/late-applies updates for culled refs or mid-attach bodies (documented no-collision-on-load Steam reports match). Anchors: hkp error strings, bhk* RTTI, JIP ProjectileImpact call site."
  },
  {
   "id": "FNV-BUG-022",
@@ -493,7 +498,8 @@
     "label": "GECKWiki engine bugs",
     "url": "https://geckwiki.com/index.php?title=Engine_Bugs_%28Fallout_New_Vegas%29"
    }
-  ]
+  ],
+  "research": "HAS a dedicated community fix: Collision Sphere Hider NVSE (Nexus 95387) hides the spheres via ref scan - confirming the objects are addressable refs whose render/visibility flag transiently resolves visible on load. That mod is a workaround, not an engine patch; the visibility-bit write on editor-primitive nodes remains the RE target."
  },
  {
   "id": "FNV-BUG-023",
@@ -555,7 +561,8 @@
     "label": "GECKWiki engine bugs",
     "url": "https://geckwiki.com/index.php?title=Engine_Bugs_%28Fallout_New_Vegas%29"
    }
-  ]
+  ],
+  "research": "No engine fix; GECK-side guidance (restitution partially broken in NV; bounces only on boxy/acute contacts, spherical almost never). Strong version evidence: NV's Havok build lacks NifSkope's 'Stabilized' motion systems (act as MO_SYS_INVALID) and the exe contains an 'Old hkpRigidBody' serialization warning - FO3/NV Havok SDK mismatch is the leading theory; contact-material resolution on curved surfaces the suspected defect site."
  },
  {
   "id": "FNV-BUG-027",
