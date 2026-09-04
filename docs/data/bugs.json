@@ -175,11 +175,12 @@
  {
   "id": "FNV-BUG-005",
   "title": "Actor templates in leveled lists are selected disproportionately often",
-  "status": "active",
+  "status": "remapped",
   "subsystem": "Leveled lists / actors",
   "priority": 5,
   "platform": "New Vegas; reported working in Fallout 3",
   "summary": "GECKWiki reports that if an actor template is itself in a leveled list, it is almost always chosen. The Fallout 3 comparison makes this another useful engine-differential target.",
+  "re_findings": "2026-09-04 anchors: PlaceLeveledActorAtMe console exec = 0x5D9810 (command struct name-slot 0x11951B8). Leveled-actor level formula settings located: fLeveledActorMultEasy/Medium/Hard/Boss name strings @0x1016214-0x1028266, iLevCreaLevelDifferenceMax @0x10289EC. The template-vs-entry weighting defect is expected in the leveled-form selection reached from the PlaceLeveledActorAtMe path; 'Invalid LeveledCharacter' diagnostics @0x10382B0/0x1038358 confirm the validation neighborhood.",
   "hypothesis": "The New Vegas leveled-actor selection path treats template entries differently during eligibility filtering or random weighting.",
   "next": "Build a controlled LVLC/LVLN test with equal-weight template and non-template candidates, gather selection frequencies, then trace the leveled actor picker and compare against Fallout 3/Xbox evidence where available.",
   "sources": [
@@ -209,11 +210,12 @@
  {
   "id": "FNV-BUG-007",
   "title": "Combat / CAUTION state can remain stuck after threats are gone",
-  "status": "active",
+  "status": "remapped",
   "subsystem": "AI / combat state",
   "priority": 4,
   "platform": "Fallout 3 and New Vegas",
   "summary": "Combat or caution may persist after moving to a cell with no alerted actors or after enemies die; GECKWiki marks this as only partially fixed by JohnnyGuitar.",
+  "re_findings": "2026-09-04 anchors: '[CAUTION]' HUD/status string @0x105B3F4 referenced at 0xF6F0C3 - that code region owns the caution-state display/aggregation; sSneakCaution gamesetting string @0x105B3E4. The stuck-state invalidation logic (or its absence) on actor-death/cell-transition lives in this neighborhood.",
   "hypothesis": "One or more detection/combat participants remain registered or a global/player combat-state aggregate is not invalidated on unload/death transitions.",
   "next": "Verify behavior with current JohnnyGuitar installed and without it, isolate the remaining reproduction case, then trace player combat-state aggregation and actor removal callbacks.",
   "sources": [
@@ -278,11 +280,12 @@
  {
   "id": "FNV-BUG-011",
   "title": "Looping weapon/object sounds survive reload or disable transitions",
-  "status": "active",
+  "status": "remapped",
   "subsystem": "Audio / lifecycle",
   "priority": 3,
   "platform": "PC",
   "summary": "GECKWiki lists several related lifecycle failures: looping weapon audio can replay after death-load, and disabled objects can continue emitting looping sounds.",
+  "re_findings": "2026-09-04 anchor: RTTI '.?AVExtraActivateLoopSound@@' TypeDescriptor @0x11851A8 (name @0x11851B0) -> COL 0x1104F70 -> vtable 0x1015F18. The activate-loop-sound extra-data class owns looping sound lifecycle on references; its teardown-on-disable/save-load path is where the stuck loop bug lives.",
   "hypothesis": "Looping sound handles are not consistently stopped when their owning reference is disabled, unloaded, or reconstructed from a save.",
   "next": "Split into weapon-reload and disabled-object repro cases, capture sound-handle lifecycle, and identify the teardown path omitted by the failing transition.",
   "sources": [
@@ -415,11 +418,12 @@
  {
   "id": "FNV-BUG-019",
   "title": "Aggro Radius Behavior can suppress packages indefinitely",
-  "status": "seed",
+  "status": "remapped",
   "subsystem": "AI / combat packages",
   "priority": 3,
   "platform": "PC",
   "summary": "Actors with Aggro Radius Behavior may stop executing packages near the player even when non-hostile after enough game time has elapsed.",
+  "re_findings": "2026-09-04 anchors: aggro-radius violation check code at 0x5A4FF2 (debug strings '%s has his aggro radius violated' @0x103619C / '%s does not have...' @0x1036170 pushed there); GetActorAggroRadiusViolated command name @0x1040F8C. The 'constant aggro' suppression defect is expected in the violation-state persistence around this check.",
   "sources": [
    {
     "label": "GECKWiki engine bugs",
@@ -586,11 +590,12 @@
  {
   "id": "FNV-BUG-030",
   "title": "Disabled looping-sound objects can keep playing audio",
-  "status": "seed",
+  "status": "remapped",
   "subsystem": "Audio / lifecycle",
   "priority": 3,
   "platform": "PC",
   "summary": "Separated from the save/reload looping weapon case to test whether both failures converge on the same sound-handle teardown path.",
+  "re_findings": "2026-09-04 anchor: shares the ExtraActivateLoopSound class with FNV-BUG-011 - TypeDescriptor 0x11851A8, COL 0x1104F70, vtable 0x1015F18. The disable-transition teardown is a method (or missing call) on this class; recovering its slots is the next step.",
   "sources": [
    {
     "label": "GECKWiki engine bugs",

@@ -23,7 +23,12 @@ Last updated: 2026-09-04
 | FNV-BUG-013 | Loose EGM files BSA-only | EGM path build 0x6535A3 (sprintf %s%s.egm, race-dir table 0x119B734) in BSFaceGenManager; inspect file-open after 0x6535F0 |
 | FNV-BUG-014 | Multibound culling flicker | 'Update Multibound Visibility' label push 0xF38B97 inside the culling fn; ToggleMultiboundCheck console cmd for runtime repro |
 | FNV-BUG-015 | Talking activators no attenuation | SetTalkingActivatorActor exec 0x5D4CC0; trace forward into dialogue audio consumption |
-| FNV-BUG-017 | Once a Day flag inconsistent | RTTI ExtraSayTopicInfoOnceADay TypeDescriptor 0x118521C; recover COL/vtable next |
+| FNV-BUG-017 | Once a Day flag inconsistent | Class fully identified: extra type 0x73, ctors 0x437440/0x437510, vtable 0x1015F3C, per-day heap obj +0xC; consult site = GetExtraData(0x73) consumers, next |
+| FNV-BUG-005 | Leveled actor template bias | PlaceLeveledActorAtMe exec 0x5D9810; leveling settings cluster @0x1016214+ |
+| FNV-BUG-007 | CAUTION/combat stuck | '[CAUTION]' state code @0xF6F0C3 |
+| FNV-BUG-011 | Loop sounds survive transitions | ExtraActivateLoopSound vtable 0x1015F18 recovered |
+| FNV-BUG-019 | Aggro radius suppresses packages | Violation check @0x5A4FF2 with debug strings |
+| FNV-BUG-030 | Disabled loop-sound objects play | Shares ExtraActivateLoopSound with BUG-011 |
 
 ## RESEARCH IN FLIGHT — 4 web-research batches (all 29 open bugs covered)
 

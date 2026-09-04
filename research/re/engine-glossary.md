@@ -269,7 +269,19 @@ the 0x575400→0x8248E0→0x804210 teardown sequence, re-run the repro.
 | BUG-017 | RTTI TypeDescriptor '.?AVExtraSayTopicInfoOnceADay@@' @0x118521C (descriptor base 0x1185210) | say-once-a-day extra-data class; recover COL→vtable for methods |
 | (support) | BGSImpactDataSet RTTI 0x11862E4; DefaultImpactDataSet str 0x1033374; BSMultiBound* RTTI 0x11885E4+; CheckWithinMultiBoundTask 0x118B6D4 | cluster identification aids |
 
-### 3.5 Prior subsystem maps (do not re-derive)
+### 3.5 Round-2 sweep anchors + pass-4 findings (2026-09-04)
+
+| Bug | Anchor | Meaning |
+|-----|--------|---------|
+| BUG-005 | PlaceLeveledActorAtMe exec **0x5D9810** (struct slot 0x11951B0); fLeveledActorMultEasy/Medium/Hard/Boss @0x1016214+; iLevCreaLevelDifferenceMax @0x10289EC | leveled-actor selection/leveling path |
+| BUG-007 | '[CAUTION]' @0x105B3F4 referenced at **0xF6F0C3**; sSneakCaution @0x105B3E4 | caution/combat state aggregation neighborhood |
+| BUG-011/030 | ExtraActivateLoopSound: TD 0x11851A8 → COL 0x1104F70 → vtable **0x1015F18** | loop-sound extra-data class; disable/save teardown in its slots |
+| BUG-019 | aggro-radius violation check at **0x5A4FF2** (debug strings 0x1036170/0x103619C); GetActorAggroRadiusViolated cmd @0x1040F8C | violation-state persistence |
+| BUG-013 (pass 4) | FUN_004037F0 = string-setter only; the EGM *loader* is the following FUN_00559450 call in FUN_00653520 | next hop = FUN_00559450's EGM branch |
+| BUG-017 (pass 4) | ExtraSayTopicInfoOnceADay ctor pair 0x437440/0x437510: extra type **0x73**, vtable 0x1015F3C, per-day state = heap obj at +0xC; vtable slot1 = stub `return 0` | consult site = whoever GetExtraData(0x73)s; check FUN_00428150 (ExtraDataList::LoadGame, already in corpus) for the 0x73 load branch |
+| BUG-009 (pass 4) | ballistic picker decompiled = FUN_009A6E90 (contains the sole reader 0x9A7141) | read next: water-material branch in its collision sampling |
+
+### 3.6 Prior subsystem maps (do not re-derive)
 
 - Encounter zones: `research/re/encounter_zone_subsystem.md` (BGSEncounterZone layout,
   XZEN link, registry readers).
