@@ -255,7 +255,21 @@ the 0x575400→0x8248E0→0x804210 teardown sequence, re-run the repro.
 - Open: find the shared engine remove/unequip core via 0x5D0300 and 0x5B4E90 callee
   diff vs 0x5B1570's bulk path.
 
-### 3.4 Prior subsystem maps (do not re-derive)
+### 3.4 Cluster anchors from the pass-3 sweep (2026-09-04)
+
+| Bug | Anchor | Meaning |
+|-----|--------|---------|
+| BUG-009 | Setting 0x11CFD7C = iBallisticProjectilePathPickSegments (ctor 0xF5E41A); sole runtime reader **0x9A7141** | ballistic path picker for non-hitscan projectiles; water-impact decal branch expected in/near it |
+| BUG-012 | SayTo exec **0x5C9100** (struct slot 0x1191130); SayToDone exec 0x5CA950; predicate 0x5CA1C0 | speech initiation → completion event chain |
+| BUG-013 | EGM path build **0x6535A3** ('%s%s.egm' @0x6535B5, '%s.egm' @0x6535D7, race-dir table [edx*4+0x119B734]) | BSFaceGenManager loose/BSA resolution |
+| BUG-013 (pass-3 CLOSED CHAIN) | decompiled FUN_00653520: strips extension, appends `.egm` (+ NoHat variant via table 0x119B734), then calls **FUN_004037f0(path, 0)** — that single callee is the archive-vs-loose file resolver; the BSA-only behavior lives inside it | next decompile hop |
+| BUG-017 (vtable recovered) | ExtraSayTopicInfoOnceADay: TypeDescriptor 0x1185214 → COL 0x1105054 → vtable **0x1015F3C**; slots: dtor 0x4374E0, 0x8D0370, 0x10150A0, 0x41B680/0x40F700 (shared extra-data save/load, already in corpus); instantiated at 0x43747C / 0x43754C / 0x4375EB | constructor/consult sites |
+| BUG-014 | 'Update Multibound Visibility' label push **0xF38B97** | multibound culling/visibility updater; ToggleMultiboundCheck cmd + bUseMultibounds ini for repro |
+| BUG-015 | SetTalkingActivatorActor exec **0x5D4CC0** (struct slot 0x11942B8, id 0x1171) | talking-activator actor assignment |
+| BUG-017 | RTTI TypeDescriptor '.?AVExtraSayTopicInfoOnceADay@@' @0x118521C (descriptor base 0x1185210) | say-once-a-day extra-data class; recover COL→vtable for methods |
+| (support) | BGSImpactDataSet RTTI 0x11862E4; DefaultImpactDataSet str 0x1033374; BSMultiBound* RTTI 0x11885E4+; CheckWithinMultiBoundTask 0x118B6D4 | cluster identification aids |
+
+### 3.5 Prior subsystem maps (do not re-derive)
 
 - Encounter zones: `research/re/encounter_zone_subsystem.md` (BGSEncounterZone layout,
   XZEN link, registry readers).

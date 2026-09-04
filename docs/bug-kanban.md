@@ -16,7 +16,14 @@ Last updated: 2026-09-04
 
 ## RE MAPPING — static analysis under way
 
-_(empty — BUG-002 and BUG-003 promoted to ROOT CAUSE CONFIRMED below.)_
+| Bug | Title | Current state |
+|-----|-------|---------------|
+| FNV-BUG-009 | Ballistic projectiles ignore water impact decals | Ballistic path picker = sole reader 0x9A7141 of Setting 0x11CFD7C (iBallisticProjectilePathPickSegments); water-impact branch expected in/near it; pass-3 decompile queued |
+| FNV-BUG-012 | SayToDone fails off-cell | SayTo exec 0x5C9100, SayToDone exec 0x5CA950 + predicate 0x5CA1C0; event machinery downstream of SayTo initiation |
+| FNV-BUG-013 | Loose EGM files BSA-only | EGM path build 0x6535A3 (sprintf %s%s.egm, race-dir table 0x119B734) in BSFaceGenManager; inspect file-open after 0x6535F0 |
+| FNV-BUG-014 | Multibound culling flicker | 'Update Multibound Visibility' label push 0xF38B97 inside the culling fn; ToggleMultiboundCheck console cmd for runtime repro |
+| FNV-BUG-015 | Talking activators no attenuation | SetTalkingActivatorActor exec 0x5D4CC0; trace forward into dialogue audio consumption |
+| FNV-BUG-017 | Once a Day flag inconsistent | RTTI ExtraSayTopicInfoOnceADay TypeDescriptor 0x118521C; recover COL/vtable next |
 
 ## RESEARCH IN FLIGHT — 4 web-research batches (all 29 open bugs covered)
 

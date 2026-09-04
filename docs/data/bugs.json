@@ -137,7 +137,7 @@
   "summary": "GECKWiki reports that mass-removal commands do not execute OnUnequip blocks and can leave effects behind. Older modder reports also describe partially removed equipped armor and corrupted inventory state.",
   "hypothesis": "CONFIRMED by static analysis: the bulk-removal path bypasses the equipment teardown. RemoveItem (0x5B4E90) checks IsEquipped (0x575400) and runs the unequip teardown (0x8248E0 / 0x41AB70 family) before invoking the vtable+0x17C remove per item. RemoveAllTypedItems (0x5B55A0) instead calls the shared inventory-remove primitive FUN_004CE340 + list rebuild FUN_00952C30 with no IsEquipped check and no unequip call. RemoveAllItems' console handler (0x5B1570) is a parser/re-emitter dispatching through the command table function pointer at record+0x1C.",
   "root_cause": "Bulk removal goes straight to InventoryChanges-style removal (0x4CE340) and never enters the equip/unequip lifecycle, so OnUnequip blocks never fire and persistent magic effects applied at equip time are never torn down. The single-item path proves the lifecycle functions exist and are wired (0x575400 IsEquipped -> 0x8248E0 -> vtable+0x17C); the bulk path simply omits the loop that routes equipped entries through them.",
-  "re_findings": "Console command anchors (GOG clean image): RemoveAllItems name 0x1040B74/struct 0x1192418/handler 0x5B1570; RemoveAllTypedItems 0x103E114/0x1196478/0x5B55A0; RemoveItem 0x1041268/0x11915E0/0x5B4E90; UnequipItem 0x1040584/0x1192E68/0x5D0300. Command struct layout: name @+0x0 (slot), exec @name_slot+0x18, shared post-mod callback 0x5B1BA0 @+0x1C. Decompiled C in research/re/decompiled/FUN_005b1570/5b4e90/5b55a0/5d0300 .c files; analysis record in glossary section 3.3.",
+  "re_findings": "Console command anchors (GOG clean image): RemoveAllItems name 0x1040B74/struct 0x1192418/exec 0x5B5690; RemoveAllTypedItems 0x103E114/0x1196478/0x5B55A0; RemoveItem 0x1041268/0x11915E0/0x5B4E90; UnequipItem 0x1040584/0x1192E68/0x5D0300. Command struct layout: name @+0x0 (slot), exec @name_slot+0x18, shared post-mod callback 0x5B1BA0 @+0x1C. DECOMPILED (2026-09-04): RemoveAllItems exec FUN_005b5690 calls FUN_004ce380(refr, item, 0, silent, 0, flag, 0xffffffff /*count=-1 remove-all*/, 0) + FUN_00952c30(refr) rebuild - NO IsEquipped/unequip anywhere. RemoveItem exec FUN_005b4e90 conversely performs per-item: 0x575400 IsEquipped -> 0x8248E0 teardown -> vtable+0x17C. The 6.8KB primitive 0x4CE380 itself contains no unequip machinery in its 48 callees. Analysis record in glossary section 3.3.",
   "fix_direction": "Route equipped entries through the same IsEquipped(0x575400)->teardown(0x8248E0)->vtable+0x17C sequence the RemoveItem handler performs, applied at the two bulk exec call sites (0x5B5690 / 0x5B55A0). Do NOT patch the shared primitive 0x4CE380 - it has three callers including engine path 0x54B5B0 and lacks unequip internally by design. Shared with FNV-BUG-028 and FNV-BUG-029 (same mechanism, different observable symptom).",
   "next": "Runtime repro on clean GOG vanilla: scripted armor with an observable OnUnequip block + enchantment effect, equip, RemoveAllItems, assert no block fire + effect remains. Then prototype the NVSE-plugin fix mirroring the RemoveItem teardown sequence and re-run repro.",
   "sources": [
@@ -243,11 +243,12 @@
  {
   "id": "FNV-BUG-009",
   "title": "Ballistic projectiles ignore defined water impact decals",
-  "status": "active",
+  "status": "remapped",
   "subsystem": "Projectiles / rendering",
   "priority": 3,
   "platform": "PC",
   "summary": "Non-hitscan projectiles using full ballistic flight modeling reportedly fail to use water impact decals even when the impact data set defines them.",
+  "re_findings": "2026-09-04 anchor: gamesetting iBallisticProjectilePathPickSegments = Setting object 0x11CFD7C (ctor thunk 0xF5E41A). Sole runtime reader at 0x9A7141 - that is the ballistic path picker where non-hitscan collision/impact sampling happens; the water-material impact branch is expected in or near it. BGSImpactDataSet RTTI @0x11862E4, DefaultImpactDataSet string @0x1033374 available as supporting anchors.",
   "hypothesis": "The ballistic collision path bypasses or misclassifies the water-material impact branch used by hitscan projectiles.",
   "next": "Create matched hitscan and ballistic weapons using the same impact data, reproduce at controlled water surfaces, then compare impact-dispatch call paths.",
   "sources": [
@@ -294,11 +295,12 @@
  {
   "id": "FNV-BUG-012",
   "title": "SayToDone fails when the speaker is outside the player's cell",
-  "status": "active",
+  "status": "remapped",
   "subsystem": "Dialogue / scripting",
   "priority": 3,
   "platform": "PC",
   "summary": "SayToDone reportedly does not fire for an actor outside the player's current cell regardless of persistence/quest status. Related Say/SayTo package-result calls can hang when the player is elsewhere.",
+  "re_findings": "2026-09-04 anchors: SayTo console exec = 0x5C9100 (command struct name-slot 0x1191130); SayToDone exec = 0x5CA950 with predicate 0x5CA1C0 (topic/speaker availability check returning 1.0f/0.0f). The speech-completion event machinery that fails off-cell is downstream of the SayTo initiation path - next hop is the audio/conversation completion consumer.",
   "hypothesis": "Dialogue completion notification is tied to the high-process actor/audio update path rather than persistent script/event state.",
   "next": "Build two-cell scripted dialogue repro, compare event dispatch with NVSE's SayToDone event handling, then trace completion notification ownership across actor process levels.",
   "sources": [
@@ -319,11 +321,12 @@
  {
   "id": "FNV-BUG-013",
   "title": "Loose EGM files do not load reliably outside BSAs",
-  "status": "seed",
+  "status": "remapped",
   "subsystem": "Assets / facegen",
   "priority": 2,
   "platform": "PC",
   "summary": "GECKWiki remaining-bug seed; independent 2026 verification pending.",
+  "re_findings": "2026-09-04 anchor: EGM path construction at 0x6535A3-0x6535ED (sprintf '%s%s.egm' @0x6535B5 / '%s.egm' @0x6535D7 into 0x104-byte buffers, race-directory table indexed at [edx*4+0x119B734]) inside the BSFaceGenManager load path (module path strings D:\\...BSFaceGenManager.cpp nearby). The loose-vs-BSA resolution decision follows this build - inspect the file-open call after 0x6535F0 for the archive-only behavior.",
   "sources": [
    {
     "label": "GECKWiki engine bugs",
@@ -334,11 +337,12 @@
  {
   "id": "FNV-BUG-014",
   "title": "Multibound culling flickers with visibility planes",
-  "status": "seed",
+  "status": "remapped",
   "subsystem": "Rendering / culling",
   "priority": 2,
   "platform": "PC",
   "summary": "GECKWiki remaining-bug seed; likely renderer/culling interaction. Independent verification pending.",
+  "re_findings": "2026-09-04 anchors: debug/task label 'Update Multibound Visibility' pushed at 0xF38B97 inside the multibound visibility updater (the culling function). Supporting: RTTI BSMultiBoundNode/CheckWithinMultiBoundTask (@0x118B6D4), 'MASTERFILE: Unable to find multibound ref' diagnostic @0x10146B8, ini bUseMultibounds:General @0x102F4D0, console ToggleMultiboundCheck (name @0x1042248) for runtime toggling during repro.",
   "sources": [
    {
     "label": "GECKWiki engine bugs",
@@ -349,11 +353,12 @@
  {
   "id": "FNV-BUG-015",
   "title": "Talking activators have no distance attenuation",
-  "status": "seed",
+  "status": "remapped",
   "subsystem": "Audio / dialogue",
   "priority": 2,
   "platform": "New Vegas; reported working in Fallout 3",
   "summary": "SetTalkingActivatorActor references reportedly ignore distance attenuation. GECKWiki notes this may be intentional in New Vegas.",
+  "re_findings": "2026-09-04 anchor: SetTalkingActivatorActor console exec = 0x5D4CC0 (command struct name-slot 0x11942B8, id 0x1171). The attenuation behavior (or its absence) for the activator's voice follows from how the set actor is consumed by the dialogue audio path - trace forward from this handler.",
   "sources": [
    {
     "label": "GECKWiki engine bugs",
@@ -379,11 +384,12 @@
  {
   "id": "FNV-BUG-017",
   "title": "AI dialogue package Once a Day flag is inconsistent",
-  "status": "seed",
+  "status": "remapped",
   "subsystem": "AI / dialogue packages",
   "priority": 2,
   "platform": "New Vegas; reported working in Fallout 3",
   "summary": "GECKWiki remaining-bug seed; reproduction matrix still needed.",
+  "re_findings": "2026-09-04 anchor: RTTI type descriptor '.?AVExtraSayTopicInfoOnceADay@@' @0x118521C - the extra-data class implementing say-once-a-day semantics. Next: recover the complete-object-locator/vtable from this TypeDescriptor to get the class methods (the once-per-day check + its reset condition), then compare against the FO3 behavior the wiki says works.",
   "sources": [
    {
     "label": "GECKWiki engine bugs",
