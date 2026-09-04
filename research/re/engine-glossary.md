@@ -413,3 +413,16 @@ Struct offsets (xNVSE headers, for field-level patching):
 - BUG-013: FUN_00650ba0 ruled out as map insert - it is the two-queue facegen retry
   processor (queues 0/1, aging +10). Insertion-site hunt remains open; candidate
   approach: scan writes near the bucket array of the map object used by 0x6C62D0.
+
+### 3.14 Session-3 close-out notes (2026-09-04)
+- BUG-024: static engine trail complete (tables/validator/filters/condition-eval
+  0x680C60). ESM data side NOT extracted: GOG FalloutNV.esm (245MB) has a header
+  layout that defeated three naive walkers (mixed 22/24-byte record headers;
+  walk desyncs after record 2: 'CauselessRebel', 'BondsOfSteel', then garbage).
+  Use a proper parser (xEdit dump, pyffi, or xNVSE's plugin record reader) to pull
+  Stonewall's PRKE/PRKC filter+condition. String hits: 'Stonewall' @0xDF8A1+ are in
+  early groups (GMST FULL strings), not the PERK record.
+- Loop state at close: 1 shipped / 8 root-caused entries (6 defects) / 13 remapped
+  with precise next hops / 5 seed. Static hops queued: BUG-013 map-insert xrefs,
+  BUG-018 idle loop, BUG-009 projectile-impact dispatcher (JIP hooks.h address),
+  BUG-024 ESM read. Runtime verification queue: BUG-002/003/004/006/027 repros.
