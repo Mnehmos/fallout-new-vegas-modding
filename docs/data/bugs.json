@@ -349,7 +349,7 @@
   "priority": 2,
   "platform": "PC",
   "summary": "GECKWiki remaining-bug seed; independent 2026 verification pending.",
-  "re_findings": "2026-09-04 FULL CHAIN MAPPED: facegen caller FUN_00654720 -> path builder FUN_00653520 ('.egm' sprintf) -> EGM load orchestrator FUN_00651b50 (BSFaceGenManager.cpp line 0x3E5, per embedded source string) -> open wrapper FUN_00650200 (success flag stored at ctx+0x20) -> file open FUN_006c62d0. The BSA-vs-loose resolution is inside 0x6C62D0 - the final hop for this bug. Config anchor bLoadFaceGenHeadEGTFiles @0x11D5ADC.",
+  "re_findings": "2026-09-04 pass 14: FUN_006c62d0 decompiled - it is NOT a file open but a PATH-KEYED CACHE LOOKUP (hash via vtable+4, bucket-chain compare via vtable+8, hit -> FUN_006e5cc0(entry+8), miss -> 0). The EGM load chain (0x654720 -> 0x653520 path build -> 0x651B50 orchestrator -> 0x650200 wrapper -> 0x6C62D0 cache) therefore resolves EGMs exclusively through this map. Root-cause candidate refined: the map's INSERTION path determines loose-file behavior - if only the BSA/archive enumeration populates it (loose files only via invalidation first-load), loose EGMs are invisible. Final hop: xref insertion sites into this hash map (writes at bucket heads) and identify the filesystem-vs-archive population branch. This matches the fomm/NMM ArchiveInvalidation workaround ecosystem exactly.",
   "sources": [
    {
     "label": "GECKWiki engine bugs",
