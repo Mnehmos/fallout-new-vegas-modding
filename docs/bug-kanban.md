@@ -4,7 +4,7 @@ Tracking board for the GECKWiki "Engine Bugs (Fallout New Vegas)" RE effort.
 Source of truth for per-bug detail: `docs/data/bugs.json` (IDs here match its `id` fields).
 When a bug advances a column, update its `status`/`next` in bugs.json AND move it here.
 
-Last updated: 2026-09-04
+Last updated: 2026-09-04 (session 3: 8 root-caused entries / 6 defects)
 
 ---
 
@@ -19,8 +19,6 @@ Last updated: 2026-09-04
 | Bug | Title | Current state |
 |-----|-------|---------------|
 | FNV-BUG-009 | Ballistic projectiles ignore water impact decals | Ballistic path picker = sole reader 0x9A7141 of Setting 0x11CFD7C (iBallisticProjectilePathPickSegments); water-impact branch expected in/near it; pass-3 decompile queued |
-| FNV-BUG-012 | SayToDone fails off-cell | SayTo exec 0x5C9100, SayToDone exec 0x5CA950 + predicate 0x5CA1C0; event machinery downstream of SayTo initiation |
-| FNV-BUG-013 | Loose EGM files BSA-only | EGM path build 0x6535A3 (sprintf %s%s.egm, race-dir table 0x119B734) in BSFaceGenManager; inspect file-open after 0x6535F0 |
 | FNV-BUG-014 | Multibound culling flicker | 'Update Multibound Visibility' label push 0xF38B97 inside the culling fn; ToggleMultiboundCheck console cmd for runtime repro |
 | FNV-BUG-015 | Talking activators no attenuation | SetTalkingActivatorActor exec 0x5D4CC0; trace forward into dialogue audio consumption |
 | FNV-BUG-017 | Once a Day flag inconsistent | Class fully identified: extra type 0x73, ctors 0x437440/0x437510, vtable 0x1015F3C, per-day heap obj +0xC; consult site = GetExtraData(0x73) consumers, next |
@@ -59,9 +57,10 @@ BUG-003/028/029 (NVSE command-table strings lead straight to handlers), BUG-024 
 | FNV-BUG-002 | iSneakLevelBonus can invert the sneak modifier | Ghidra C line `(max-clamped sibling) + (L2−L1)*iSneakLevelBonus` unclamped signed term in FUN_00642ed0 (0x642ED0); all 8 settings bound; caller arg map complete | Runtime A/B for sign direction; clamp-patch design; plugin build |
 | FNV-BUG-003 | RemoveAllItems skips unequip lifecycle | Bulk handler 0x5B55A0 calls 0x4CE340 directly; single-item 0x5B4E90 proves the missing IsEquipped(0x575400)→unequip(0x8248E0)→vtable+0x17C sequence; decompiled C for all four handlers | Runtime repro (scripted armor + OnUnequip); patch prototype |
 
-Shared-mechanism siblings: FNV-BUG-028 (RemoveAllTypedItems) and FNV-BUG-029
-(OnEquip/OnUnequip event miss) are the same defect as BUG-003 — keep separate entries
-for symptom-level verification, but the root cause above covers both.
+| FNV-BUG-012 | SayToDone fails off-cell | Completion marker FUN_00579160 works but is a table callback (0x102F69C) dispatched only on the processed-speaker path; SayTo exec gates on vtable+0x22C | Two-cell repro; vtable+0x22C identity; hook prototype |
+| FNV-BUG-027 | Hit-bark sounds have no cooldown | Combat-dialogue processor FUN_009839b0 switch arms 0/1/3/4/5 only — no case 2 (hit), no Hit GMST exists; only a global 1500ms gate | Bark-count repro; case-2 cooldown patch |
+
+Shared-mechanism siblings: FNV-BUG-028 and FNV-BUG-029 share the BUG-003 root cause.
 
 ## FIX SHIPPED
 
