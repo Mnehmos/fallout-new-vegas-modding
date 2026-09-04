@@ -165,7 +165,7 @@
   "priority": 5,
   "platform": "PC",
   "summary": "GECKWiki reports that enchantments on NPC-worn armor can be reapplied on each load and stack indefinitely.",
-  "re_findings": "2026-09-04 anchors: RTTI '.?AVEnchantmentItem@@' TypeDescriptor @0x118359C (the per-actor active-equipment-enchantment manager class); supporting strings sCanNotEquipWornEnchantment @0x105FDD0, 'SAVELOAD: Enchantable item %08X with no enchantment exists in the created base objects list' @0x1081C60, MASTERFILE enchanting-owner diagnostics @0x101AF00+. The reapply-without-recovery-flag behavior is expected in the actor-load path that constructs EnchantmentItem entries; TD->COL->vtable recovery is the next step.",
+  "re_findings": "2026-09-04 anchors: RTTI '.?AVEnchantmentItem@@' TypeDescriptor @0x1183594 (xNVSE symbol table confirms) with 18 references: 7 RTDynamicCast sites in .text - most notably 0x824A9D inside the same 0x824xxx equipment region as the BUG-003 teardown loop (0x8248E0), plus 0x815E85/0x8C49D7/0x8CF32B/0x48324E/0x40936C - these are the equip-change sites that activate enchantments; the NPC-load re-application lives among them. Supporting strings sCanNotEquipWornEnchantment @0x105FDD0, 'SAVELOAD: Enchantable item...' @0x1081C60. Pass-6 decompile queued for all cast-site functions.",
   "hypothesis": "Actor load/equipment restoration reapplies the armor effect without checking for an existing equivalent active effect or without restoring the effect as recovered state.",
   "next": "Create an NPC with a measurable armor enchant, cycle unload/reload repeatedly, log actor values, then trace armor restoration and magic-effect application calls.",
   "sources": [
@@ -203,7 +203,7 @@
   "priority": 4,
   "platform": "New Vegas; reported working in Fallout 3",
   "summary": "Sleep, find, patrol and eat packages may fail to advance unless the player enters the cell, crosses a load door, or fast-travels, even when low-level processing should apply.",
-  "re_findings": "2026-09-04 anchor: RTTI '.?AVExtraProcessMiddleLow@@' TypeDescriptor @0x1183C64 - the extra-data object that carries an actor's middle/low process assignment. The wiki's 'wrong process level chosen' theory maps directly onto how this extra is (re)evaluated for off-screen actors; recover COL/vtable + the scheduler that reads it. Full extra-class RTTI index now in glossary 3.6 for the neighboring classes (ExtraHavok for BUG-010/020/021/026, ExtraWorn/ExtraWornLeft for BUG-003 fix design).",
+  "re_findings": "2026-09-04 anchors: ExtraProcessMiddleLow TD @0x1183C5C AND MiddleLowProcess class TD @0x11A3668 (both confirmed by the xNVSE symbol table). MiddleLowProcess is dynamic-cast at exactly two sites - 0x8D06B0 and 0x8D0724 - which are the process-level transition/scheduling code; those two functions are the decisive trace targets (pass-6 queued). xNVSE struct offsets on file: BaseProcess::processLevel +0x28, ActorProcessManager buckets, MobileObject+0x87 = inverse NoLowLevelProcessing.",
   "hypothesis": "New Vegas selects the wrong process level or skips package ticks for unloaded actors under some package categories.",
   "next": "Construct deterministic patrol/sleep actors with timestamps, compare same-cell and off-cell progress, identify process-level selection and package scheduler functions.",
   "sources": [
@@ -222,7 +222,7 @@
   "priority": 4,
   "platform": "Fallout 3 and New Vegas",
   "summary": "Combat or caution may persist after moving to a cell with no alerted actors or after enemies die; GECKWiki marks this as only partially fixed by JohnnyGuitar.",
-  "re_findings": "2026-09-04 anchors: '[CAUTION]' HUD/status string @0x105B3F4 referenced at 0xF6F0C3 - that code region owns the caution-state display/aggregation; sSneakCaution gamesetting string @0x105B3E4. The stuck-state invalidation logic (or its absence) on actor-death/cell-transition lives in this neighborhood.",
+  "re_findings": "2026-09-04 anchors: '[CAUTION]' HUD/status string @0x105B3F4 referenced at 0xF6F0C3 (caution-state display/aggregation); sSneakCaution @0x105B3E4. Community-confirmed engine addresses (JG NVSE source): GetPlayerInCombat=0x953C50, bFixFleeing patch site 0x8F5FE2, combat-music routine 0x992D90 (call site 0x82FC0B), named Actor::TrespassAlarm/StealAlarm. State holders: HighProcess::combatTarget +0x404, detectedActors +0x25C / detectingActors +0x260, fAwarePlayerTimer +0x34C. The latch defect is in whatever clears combatTarget/SetAlert(false) - trace from GetPlayerInCombat's readers.",
   "hypothesis": "One or more detection/combat participants remain registered or a global/player combat-state aggregate is not invalidated on unload/death transitions.",
   "next": "Verify behavior with current JohnnyGuitar installed and without it, isolate the remaining reproduction case, then trace player combat-state aggregation and actor removal callbacks.",
   "sources": [
