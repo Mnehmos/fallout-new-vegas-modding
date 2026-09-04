@@ -352,3 +352,15 @@ Struct offsets (xNVSE headers, for field-level patching):
 - TESPackage flags: LockDoorsAtLocation 0x20, UnlockDoorsAtLocation 0x100,
   OncePerDay 0x400; TESAIForm: aggroRadiusBehavior +0x13, aggroRadius +0x14
 - TESLeveledList: datas +0x4, chanceNone +0xC, flags +0xD; TESIdleForm conditions +0x30
+
+### 3.9 Root-cause pass findings (2026-09-04, session 3)
+
+- BUG-007 combat flag located: GetPlayerInCombat (0x953C50, confirmed vs JG source)
+  is a 6-instruction __thiscall returning byte [this+0xDF0], optionally writing
+  byte [this+0xDF1] to an out-ptr. The stuck-combat latch is PlayerCharacter+0xDF0;
+  whoever writes that byte without a proper clear is the defect.
+- BUG-005 leveled-actor function: 0x7701E0 is a real function entry (0x128 frame):
+  __thiscall(actor), reads actor+0xA4 vtable slots +0x0/+0x8 as ints->floats, then
+  calls 0x7700F0(actor, playerSingleton 0x11DEA3C)->float. This is the leveled-actor
+  value-vs-player computation Stewie referenced. The template-bias defect is in the
+  selection upstream, reached from PlaceLeveledActorAtMe exec 0x5D9810.
