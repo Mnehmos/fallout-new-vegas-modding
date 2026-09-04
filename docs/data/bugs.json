@@ -533,14 +533,15 @@
   "priority": 3,
   "platform": "PC",
   "summary": "Creature attacks are reportedly classified as neither melee nor unarmed for Stonewall's damage reduction test.",
-  "re_findings": "2026-09-04 pass-16: complete entry-point navigation map - (1) entry-point NAME table in .rdata 0x1045E00-0x10460A0 (enum-ordered: ...Modify Recovered Health @0x1045EA0, Adjust Limb Damage @0x1045F40, Adjust Range Penalty @0x1045F50, Calculate To Hit Chance @0x1045F10...); (2) function-type apply table @0x11973C0: pairs {handler, typeNameString, argCount} - handlers 0x5E5D80/0x5E5DF0/0x5E5EA0/0x5E5EF0/0x5E5F50/0x5E61B0 for Add-Activate-Choice/Add-Leveled-List/Negative-Abs-Value/Abs-Value/Add-Actor-Value-Mult/Add-Range-To-Value; (3) validator 0x5E5B80 + expected-arg-count registry 0x1197400. Stonewall's DT-vs-melee/unarmed classification test lives in the damage-family apply arm within 0x5E5Cxx-0x5E62xx indexed by these tables; fallout.wiki's display-vs-applied discrepancy points at the entry checking the PLAYER's weapon rather than the ATTACKER's.",
+  "re_findings": "2026-09-04 pass-17: CheckConditionFilters = FUN_005ea060 - validates each filter form (vtable+0xE4 actor check, else vtable+0xF0 weapon-form fallback, else 'Bad Filter form' diagnostic) then evaluates each condition via FUN_00680C60. Stonewall's melee/unarmed classification is therefore a DATA-DRIVEN condition on the perk's PRKE filter (evaluated by 0x680C60's condition-function dispatch), not hard-coded in the apply handlers. Static trail complete: entry-point name table 0x1045E00+, apply-handler table 0x11973C0, registry 0x1197400, validator 0x5E5B80, filter checker 0x5EA060, condition evaluator 0x680C60. The wrong-actor-weapon theory (checks player's weapon instead of attacker's) is now precisely testable: read Stonewall's PRKE filter + condition from the ESM, map its condition function to the engine handler, and check which actor's equipped weapon it queries.",
   "sources": [
    {
     "label": "GECKWiki engine bugs",
     "url": "https://geckwiki.com/index.php?title=Engine_Bugs_%28Fallout_New_Vegas%29"
    }
   ],
-  "research": "YUP fixed only the DISPLAY half (Pip-Boy shows +5 DT with melee/unarmed equipped; the applied DT correctly gates on attack type). Creature-attack DT half: no public fix. fallout.wiki detail: knockdown immunity DOES cover creature attacks while the DT entry does not - the DT entry's weapon-classification test (melee/unarmed) fails for creatures; display bug suggests the condition checks the PLAYER's equipped weapon instead of the attacker's - same 'whose weapon' confusion behind both symptoms."
+  "research": "YUP fixed only the DISPLAY half (Pip-Boy shows +5 DT with melee/unarmed equipped; the applied DT correctly gates on attack type). Creature-attack DT half: no public fix. fallout.wiki detail: knockdown immunity DOES cover creature attacks while the DT entry does not - the DT entry's weapon-classification test (melee/unarmed) fails for creatures; display bug suggests the condition checks the PLAYER's equipped weapon instead of the attacker's - same 'whose weapon' confusion behind both symptoms.",
+  "next": "Read Stonewall (perk 00061864-ish) PRKE/PRKC filter+condition from FalloutNV.esm; map the condition function to its engine handler via the CTDA function table; verify which actor's weapon is queried (player vs attacker). Runtime: creature attack with/without melee equipped DT delta."
  },
  {
   "id": "FNV-BUG-025",
