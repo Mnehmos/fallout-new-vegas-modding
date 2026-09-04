@@ -411,7 +411,7 @@
  {
   "id": "FNV-BUG-017",
   "title": "AI dialogue package Once a Day flag is inconsistent",
-  "status": "remapped",
+  "status": "root-caused",
   "subsystem": "AI / dialogue packages",
   "priority": 2,
   "platform": "New Vegas; reported working in Fallout 3",
@@ -423,7 +423,10 @@
     "url": "https://geckwiki.com/index.php?title=Engine_Bugs_%28Fallout_New_Vegas%29"
    }
   ],
-  "research": "No public fix. kPackageFlag_OncePerDay=0x400; run-once state lives in the per-actor package stack (BaseProcess run-once virtuals, MiddleHighProcess::interruptPackage +0xE4, PackageInfo at BaseProcess+0x4). Theory consistent with 'works in FO3': the once-per-day timestamp is stored per package-stack entry and resets on interrupt/re-push or is not persisted across save/load."
+  "research": "No public fix. kPackageFlag_OncePerDay=0x400; run-once state lives in the per-actor package stack (BaseProcess run-once virtuals, MiddleHighProcess::interruptPackage +0xE4, PackageInfo at BaseProcess+0x4). Theory consistent with 'works in FO3': the once-per-day timestamp is stored per package-stack entry and resets on interrupt/re-push or is not persisted across save/load.",
+  "root_cause": "ROOT CAUSE (static, 2026-09-04): ExtraSayTopicInfoOnceADay (extra type 0x73, ctors 0x437440/0x437510) has exactly ONE construction call site in the entire binary: 0x429300, which lies inside ExtraDataList::LoadGame (FUN_00428150, 17KB, 144 callees - the save-load extra-data switch). The once-per-day tracking extra is therefore ONLY instantiated when restored from a save; the in-session say path never creates it. Consequently the once-a-day gate has no state to read on a fresh session (or reads state restored from an earlier day), so the Once a Day package flag behaves inconsistently depending on save/load history - matching the wiki's 'works inconsistently (works in Fallout 3)' report.",
+  "fix_direction": "Create/refresh the OnceADay extra at say time: hook the topic-info say path (or the package executor testing kPackageFlag_OncePerDay=0x400) to construct extra 0x73 with the current game day if absent, mirroring what the save-load path restores. NVSE-plugin style.",
+  "next": "Runtime verify: fresh session (no prior save-load of the actor), trigger a Once a Day package twice in one day - expect both fire; after a save+load, expect the gate holds. Confirms the absent-in-session mechanism."
  },
  {
   "id": "FNV-BUG-018",
@@ -450,7 +453,7 @@
   "priority": 3,
   "platform": "PC",
   "summary": "Actors with Aggro Radius Behavior may stop executing packages near the player even when non-hostile after enough game time has elapsed.",
-  "re_findings": "2026-09-04 anchors: aggro-radius violation check code at 0x5A4FF2 (debug strings '%s has his aggro radius violated' @0x103619C / '%s does not have...' @0x1036170 pushed there); GetActorAggroRadiusViolated command name @0x1040F8C. The 'constant aggro' suppression defect is expected in the violation-state persistence around this check.",
+  "re_findings": "2026-09-04 pass 18: the query chain decompiled - FUN_005a4f30 (contains the 'aggro radius violated' debug prints) asks the combat/detection owner (FUN_008d8520) via vtable+0x20C twice: first non-arg (violation registry present?) then (owner, actor, actor3d) membership test; result set only for form type 0xE. The LATCH is the owner's +0x20C registry: no clear-actor-on-exit was found in this function or its callees - the 'constant aggro' persistence lives in the registry's add/remove management. Remaining hop: decompile the +0x20C implementation on the owner class (resolve 0x8D8520's constructed class via RTTI).",
   "sources": [
    {
     "label": "GECKWiki engine bugs",
