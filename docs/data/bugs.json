@@ -459,7 +459,7 @@
   "priority": 3,
   "platform": "Fallout 3 and New Vegas",
   "summary": "Reported when both cell Havok bounds and mesh bounds are exceeded or with certain enable-state setups.",
-  "re_findings": "2026-09-04 anchors: shares the Havok cluster with FNV-BUG-010 - ExtraHavok TD @0x1183B50, bFindContactPointsOnAdd:HAVOK @0x10C42EB, fCharControllerWarpDistSqr:HAVOK @0x10C4AF4, fHavokTauRatio @0x10561F0.",
+  "re_findings": "2026-09-04 in-binary Havok anchors: 'File %s contains an old hkpRigidBody! Converting cinfo at runtime is slow...' @0x10C6118 (xref = body load/convert fn); hkpRigidBody.cpp source path @0x10C78AF; .?AVhkpRigidBody@@ RTTI TD @0x11B18A8; engine NiTMap<hkpRigidBody*,bool> RTTI @0x119AFA8 (a per-body tracking map - candidate for the old-body/converted set feeding the defects). 2026-09-04 anchors: shares the Havok cluster with FNV-BUG-010 - ExtraHavok TD @0x1183B50, bFindContactPointsOnAdd:HAVOK @0x10C42EB, fCharControllerWarpDistSqr:HAVOK @0x10C4AF4, fHavokTauRatio @0x10561F0.",
   "sources": [
    {
     "label": "GECKWiki engine bugs",
@@ -476,7 +476,7 @@
   "priority": 3,
   "platform": "PC",
   "summary": "Potential simulation/culling lifecycle bug; independent reproduction pending.",
-  "re_findings": "2026-09-04 anchors: Havok cluster (ExtraHavok TD 0x1183B50, bFindContactPointsOnAdd:HAVOK, fCharControllerWarpDistSqr:HAVOK) - the cull/load lifecycle that drops simulation shares these owners with FNV-BUG-010/020.",
+  "re_findings": "2026-09-04 in-binary Havok anchors: 'File %s contains an old hkpRigidBody! Converting cinfo at runtime is slow...' @0x10C6118 (xref = body load/convert fn); hkpRigidBody.cpp source path @0x10C78AF; .?AVhkpRigidBody@@ RTTI TD @0x11B18A8; engine NiTMap<hkpRigidBody*,bool> RTTI @0x119AFA8 (a per-body tracking map - candidate for the old-body/converted set feeding the defects). 2026-09-04 anchors: Havok cluster (ExtraHavok TD 0x1183B50, bFindContactPointsOnAdd:HAVOK, fCharControllerWarpDistSqr:HAVOK) - the cull/load lifecycle that drops simulation shares these owners with FNV-BUG-010/020.",
   "sources": [
    {
     "label": "GECKWiki engine bugs",
@@ -555,7 +555,7 @@
   "priority": 2,
   "platform": "New Vegas; reported working in Fallout 3",
   "summary": "NIF restitution reportedly produces bounce only on rare contact geometries, making nominally bouncy objects behave like rocks.",
-  "re_findings": "2026-09-04 anchors: Havok cluster (ExtraHavok TD 0x1183B50, fHavokTauRatio @0x10561F0). The FO3-works/NV-broken restitution delta is a Havok-world/NIF-collision remap difference; needs the NIF collision-loading code (bFindContactPointsOnAdd neighborhood) rather than gameplay code.",
+  "re_findings": "2026-09-04 in-binary Havok anchors: 'File %s contains an old hkpRigidBody! Converting cinfo at runtime is slow...' @0x10C6118 (xref = body load/convert fn); hkpRigidBody.cpp source path @0x10C78AF; .?AVhkpRigidBody@@ RTTI TD @0x11B18A8; engine NiTMap<hkpRigidBody*,bool> RTTI @0x119AFA8 (a per-body tracking map - candidate for the old-body/converted set feeding the defects). 2026-09-04 anchors: Havok cluster (ExtraHavok TD 0x1183B50, fHavokTauRatio @0x10561F0). The FO3-works/NV-broken restitution delta is a Havok-world/NIF-collision remap difference; needs the NIF collision-loading code (bFindContactPointsOnAdd neighborhood) rather than gameplay code.",
   "sources": [
    {
     "label": "GECKWiki engine bugs",
