@@ -328,3 +328,27 @@ Key classes for open bugs:
 | BUG-011 supplement | ExtraWeaponIdleSound TD @0x1185164 | weapon loop-sound extra (distinct from ExtraActivateLoopSound) |
 
 ### 3.8 Prior subsystem maps (do not re-derive)
+
+### 3.8 Community-sourced calibration (research batches A+B, 2026-09-04)
+
+Symbol sources (no Skyrim-style address library exists for FNV):
+- **xNVSE source** = de-facto symbol DB; `research/re/symbols/GameRTTI_1_4_0_525.inc`
+  (103KB, downloaded 2026-09-04) maps RTTI class names → type-descriptor addresses
+  for exactly our 1.4.0.525 build. JIP/JohnnyGuitar/ShowOff sources add hook sites.
+
+Confirmed absolute addresses (from JG NVSE / xNVSE source, cross-checked):
+- Cmd_EquipItem_Execute 0x5D0060; Cmd_UnequipItem_Execute 0x5D0300 (matches our finding)
+- GetPlayerInCombat 0x953C50 (BUG-007); bFixFleeing patch site 0x8F5FE2
+- Combat-music routine 0x992D90, call site 0x82FC0B
+- 0x7701E0 = leveled-actor iteration region (Stewie's Living Anatomy note; BUG-005)
+- 0x471870 = created-object ref-name rebuild (BUG-008 crafted-items path)
+- perk-entry code copy site 0x77A0C4
+
+Struct offsets (xNVSE headers, for field-level patching):
+- BaseProcess::processLevel +0x28; MobileObject::baseProcess +0x68, +0x87 = inverse
+  NoLowLevelProcessing; ActorProcessManager buckets middleHigh/low0C/low18/high
+- HighProcess: detectedActors +0x25C, detectingActors +0x260, interruptPackage +0xE4,
+  combatTarget +0x404, queuedIdleFlags +0x424, fAwarePlayerTimer +0x34C
+- TESPackage flags: LockDoorsAtLocation 0x20, UnlockDoorsAtLocation 0x100,
+  OncePerDay 0x400; TESAIForm: aggroRadiusBehavior +0x13, aggroRadius +0x14
+- TESLeveledList: datas +0x4, chanceNone +0xC, flags +0xD; TESIdleForm conditions +0x30

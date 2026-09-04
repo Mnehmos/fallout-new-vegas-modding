@@ -107,7 +107,7 @@
   "priority": 5,
   "platform": "PC",
   "summary": "When the player is above an actor's level, the level modifier can become negative and make sneaking harder. GECKWiki points directly at engine address 0x642ED0. YUP has documented the behavior and ultimately reverted its own gamesetting workaround because the underlying calculation remains bugged for some actors.",
-  "hypothesis": "PARTIALLY CONFIRMED by static analysis (2026-09-04): 0x642ED0 is the sneak detection-value accumulator. It adds (arg24 - arg23) * iSneakLevelBonus at 0x642F10-0x642F1C with a signed, UNCLAMPED integer multiply - the only level term in the function without a max(0, ...) clamp (the neighboring iSneakStartBonus term is clamped via max helper 0x647B70 at 0x642F3D). When the player out-levels the actor, this term goes negative, matching GECKWiki's 'multiplication results in a negative modifier'. Settings confirmed via ctor thunks: iSneakLevelBonus=obj 0x11CD13C (default 5), iSneakStartBonus=0x11CD8C0 (50), iSneakStartBonusLevelPen=0x11CD4C0 (10), fSneakBaseValue=0x11CD7E4 (-25.0), fSneakAmbushTargetMod=0x11CDBF8, fSneakAmbushNonTargetMod=0x11CD1E0, fSneakPerceptionSkillMin=0x11CDF04, fSneakPerceptionSkillMax=0x11CDD9C.",
+  "hypothesis": "PARTIALLY CONFIRMED by static analysis (2026-09-04): 0x642ED0 is the sneak detection-value accumulator. It adds (arg24 - arg23) * iSneakLevelBonus at 0x642F10-0x642F1C with a signed, UNCLAMPED integer multiply - the only level term in the function without a max(0, ...) clamp (the neighboring iSneakStartBonus term is clamped via max helper 0x647B70 at 0x642F3D). When the player out-levels the actor, this term goes negative, matching GECKWiki's 'multiplication results in a negative modifier'. Settings confirmed via ctor thunks: iSneakLevelBonus=obj 0x11CD13C (default 5), iSneakStartBonus=0x11CD8C0 (50), iSneakStartBonusLevelPen=0x11CD4C0 (10), fSneakBaseValue=0x11CD7E4 (-25.0), fSneakAmbushTargetMod=0x11CDBF8, fSneakAmbushNonTargetMod=0x11CD1E0, fSneakPerceptionSkillMin=0x11CDF04, fSneakPerceptionSkillMax=0x11CDD9C. SECOND-DEFECT ANGLE (community): YUP found the setting 'always miscalculates the bonus for certain actors' even when nonzero - creature actor-level getters (Ghost People reach level 50) may return unexpected values; test creature vs NPC targets separately in the runtime A/B.",
   "re_findings": "Sole caller: call site 0x8A152D inside the detection updater FUN_008a0d10. Accumulator seeded from arg2, perception-skill scale and ambush/lighting factor tail confirmed instruction-exact. Ghidra decompile (research/re/decompiled/FUN_00642ed0_00642ed0.c) gives the decisive line: total -= ((max(0, iSneakStartBonus - L2*pen) + (L2 - L1)*iSneakLevelBonus + arg2 - arg25) * flag) * floatSetting. arg23/arg24 are both actor levels fetched with the identical +0xA4 -> vtable+0x28 (movzx ax) getter in the caller. arg4 sneak skill resolved via actor-variable getter 0x5E58F0 (AV bound 0x4A, player singleton 0x11DEA3C). Full working notes in research/re/engine-glossary.md section 3.1.",
   "root_cause": "The level-difference term (param_24 - param_23) * iSneakLevelBonus is raw signed integer arithmetic with no clamp, while the sibling start-bonus term is deliberately clamped with the engine's own max(0,.) helper 0x647B70. When the two actor levels are ordered so the difference is negative, the sneak 'bonus' becomes a penalty (harder to sneak), matching the GECKWiki report and the 'multiplication results in a negative modifier' note at 0x642ED0.",
   "fix_direction": "Clamp the level-difference term with the same max(0,.) helper used by the start-bonus sibling (behavior-preserving when the bonus should only ever add). Operand-swap is the alternative if runtime A/B shows the intended polarity is actor-level minus player-level rather than 'only positive'. Design decision pending the player-vs-actor direction test.",
@@ -125,7 +125,8 @@
     "label": "Sneak Level Tweak",
     "url": "https://www.nexusmods.com/newvegas/mods/86023"
    }
-  ]
+  ],
+  "research": "No engine fix. YUP v11.2 zeroed iSneakLevelBonus, v12.0 reverted it ('still bugged and always miscalculates the bonus for certain actors') - implying a second defect beyond the sign issue, possibly the actor-level getter for creatures (Ghost People reach level 50; mods 86023/78398/60519 target exactly those). fallout.wiki Detection Formula documents the intended math: (Sneak + iSneakLevelBonus*(TargetLevel-DetectorLevel) + max(iSneakStartBonus - pen*TargetLevel,0) - ArmorPenalty); engine GMST name is literally misspelled 'iSneakStartBonusLevelPenatly' in docs."
  },
  {
   "id": "FNV-BUG-003",
@@ -153,7 +154,8 @@
     "label": "2014 modder report",
     "url": "https://forums.nexusmods.com/topic/1818005-removeallitems-bug-in-fnv/"
    }
-  ]
+  ],
+  "research": "No public engine fix - our static root cause is the deepest analysis available. ShowOff's RemoveAllItemsShowOff (v1.15+) is a reimplementation with its own documented bugs (exception formlists ignored, flags unreliable); JohnnyGuitar fixed only the cosmetic backpack-remains variant. xNVSE source calibration: Cmd_EquipItem_Execute=0x5D0060, Cmd_UnequipItem_Execute=0x5D0300 - the latter independently confirms our static exec finding for UnequipItem. Modder workaround: JIP UnequipItemAlt/getAllItemRefs loop before removal."
  },
  {
   "id": "FNV-BUG-004",
@@ -171,7 +173,8 @@
     "label": "GECKWiki engine bugs",
     "url": "https://geckwiki.com/index.php?title=Engine_Bugs_%28Fallout_New_Vegas%29"
    }
-  ]
+  ],
+  "research": "No public fix anywhere (zero YUP changelog hits for enchant/stack across all 13 versions; nothing in UPNVSE+/Stewie/JIP/ShowOff). Wiki's own speculation matches our plan: missing 'has effect' check or recovery-flag handling on actor load."
  },
  {
   "id": "FNV-BUG-005",
@@ -189,7 +192,8 @@
     "label": "GECKWiki engine bugs",
     "url": "https://geckwiki.com/index.php?title=Engine_Bugs_%28Fallout_New_Vegas%29"
    }
-  ]
+  ],
+  "research": "No engine fix; YUP/TTW patch individual lists and the standing guidance is 'do not place actor templates in leveled lists in NV'. Stewie's adjacent note that code at 0x7701E0 'looks fine' (Living Anatomy DT case) places 0x7701E0 inside the leveled-actor iteration region - a direct secondary anchor. TESLeveledList layout from xNVSE: datas +0x4, chanceNone +0xC, flags +0xD."
  },
  {
   "id": "FNV-BUG-006",
@@ -207,7 +211,8 @@
     "label": "GECKWiki engine bugs",
     "url": "https://geckwiki.com/index.php?title=Engine_Bugs_%28Fallout_New_Vegas%29"
    }
-  ]
+  ],
+  "research": "No fix for the core bug. The process hierarchy is fully named in xNVSE GameProcess.h: BaseProcess::processLevel at +0x28 (High/MiddleHigh/MiddleLow/Low), ActorProcessManager buckets middleHighActors/lowActors0C/lowActors18/highActors, MobileObject+0x87 holds the inverse of NoLowLevelProcessing, baseProcess at +0x68. Community theory matches ours: freshly loaded actors left in the wrong bucket until a cell transition forces re-bucketing."
  },
  {
   "id": "FNV-BUG-007",
@@ -225,7 +230,8 @@
     "label": "GECKWiki engine bugs",
     "url": "https://geckwiki.com/index.php?title=Engine_Bugs_%28Fallout_New_Vegas%29"
    }
-  ]
+  ],
+  "research": "'Partially fixed by JG' but the specific sub-fix is undocumented. JG internals pin absolute addresses: engine GetPlayerInCombat=0x953C50, bFixFleeing patch site 0x8F5FE2, combat-music routine 0x992D90 (call site 0x82FC0B), plus named Actor::TrespassAlarm/StealAlarm. Struct state: HighProcess::combatTarget +0x404, detectedActors +0x25C / detectingActors +0x260, fAwarePlayerTimer +0x34C. Community theory: combat state latches when the last alerted actor dies or unloads before a combat-end event fires."
  },
  {
   "id": "FNV-BUG-008",
@@ -243,7 +249,8 @@
     "label": "GECKWiki engine bugs",
     "url": "https://geckwiki.com/index.php?title=Engine_Bugs_%28Fallout_New_Vegas%29"
    }
-  ]
+  ],
+  "research": "The OnAdd variant was fixed in JIP LN NVSE but only partially ('armors and non disposable weapons'); the GameMode variant remains unfixed anywhere. Crafted items are runtime-created forms with modIndex 0xFF (xNVSE Hooks_CreatedObject.cpp); xNVSE names engine function 0x471870 in the created-object ref-name path. Theory: the script instance is not attached the normal way until a full drop+pick-up add cycle."
  },
  {
   "id": "FNV-BUG-009",
@@ -386,7 +393,8 @@
     "label": "GECKWiki engine bugs",
     "url": "https://geckwiki.com/index.php?title=Engine_Bugs_%28Fallout_New_Vegas%29"
    }
-  ]
+  ],
+  "research": "No public fix. TESPackage flag bits from xNVSE: kPackageFlag_LockDoorsAtLocation=0x20, kPackageFlag_UnlockDoorsAtLocation=0x100. The wiki itself suspects this is the BUG-006 process-level defect. Ownership is reference-level (ExtraOwnership/XOWN)."
  },
  {
   "id": "FNV-BUG-017",
@@ -402,7 +410,8 @@
     "label": "GECKWiki engine bugs",
     "url": "https://geckwiki.com/index.php?title=Engine_Bugs_%28Fallout_New_Vegas%29"
    }
-  ]
+  ],
+  "research": "No public fix. kPackageFlag_OncePerDay=0x400; run-once state lives in the per-actor package stack (BaseProcess run-once virtuals, MiddleHighProcess::interruptPackage +0xE4, PackageInfo at BaseProcess+0x4). Theory consistent with 'works in FO3': the once-per-day timestamp is stored per package-stack entry and resets on interrupt/re-push or is not persisted across save/load."
  },
  {
   "id": "FNV-BUG-018",
@@ -418,7 +427,8 @@
     "label": "GECKWiki engine bugs",
     "url": "https://geckwiki.com/index.php?title=Engine_Bugs_%28Fallout_New_Vegas%29"
    }
-  ]
+  ],
+  "research": "No engine fix; JohnnyGuitar ships RefreshIdle/SetIdleMarkerAnimations/PickIdleEx as script-level workarounds. TESIdleForm layout from xNVSE: conditions list +0x30, parent/previous chain; actor-side HighProcess::queuedIdleFlags +0x424. Wiki's 'possibly condition issue' aligns with cached/skipped condition evaluation."
  },
  {
   "id": "FNV-BUG-019",
@@ -434,7 +444,8 @@
     "label": "GECKWiki engine bugs",
     "url": "https://geckwiki.com/index.php?title=Engine_Bugs_%28Fallout_New_Vegas%29"
    }
-  ]
+  ],
+  "research": "No engine fix for the constant-aggro behavior; Stewie's adjacent fix only prevents weapon-holster suppression when the radius is breached. TESAIForm::aggroRadiusBehavior at +0x13 and aggroRadius at +0x14 (few readers - fast to pinpoint). Theory: the player-aware latch (fAwarePlayerTimer HighProcess+0x34C family) is never reset when the player leaves the radius."
  },
  {
   "id": "FNV-BUG-020",
@@ -579,7 +590,8 @@
     "label": "GECKWiki RemoveAllTypedItems",
     "url": "https://geckwiki.com/index.php/RemoveAllTypedItems"
    }
-  ]
+  ],
+  "research": "No public fix; shares the BUG-003 mechanism and its analysis. ShowOff's RemoveAllTypedItems superset has documented flag bugs and no OnUnequip dispatch."
  },
  {
   "id": "FNV-BUG-029",
@@ -595,7 +607,8 @@
     "label": "GECKWiki engine bugs",
     "url": "https://geckwiki.com/index.php?title=Engine_Bugs_%28Fallout_New_Vegas%29"
    }
-  ]
+  ],
+  "research": "No public fix in any fix pack. xNVSE 6.x event-handler API lets mods re-synthesize equip events, but nothing re-fires vanilla OnEquip/OnUnequip after bulk removal. Community consensus matches our root cause: the bulk path never invokes the equip-change notifier."
  },
  {
   "id": "FNV-BUG-030",

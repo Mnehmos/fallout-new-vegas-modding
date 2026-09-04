@@ -110,7 +110,7 @@ function sourcesList(sources){
   return `<h2>Evidence / sources</h2><ul class="evidence-list">${items}</ul>`;
 }
 
-const RENDERED_KEYS = new Set(['id','title','status','status_note','subsystem','priority','platform','summary','hypothesis','measured','root_cause','fix_direction','next','sources','falsification_trail','shipped_fix','re_findings','atlas_findings','dead_code_finding','fix_verified','remaining','v3_design','superseded_thrown_weapon_analysis']);
+const RENDERED_KEYS = new Set(['id','title','status','status_note','subsystem','priority','platform','summary','hypothesis','measured','root_cause','fix_direction','next','sources','falsification_trail','shipped_fix','re_findings','research','atlas_findings','dead_code_finding','fix_verified','remaining','v3_design','superseded_thrown_weapon_analysis']);
 
 async function detailPage(){
   const root=document.querySelector('#bug-detail');
@@ -133,6 +133,7 @@ async function detailPage(){
       ${section('Root cause', b.root_cause)}
       ${section('Fix direction', b.fix_direction)}
       ${section('Shipped fix', b.shipped_fix)}
+      ${section('Community research', b.research)}
       ${section('Fix verification', b.fix_verified)}
       ${section('Outstanding', b.remaining)}
       ${falsificationTrail(b.falsification_trail)}
