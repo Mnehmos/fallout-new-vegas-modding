@@ -160,21 +160,23 @@
  {
   "id": "FNV-BUG-004",
   "title": "NPC armor enchantments stack again every time the NPC loads",
-  "status": "remapped",
+  "status": "root-caused",
   "subsystem": "Magic effects / actor load",
   "priority": 5,
   "platform": "PC",
   "summary": "GECKWiki reports that enchantments on NPC-worn armor can be reapplied on each load and stack indefinitely.",
   "re_findings": "2026-09-04: equipped-walker FUN_008249d0's enchant gate resolved - FUN_005f36f0 is a PLAIN FIELD GETTER returning [EnchantmentItem+0x34]; the walker updates visuals only when that field is 0. The stacking defect is upstream: whoever ADDS EnchantmentItem entries on actor load (equip-restore path) does not dedupe. Next: identify +0x34 semantics in xNVSE GameMagicForms.h EnchantmentItem layout and trace the actor-load equip-restore add path for the missing has-equivalent check.",
   "hypothesis": "Actor load/equipment restoration reapplies the armor effect without checking for an existing equivalent active effect or without restoring the effect as recovered state.",
-  "next": "Create an NPC with a measurable armor enchant, cycle unload/reload repeatedly, log actor values, then trace armor restoration and magic-effect application calls.",
+  "next": "Runtime verify: NPC with enchanted armor, cycle cell unload/reload N times, assert effect magnitude/value stacks N-deep (GetActorValueC or effect listing); then prototype the dedupe patch as an NVSE hook on the activation branch.",
   "sources": [
    {
     "label": "GECKWiki engine bugs",
     "url": "https://geckwiki.com/index.php?title=Engine_Bugs_%28Fallout_New_Vegas%29"
    }
   ],
-  "research": "No public fix anywhere (zero YUP changelog hits for enchant/stack across all 13 versions; nothing in UPNVSE+/Stewie/JIP/ShowOff). Wiki's own speculation matches our plan: missing 'has effect' check or recovery-flag handling on actor load."
+  "research": "No public fix anywhere (zero YUP changelog hits for enchant/stack across all 13 versions; nothing in UPNVSE+/Stewie/JIP/ShowOff). Wiki's own speculation matches our plan: missing 'has effect' check or recovery-flag handling on actor load.",
+  "root_cause": "ROOT CAUSE (static, 2026-09-04): the equip-change handler FUN_008c48d0 activates worn-item enchantments after checks that are purely type-based: form-type gate (vtable+0x18 == 6 armor family), the enchant cast, and EnchantmentItem+0x34 == 2 (an enchantment slot/type test via getter 0x5F36F0) - plus a FUN_00639B40 match check that only suppresses in narrow conditions (form 0x29 / param_4 flag). There is NO 'does the actor already have this effect active' dedupe anywhere in the path. NPC load restores equipment by re-running this equip path, so each load adds another active copy of the armor enchantment - matching the wiki's 'no has-effect check' speculation. The SAVELOAD 'Enchantable item ... created base objects list' diagnostic confirms load-time re-processing.",
+  "fix_direction": "Add an active-effect dedupe (or recovery-flag respect) in the enchant-activation branch of FUN_008c48d0: before applying, query the actor's active effects for an existing instance from the same EnchantmentItem (the query helper family used by the walker gate 0x5F36F0/+0x34 state is the natural hook point)."
  },
  {
   "id": "FNV-BUG-005",
