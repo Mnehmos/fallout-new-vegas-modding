@@ -102,14 +102,16 @@
  {
   "id": "FNV-BUG-002",
   "title": "iSneakLevelBonus can invert the intended sneak modifier",
-  "status": "remapped",
+  "status": "root-caused",
   "subsystem": "AI / detection",
   "priority": 5,
   "platform": "PC",
   "summary": "When the player is above an actor's level, the level modifier can become negative and make sneaking harder. GECKWiki points directly at engine address 0x642ED0. YUP has documented the behavior and ultimately reverted its own gamesetting workaround because the underlying calculation remains bugged for some actors.",
   "hypothesis": "PARTIALLY CONFIRMED by static analysis (2026-09-04): 0x642ED0 is the sneak detection-value accumulator. It adds (arg24 - arg23) * iSneakLevelBonus at 0x642F10-0x642F1C with a signed, UNCLAMPED integer multiply - the only level term in the function without a max(0, ...) clamp (the neighboring iSneakStartBonus term is clamped via max helper 0x647B70 at 0x642F3D). When the player out-levels the actor, this term goes negative, matching GECKWiki's 'multiplication results in a negative modifier'. Settings confirmed via ctor thunks: iSneakLevelBonus=obj 0x11CD13C (default 5), iSneakStartBonus=0x11CD8C0 (50), iSneakStartBonusLevelPen=0x11CD4C0 (10), fSneakBaseValue=0x11CD7E4 (-25.0), fSneakAmbushTargetMod=0x11CDBF8, fSneakAmbushNonTargetMod=0x11CD1E0, fSneakPerceptionSkillMin=0x11CDF04, fSneakPerceptionSkillMax=0x11CDD9C.",
-  "re_findings": "Sole caller: call site 0x8A152D in a large detection updater (true function start not yet located; CFG estimate 0x8A152D-0x8A16A6 is mid-function tail). Accumulator seeded from arg2, perception-skill scale and ambush/lighting factor tail confirmed instruction-exact. Candidate fixes: (1) swap the sub operands at 0x642F10/0x642F13, or (2) clamp the term to >= 0 like the start-bonus term. Decision requires mapping arg23/arg24 to player/actor levels and a runtime A/B test. Full working notes in research/re/engine-glossary.md section 3.1.",
-  "next": "Map the 25-argument push sequence at 0x8A14E0-0x8A152D to the caller's locals to bind arg23/arg24 to player/actor levels; locate the caller's true prologue; then runtime A/B test the two candidate patches (operand swap vs clamp).",
+  "re_findings": "Sole caller: call site 0x8A152D inside the detection updater FUN_008a0d10. Accumulator seeded from arg2, perception-skill scale and ambush/lighting factor tail confirmed instruction-exact. Ghidra decompile (research/re/decompiled/FUN_00642ed0_00642ed0.c) gives the decisive line: total -= ((max(0, iSneakStartBonus - L2*pen) + (L2 - L1)*iSneakLevelBonus + arg2 - arg25) * flag) * floatSetting. arg23/arg24 are both actor levels fetched with the identical +0xA4 -> vtable+0x28 (movzx ax) getter in the caller. arg4 sneak skill resolved via actor-variable getter 0x5E58F0 (AV bound 0x4A, player singleton 0x11DEA3C). Full working notes in research/re/engine-glossary.md section 3.1.",
+  "root_cause": "The level-difference term (param_24 - param_23) * iSneakLevelBonus is raw signed integer arithmetic with no clamp, while the sibling start-bonus term is deliberately clamped with the engine's own max(0,.) helper 0x647B70. When the two actor levels are ordered so the difference is negative, the sneak 'bonus' becomes a penalty (harder to sneak), matching the GECKWiki report and the 'multiplication results in a negative modifier' note at 0x642ED0.",
+  "fix_direction": "Clamp the level-difference term with the same max(0,.) helper used by the start-bonus sibling (behavior-preserving when the bonus should only ever add). Operand-swap is the alternative if runtime A/B shows the intended polarity is actor-level minus player-level rather than 'only positive'. Design decision pending the player-vs-actor direction test.",
+  "next": "Runtime A/B on the GOG 1.4.0.525 + xNVSE: two saves, player above vs below an actor's level, measure detection threshold shift; confirm sign direction; then implement the clamp patch (NVSE plugin, following the FNVBug001Fix two-site pattern) and verify the bonus can no longer invert.",
   "sources": [
    {
     "label": "GECKWiki engine bugs",
@@ -128,13 +130,16 @@
  {
   "id": "FNV-BUG-003",
   "title": "RemoveAllItems / RemoveAllTypedItems skip normal unequip lifecycle",
-  "status": "active",
+  "status": "root-caused",
   "subsystem": "Inventory / equipment",
   "priority": 5,
   "platform": "PC",
   "summary": "GECKWiki reports that mass-removal commands do not execute OnUnequip blocks and can leave effects behind. Older modder reports also describe partially removed equipped armor and corrupted inventory state.",
-  "hypothesis": "The bulk-removal path bypasses the normal equipment teardown routine or removes stack entries before the unequip/event path can observe them.",
-  "next": "Locate vanilla command handlers and compare their equipped-item branch against UnequipItem/RemoveItem. Build a minimal scripted armor with observable OnUnequip/effect state for reproduction.",
+  "hypothesis": "CONFIRMED by static analysis: the bulk-removal path bypasses the equipment teardown. RemoveItem (0x5B4E90) checks IsEquipped (0x575400) and runs the unequip teardown (0x8248E0 / 0x41AB70 family) before invoking the vtable+0x17C remove per item. RemoveAllTypedItems (0x5B55A0) instead calls the shared inventory-remove primitive FUN_004CE340 + list rebuild FUN_00952C30 with no IsEquipped check and no unequip call. RemoveAllItems' console handler (0x5B1570) is a parser/re-emitter dispatching through the command table function pointer at record+0x1C.",
+  "root_cause": "Bulk removal goes straight to InventoryChanges-style removal (0x4CE340) and never enters the equip/unequip lifecycle, so OnUnequip blocks never fire and persistent magic effects applied at equip time are never torn down. The single-item path proves the lifecycle functions exist and are wired (0x575400 IsEquipped -> 0x8248E0 -> vtable+0x17C); the bulk path simply omits the loop that routes equipped entries through them.",
+  "re_findings": "Console command anchors (GOG clean image): RemoveAllItems name 0x1040B74/struct 0x1192418/handler 0x5B1570; RemoveAllTypedItems 0x103E114/0x1196478/0x5B55A0; RemoveItem 0x1041268/0x11915E0/0x5B4E90; UnequipItem 0x1040584/0x1192E68/0x5D0300. Command struct layout: name @+0x0 (slot), exec @name_slot+0x18, shared post-mod callback 0x5B1BA0 @+0x1C. Decompiled C in research/re/decompiled/FUN_005b1570/5b4e90/5b55a0/5d0300 .c files; analysis record in glossary section 3.3.",
+  "fix_direction": "Route equipped entries through the same IsEquipped->unequip teardown the RemoveItem handler performs (either patch 0x5B55A0 to pre-pass equipped items via the single-item path, or hook the shared 0x4CE340 primitive to perform unequip when the reference is the player/actor owner). Shared with FNV-BUG-028 and FNV-BUG-029 (same mechanism, different observable symptom).",
+  "next": "Runtime repro on clean GOG vanilla: scripted armor with an observable OnUnequip block + enchantment effect, equip, RemoveAllItems, assert no block fire + effect remains. Then prototype the NVSE-plugin fix mirroring the RemoveItem teardown sequence and re-run repro.",
   "sources": [
    {
     "label": "GECKWiki engine bugs",
@@ -539,11 +544,12 @@
  {
   "id": "FNV-BUG-028",
   "title": "RemoveAllTypedItems reproduces the bulk-removal lifecycle bug",
-  "status": "seed",
+  "status": "root-caused",
   "subsystem": "Inventory / equipment",
   "priority": 4,
   "platform": "PC",
   "summary": "Tracked separately from FNV-BUG-003 for command-specific root-cause testing; likely shares the same lower-level removal path.",
+  "re_findings": "2026-09-04: CONFIRMED same mechanism as FNV-BUG-003. RemoveAllTypedItems console Execute handler at 0x5B55A0 (name string 0x103E114, command struct 0x1196478); it calls the shared bulk primitive FUN_004CE340 + rebuild FUN_00952C30 with no IsEquipped/unequip pre-pass. Decompiled C: research/re/decompiled/FUN_005b55a0_005b55a0.c; analysis in glossary section 3.3.",
   "sources": [
    {
     "label": "GECKWiki engine bugs",
@@ -563,6 +569,7 @@
   "priority": 4,
   "platform": "PC",
   "summary": "A narrower event-level manifestation of the RemoveAllItems family; retained separately so event dispatch can be tested independently of persistent magic effects.",
+  "re_findings": "2026-09-04: covered by the FNV-BUG-003 root cause — the bulk path never enters the equip/unequip lifecycle where OnEquip/OnUnequip blocks fire (single-item RemoveItem 0x5B4E90 proves the wiring). Event-level runtime confirmation still owed per this entry's next.",
   "sources": [
    {
     "label": "GECKWiki engine bugs",

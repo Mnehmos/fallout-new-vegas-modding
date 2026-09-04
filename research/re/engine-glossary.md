@@ -91,6 +91,60 @@ the magnitude, is wrong.
 enclosing function start of the caller; confirm sign direction against Xbox/FO3 symbol
 names; runtime A/B test.
 
+**Caller argument map (CONFIRMED, call site 0x8A152D — 25 args pushed in blocks
+0x8A14B5–0x8A152D, last push = arg1):**
+
+| Arg | Source at caller | Meaning (confidence) |
+|-----|------------------|----------------------|
+| arg24 | `[ebp-0x28]` = level of caller-arg `[ebp+0xC]` via +0xA4 → virtual +0x28 (movzx ax) | the *other* actor's level (CONFIRMED fetch pattern) |
+| arg23 | `[ebp-0x5C]` = level of `[ebp-0x98]` via identical +0xA4 → virtual +0x28 pattern | the *detecting/subject* actor's level (CONFIRMED fetch pattern) |
+| arg22 | `[ebp-0x68]` out-ptr; arg21 `[ebp-0x2C]` out-ptr; arg20 `[ebp-0x3C]` out-ptr | result slots (LIKELY out pointers — lea) |
+| arg4 | float from helper `0x5E58F0(0x1F, actor, ...)` — actor-variable getter, player-redirect global `0x11DEA3C`, AV-74 guard `0x4A`; then × fSneakPerceptionSkillMin-ish scale @0x8A149B | sneak-skill term (CONFIRMED helper identity; exact AV index LIKELY=31) |
+| arg1 | `[ebp-0x10]` (pushed 0x8A1529) | actor/process object (CONFIRMED last-push=arg1) |
+
+**Decisive finding:** arg23 and arg24 are fetched with the *identical* +0xA4→vtable+0x28→
+movzx ax level-getter pattern (0x8A1447 vs 0x8A146A) on two different actors. The
+wiki-cited bug term `(arg24 − arg23) × iSneakLevelBonus` is therefore a raw signed
+difference of two actor levels. Whether player-vs-NPC is inverted in the subtraction
+order is the final open question: it requires either the Xbox PDB symbol for 0x642ED0
+or a runtime two-actor A/B (player above vs below actor level, identical build). The
+sibling start-bonus term is explicitly clamped (`max(0, …)` @0x647B70) while this one is
+not — strong evidence the sign is a defect, not a design choice.
+
+**Ghidra decompile CONFIRMS the root cause** (`decompiled/FUN_00642ed0_00642ed0.c`,
+function is 26 params, `__cdecl`-style). The return value is
+`fVar1 + fVar22 + local_34 + fVar2` where the sneak-detection magnitude is:
+```
+... - max(0, iSneakStartBonus - param_24*iSneakStartBonusLevelPen)
+      - (int)((( (clampedTerm + (param_24 - param_23)*iSneakLevelBonus + param_2) - param_25) * ambushFlag))
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+      the bug: (param_24 - param_23) is a SIGNED actor-level difference multiplied by
+      iSneakLevelBonus (iVar13), UNCLAMPED. When param_24 (other actor level) < param_23
+      (this actor level) the term goes negative, exactly as the wiki describes.
+```
+- Line 148 in the decompiled C is the single decisive expression. The neighboring
+  `FUN_00647b70(iVar18 - param_24*penalty, 0)` at line 53 is the clamped sibling —
+  the engine deliberately clamps that one and forgot the level-difference one.
+- **Minimal patch candidates (now designable from the C, not raw bytes):**
+  1. Clamp the term: wrap `(param_24 - param_23)*iVar13` with the same `FUN_00647b70(...,0)`
+     max-0 helper — mirrors the existing start-bonus clamp (behavior-preserving when the
+     bonus should only ever add).
+  2. Absolute difference `abs(param_24 - param_23)*iVar13` if intent is magnitude.
+  Pick after runtime A/B; candidate (1) is the conservative, self-consistent fix.
+- arg23/arg24 semantic roles (player vs NPC) still need the runtime two-actor test to
+  finalize, but the *defect* (missing clamp on the level-difference term) is now
+  CONFIRMED at instruction and decompiled-C level.
+
+**Reusable engine anchors discovered here:**
+- Player singleton pointer stored at `0x11DEA3C` (used by the actor-variable getter's
+  player-redirect path).
+- Actor-variable getter `0x5E58F0(avType < 0x4A, actor, ...)` → vtable+0x4AC AV-info
+  lookup → `0x6815C0` value read. Any "reads an actor value" call site routes here.
+- Setting accessors: float `0x403E20`, int `0x43D4D0` (ecx=Setting*). Setting ctor
+  thunks near 0xF5xxxx bind `.data` Setting objects (0x11CDxxx–0x11CFxxx range) to
+  `.rdata` name strings (0x104Fxxx–0x1051xxx).
+- Int helper `0x647B70(a,b)` = `max(a,b)` (plain cdecl, 16-byte body).
+
 **Identity aids:** float getter `0x403E20` (ecx=Setting* → ptr to float), int getter
 `0x43D4D0` (→ ptr to int), int max `0x647B70(a,b)`, Setting ctor `0x40C150` (int) /
 `0x40E0B0` (float), register `0xEC658F(sectionString)`; name strings cluster in
@@ -113,7 +167,53 @@ mov ecx,obj; call ctor; push sectionStr; call 0xEC658F; ret` fragments.
 - Skill helpers: `FUN_00646880` skill calc 1, `FUN_0066EF50` __thiscall skill calc 2,
   `FUN_00446390` skill-arg derivation, `FUN_004C0BF0` thrown-weapon classification.
 
-### 3.3 Prior subsystem maps (do not re-derive)
+### 3.3 Console commands → engine handlers (BUG-003 root cause, CONFIRMED 2026-09-04)
+
+| Command | Name string | Command struct (.data) | Execute handler |
+|---------|-------------|------------------------|-----------------|
+| RemoveAllItems | 0x1040B74 | 0x1192418 | 0x5B1570 (console parser/re-emitter) |
+| RemoveAllTypedItems | 0x103E114 | 0x1196478 | **0x5B55A0** (bulk removal via shared 0x4CE340) |
+| RemoveItem | 0x1041268 | 0x11915E0 | **0x5B4E90** (per-item + IsEquipped + unequip) |
+| UnequipItem | 0x1040584 | 0x1192E68 | 0x5D0300 |
+| SayToDone (BUG-012) | 0x1044584 | 0x118E408 | 0x5CA950 → core 0x5CA1C0 |
+
+**BUG-003 root cause CONFIRMED** from Ghidra decompilation (2026-09-04):
+
+- **RemoveItem** (0x5B4E90) calls `(**(code **)(*local_14 + 0xe4))` (IsEquipped check)
+  → `FUN_008248e0(local_1c, 1)` (the engine unequip path) at line 115, **before** calling
+  the vtable+0x17C remove function pointer (lines 98/117).
+- **RemoveAllTypedItems** (0x5B55A0) and the RemoveAllItems→RemoveItem chain (parser
+  0x5B1570 at line 85) call `FUN_004CE340` directly — the shared engine remove-from-
+  inventory primitive — with **no IsEquipped check and no unequip call**. That function
+  pointer slot is `local_230 + 0x1c`, not vtable+0xE4/+0x17C.
+- The **OnUnequip/OnEquip script block** fires from the unequip function called by
+  RemoveItem's vtable dispatch. Bulk path skips it entirely. Magic effects (enchantment,
+  armor spells) are applied via the same equip/unequip lifecycle; the bulk remove leaves
+  them active because the teardown never runs.
+
+**Fix direction (design from C, minimal patch):**
+- Patch RemoveAllTypedItems's `FUN_004CE340` call chain, or the shared inventory-remove
+  helper it calls, to add the same IsEquipped→UnequipItem pre-pass that RemoveItem does.
+- Alternatively, patch RemoveAllItems' parser 0x5B1570 to loop through equipped items
+  and emit UnequipItem calls per item before calling the bulk remove.
+
+**Next (runtime verification):** craft an armor with a measurable OnUnequip block + a
+permanent magic effect, equip it on the player, then RemoveAllItems. Verify the
+OnUnequip block never fires and the effect remains. After a patch, verify both run.
+
+- All four command structs share layout: +0x0 name ptr, +0x4 alt ptr (0x01011584 = empty),
+  +0x8 id (0x10AD/0x1249/0x1052/0x10EF), +0xC help (empty), +0x10 params ptr, +0x14
+  mod ptr (0x5B1BA0 for the three inventory commands; 0x5B1BA0 is shared).
+- 0x5B1570 calls 0x5AF5F0 then a single 0x228-byte stack buffer path; 0x5B4E90 and
+  0x5D0300 are the corresponding single-item handlers to compare against.
+- **Retracted:** "0x5B1590 is an NVSE hook stub". The jump decoded at 0x5B1590 was a
+  mid-prologue linear-decode artifact; the on-disk GOG exe is clean. Lesson recorded.
+- **Retracted:** 0x44A670 is *not* the engine bulk-remove — it has 170 callers and only
+  calls the CRT allocator 0xEC6130; it is an allocation helper (likely operator new).
+- Open: find the shared engine remove/unequip core via 0x5D0300 and 0x5B4E90 callee
+  diff vs 0x5B1570's bulk path.
+
+### 3.4 Prior subsystem maps (do not re-derive)
 
 - Encounter zones: `research/re/encounter_zone_subsystem.md` (BGSEncounterZone layout,
   XZEN link, registry readers).

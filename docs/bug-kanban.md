@@ -16,9 +16,7 @@ Last updated: 2026-09-04
 
 ## RE MAPPING — static analysis under way
 
-| Bug | Title | Current state |
-|-----|-------|---------------|
-| FNV-BUG-002 | iSneakLevelBonus can invert the sneak modifier | Bug site pinned: unclamped signed term `(arg24 − arg23) × iSneakLevelBonus` @ 0x642F10–0x642F1C in the detection accumulator 0x642ED0; all 8 gamesettings named; two candidate patches (operand swap vs clamp). Remaining: bind arg23/arg24 to player/actor levels via caller push-map, then runtime A/B. See glossary 3.1. |
+_(empty — BUG-002 and BUG-003 promoted to ROOT CAUSE CONFIRMED below.)_
 
 ## RESEARCH IN FLIGHT — 4 web-research batches (all 29 open bugs covered)
 
@@ -40,7 +38,14 @@ BUG-003/028/029 (NVSE command-table strings lead straight to handlers), BUG-024 
 
 ## ROOT CAUSE CONFIRMED
 
-_(empty)_
+| Bug | Title | Evidence | Outstanding for FIX SHIPPED |
+|-----|-------|----------|------------------------------|
+| FNV-BUG-002 | iSneakLevelBonus can invert the sneak modifier | Ghidra C line `(max-clamped sibling) + (L2−L1)*iSneakLevelBonus` unclamped signed term in FUN_00642ed0 (0x642ED0); all 8 settings bound; caller arg map complete | Runtime A/B for sign direction; clamp-patch design; plugin build |
+| FNV-BUG-003 | RemoveAllItems skips unequip lifecycle | Bulk handler 0x5B55A0 calls 0x4CE340 directly; single-item 0x5B4E90 proves the missing IsEquipped(0x575400)→unequip(0x8248E0)→vtable+0x17C sequence; decompiled C for all four handlers | Runtime repro (scripted armor + OnUnequip); patch prototype |
+
+Shared-mechanism siblings: FNV-BUG-028 (RemoveAllTypedItems) and FNV-BUG-029
+(OnEquip/OnUnequip event miss) are the same defect as BUG-003 — keep separate entries
+for symptom-level verification, but the root cause above covers both.
 
 ## FIX SHIPPED
 
