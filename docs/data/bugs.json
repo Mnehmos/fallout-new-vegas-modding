@@ -315,14 +315,14 @@
  {
   "id": "FNV-BUG-012",
   "title": "SayToDone fails when the speaker is outside the player's cell",
-  "status": "remapped",
+  "status": "root-caused",
   "subsystem": "Dialogue / scripting",
   "priority": 3,
   "platform": "PC",
   "summary": "SayToDone reportedly does not fire for an actor outside the player's current cell regardless of persistence/quest status. Related Say/SayTo package-result calls can hang when the player is elsewhere.",
   "re_findings": "2026-09-04 ROOT-CAUSE CANDIDATE: SayTo exec FUN_005c9100 decompiled. The speech-queue branch (FUN_00934250 path) is gated at line ~87 on actor vtable+0x22C returning true and audio-owner 0x8D8520 being non-null; when the speaker is outside the player's cell this gate fails and the SayTo request is silently dropped - the completion event (SayToDone condition 0x5CA1C0/0x5CA950) is never armed. OnAdd exec FUN_005ca200 identified as a thin poll of the same shared event-predicate family. Remaining: identify vtable+0x22C (expected = in-player-cell / 3D-loaded predicate) and confirm which caller arms the completion flag.",
   "hypothesis": "Dialogue completion notification is tied to the high-process actor/audio update path rather than persistent script/event state.",
-  "next": "Build two-cell scripted dialogue repro, compare event dispatch with NVSE's SayToDone event handling, then trace completion notification ownership across actor process levels.",
+  "next": "Runtime verify: two-cell SayTo repro with persistent speaker (SayToDone block var before/after); identify vtable+0x22C's name via the Xbox vtable atlas; then prototype.",
   "sources": [
    {
     "label": "GECKWiki engine bugs",
@@ -337,7 +337,9 @@
     "url": "https://geckwiki.com/index.php?title=SayTo"
    }
   ],
-  "research": "No fix for the cross-cell gate (NVSE saytodone event is the workaround). Engine anchors from JG/xNVSE source: ScriptEventList::MarkEvent=0x5AC750 (hook return 0x5AC756), Say completion code at 0x5791C1 (SayToTopicInfo), kEvent_SayToDone=0x40000, blocktype opcode 07. Community theory converges with our static finding: off-cell actors are not high-processed so the say-completion callback never runs - matches the vtable+0x22C gate we located in SayTo's exec."
+  "research": "No fix for the cross-cell gate (NVSE saytodone event is the workaround). Engine anchors from JG/xNVSE source: ScriptEventList::MarkEvent=0x5AC750 (hook return 0x5AC756), Say completion code at 0x5791C1 (SayToTopicInfo), kEvent_SayToDone=0x40000, blocktype opcode 07. Community theory converges with our static finding: off-cell actors are not high-processed so the say-completion callback never runs - matches the vtable+0x22C gate we located in SayTo's exec.",
+  "root_cause": "ROOT CAUSE (static, 2026-09-04): the Say-completion marker FUN_00579160 exists and works - it resolves the say-context (FUN_0042EDE0), checks the context's active flag (+0x18), and marks kEvent_SayToDone (0x40000) on the speaker's ScriptEventList via MarkEvent (0x5AC750). But it has ZERO direct callers: it is registered as a callback in a function table at 0x102F69C. That table is consumed by the dialogue/audio completion dispatcher, which only ticks for speakers on the high-process path - SayTo's own exec (FUN_005c9100) refuses to queue speech unless the actor passes vtable+0x22C and the audio owner (0x8D8520) exists. An off-cell speaker therefore never gets the completion callback, the 0x40000 flag is never marked, and the SayToDone block/condition never fires regardless of persistence - exactly the wiki report. Package-result Say hangs follow the same missing completion.",
+  "fix_direction": "Queue the completion marking for off-cell speakers: either run FUN_00579160's marking from a low-process-safe path (timer/audio-owner independent), or relax the vtable+0x22C gate in SayTo's exec so speech is queued for persistent off-cell actors with the completion callback armed. NVSE-plugin hook style per BUG-001."
  },
  {
   "id": "FNV-BUG-013",
@@ -576,7 +578,7 @@
  {
   "id": "FNV-BUG-027",
   "title": "Dialogue hit sounds have no cooldown",
-  "status": "remapped",
+  "status": "root-caused",
   "subsystem": "Audio / dialogue",
   "priority": 2,
   "platform": "PC",
@@ -588,7 +590,10 @@
     "url": "https://geckwiki.com/index.php?title=Engine_Bugs_%28Fallout_New_Vegas%29"
    }
   ],
-  "research": "JIP v55.45 'Fixed dialogue combat reactions/comments, all of which were completely broken' is the adjacent public fix. DECISIVE EVIDENCE: JIP settings_enum.h enumerates the full combat-dialogue cooldown GMST family WITH addresses - Attack/Flee/FireExplosive/AvoidThreat/Detection pairs (e.g. fCombatDialogueAttackMinElapsedTime @0x11CFB20, Max @0x11CE4C8; fCombatDetectionDialogueMinElapsedTime @0x11CF0B0) - and TELLINGLY NO 'Hit' elapsed-time GMST exists in the family. The cooldown selector's switch has no hit arm: every qualifying hit re-triggers a Say. Also bDisableCombatDialogue [Combat] @0x11F1764 as a clean anchor."
+  "research": "JIP v55.45 'Fixed dialogue combat reactions/comments, all of which were completely broken' is the adjacent public fix. DECISIVE EVIDENCE: JIP settings_enum.h enumerates the full combat-dialogue cooldown GMST family WITH addresses - Attack/Flee/FireExplosive/AvoidThreat/Detection pairs (e.g. fCombatDialogueAttackMinElapsedTime @0x11CFB20, Max @0x11CE4C8; fCombatDetectionDialogueMinElapsedTime @0x11CF0B0) - and TELLINGLY NO 'Hit' elapsed-time GMST exists in the family. The cooldown selector's switch has no hit arm: every qualifying hit re-triggers a Say. Also bDisableCombatDialogue [Combat] @0x11F1764 as a clean anchor.",
+  "root_cause": "ROOT CAUSE (static, 2026-09-04): the combat-dialogue processor FUN_009839b0 (contains the sole runtime reader 0x983D04 of the cooldown settings) implements per-type Min/Max elapsed-time cooldowns ONLY for bark types 0/1 (attack), 3, 4, and 5 in both its topic-selection switch and its cooldown switch - case 2 (the hit-reaction type) is absent from both. No fCombatDialogue*Hit* GMST exists anywhere in the binary (confirmed by string scan), so hit reactions are structurally excluded from the per-type cooldown system; the only remaining gate is a single global 1500ms throttle (_DAT_011f170c check at 0x9839xx, 0x5DC), far too coarse for automatic-weapon hit rates. Every qualifying hit therefore re-triggers a Say.",
+  "fix_direction": "Add the missing case-2 arm to both switches in FUN_009839b0 with a Hit Min/Max GMST pair (new settings or reuse the detection pair), or hook the processor to apply the detection-family cooldown to hit reactions.",
+  "next": "Runtime verify: creature target + automatic weapon, count barks per magazine before/after; then prototype the case-2 cooldown patch."
  },
  {
   "id": "FNV-BUG-028",
