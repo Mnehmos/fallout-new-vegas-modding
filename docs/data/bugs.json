@@ -399,7 +399,7 @@
  {
   "id": "FNV-BUG-016",
   "title": "Lock/unlock door packages ignore door ownership",
-  "status": "seed",
+  "status": "root-caused",
   "subsystem": "AI / packages",
   "priority": 3,
   "platform": "New Vegas; reported working in Fallout 3",
@@ -410,7 +410,10 @@
     "url": "https://geckwiki.com/index.php?title=Engine_Bugs_%28Fallout_New_Vegas%29"
    }
   ],
-  "research": "No public fix. TESPackage flag bits from xNVSE: kPackageFlag_LockDoorsAtLocation=0x20, kPackageFlag_UnlockDoorsAtLocation=0x100. The wiki itself suspects this is the BUG-006 process-level defect. Ownership is reference-level (ExtraOwnership/XOWN)."
+  "research": "No public fix. TESPackage flag bits from xNVSE: kPackageFlag_LockDoorsAtLocation=0x20, kPackageFlag_UnlockDoorsAtLocation=0x100. The wiki itself suspects this is the BUG-006 process-level defect. Ownership is reference-level (ExtraOwnership/XOWN).",
+  "root_cause": "ROOT CAUSE (static, 2026-09-04): the package executor FUN_00766b80 (patrol/guard family with lock-at-location steps) locks and unlocks its stored target door - fields +0x198 (door) and +0x194 (has-door) - by calling the shared primitives directly: FUN_005018b0(door, 1) to lock (line ~180) and FUN_00501930(door, 1) to unlock (line ~226), the same primitive the console UnLock command (FUN_005cc120) uses. The ENTIRE 272-line function contains no ExtraOwnership access (no RTDynamicCast to 0x118476C, no ownership query of any kind): the ownership gate that Fallout 3 had is simply absent from this path in the NV build, so actors lock/unlock doors they do not own. The wiki's 'may be related to [process levels]' is explained by the same executor being the off-screen-capable package family.",
+  "fix_direction": "Add the ownership check before the 0x5018B0/0x501930 calls in FUN_00766b80 (or inside the shared primitives behind an 'ignore ownership' flag used only by console/script): query the door's ExtraOwnership (TD 0x118476C) and skip when the owner is not the actor's faction. NVSE hook at the two call sites.",
+  "next": "Runtime verify: owned door + guard package with lock-at-location; confirm unauthorized lock; then with the hook, confirm skip."
  },
  {
   "id": "FNV-BUG-017",
