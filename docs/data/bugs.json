@@ -551,7 +551,7 @@
  {
   "id": "FNV-BUG-025",
   "title": "StartCombatResponse can select the wrong speaker",
-  "status": "seed",
+  "status": "root-caused",
   "subsystem": "Dialogue / combat",
   "priority": 2,
   "platform": "PC",
@@ -562,7 +562,10 @@
     "url": "https://geckwiki.com/index.php?title=Engine_Bugs_%28Fallout_New_Vegas%29"
    }
   ],
-  "research": "No public fix. StartCombatResponse is a dialogue-function-table entry (FO3 DIAL table 0x80d81, used in vanilla DLC barks). Theory: response-selection never validates speaker candidacy of nearby actors. Anchors: 'StartCombatResponse' string in exe + the fCombatDialogue* GMST readers (shared processor with BUG-027)."
+  "research": "No public fix. StartCombatResponse is a dialogue-function-table entry (FO3 DIAL table 0x80d81, used in vanilla DLC barks). Theory: response-selection never validates speaker candidacy of nearby actors. Anchors: 'StartCombatResponse' string in exe + the fCombatDialogue* GMST readers (shared processor with BUG-027).",
+  "root_cause": "ROOT CAUSE (static, 2026-09-04): the combat-response processor FUN_009839b0 contains a full other-actor selection pass - iterates the actor list (FUN_004FB070/GetCount), skips self and the player, gates candidates through process vt+0x30C/0x22C/0x20C checks, picks the NEAREST by distance (FUN_00527A40, lines ~197-225) and says the chosen topic through that actor (vt+0x280, line ~268). BUT the whole pass is guarded by local_21 (init '\u0001'), which earlier code CLEARS when the original actor has pending state (process vt+0x214 nonzero path, lines ~136-146) or meets the 0x1A/0x1C form-type conditions. With local_21==0 the selection is skipped, the nearest-other search never runs, and the fallback (line ~227 'if none found use self' plus the line ~262 branch vt+0x2A4) makes the ORIGINAL actor say the line. The wiki's 'does not check other actors' is precisely this skipped-branch: the pending-state flag disables the check, so lines meant as responses from others are spoken by the initiator.",
+  "fix_direction": "Stop clearing local_21 on the vt+0x214 pending-state condition (or re-run the other-actor pass regardless and only fall back to self when the list is empty). Patch site: the flag-clear branches at ~0x983Bxx-0x983Cxx in FUN_009839b0; NVSE hook style.",
+  "next": "Runtime verify: pair of actors with combat-response topics; place the responder mid-package (pending state) and confirm the initiator speaks the line; then with the patch, confirm the responder speaks."
  },
  {
   "id": "FNV-BUG-026",
