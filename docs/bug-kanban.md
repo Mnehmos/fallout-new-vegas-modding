@@ -4,7 +4,7 @@ Tracking board for the GECKWiki "Engine Bugs (Fallout New Vegas)" RE effort.
 Source of truth for per-bug detail: `docs/data/bugs.json` (IDs here match its `id` fields).
 When a bug advances a column, update its `status`/`next` in bugs.json AND move it here.
 
-Last updated: 2026-09-04 (session 3: 8 root-caused entries / 6 defects)
+Last updated: 2026-09-04 (session 4: 15 root-caused entries / 13 defects)
 
 ---
 
@@ -60,7 +60,16 @@ BUG-003/028/029 (NVSE command-table strings lead straight to handlers), BUG-024 
 | FNV-BUG-012 | SayToDone fails off-cell | Completion marker FUN_00579160 works but is a table callback (0x102F69C) dispatched only on the processed-speaker path; SayTo exec gates on vtable+0x22C | Two-cell repro; vtable+0x22C identity; hook prototype |
 | FNV-BUG-027 | Hit-bark sounds have no cooldown | Combat-dialogue processor FUN_009839b0 switch arms 0/1/3/4/5 only — no case 2 (hit), no Hit GMST exists; only a global 1500ms gate | Bark-count repro; case-2 cooldown patch |
 
-Shared-mechanism siblings: FNV-BUG-028 and FNV-BUG-029 share the BUG-003 root cause.
+
+| FNV-BUG-016 | Lock/unlock packages ignore ownership | Executor FUN_00766b80 calls 0x5018B0/0x501930 with zero ownership query | Owned-door repro; ownership-gate hook |
+| FNV-BUG-009 | Ballistic water decals ignored | Impact handler 0x9C1B70; ballistic raycast can't hit water; splash branch bypasses impact data | Hitscan-vs-ballistic decal repro; sampler hook |
+| FNV-BUG-011 | Loop sounds survive transitions | Stop only inside updater 0x8DBE30; disable/load orphans audio-owned handle | Death-load ghost loop repro; sweep hook |
+| FNV-BUG-030 | Disabled loop-sound objects play | Same mechanism as BUG-011 | Disable repro; onDisable stop hook |
+| FNV-BUG-017 | Once a Day inconsistent | Extra 0x73 only constructed in LoadGame (0x429300) | Fresh-session double-fire repro |
+| FNV-BUG-007 | CAUTION stuck | Clear routine 0x8C5EF0 never resets PC+0xDF0 | Kill-while-hidden repro |
+| FNV-BUG-025 | StartCombatResponse wrong speaker | Nearest-other selection in 0x9839B0 skipped when local_21 cleared | Mid-package responder repro |
+
+Shared-mechanism siblings: FNV-BUG-028 and FNV-BUG-029 share the BUG-003 root cause; FNV-BUG-030 shares BUG-011's.
 
 ## FIX SHIPPED
 

@@ -426,3 +426,26 @@ Struct offsets (xNVSE headers, for field-level patching):
   with precise next hops / 5 seed. Static hops queued: BUG-013 map-insert xrefs,
   BUG-018 idle loop, BUG-009 projectile-impact dispatcher (JIP hooks.h address),
   BUG-024 ESM read. Runtime verification queue: BUG-002/003/004/006/027 repros.
+
+### 3.15 Session-4 root-cause closures (2026-09-04)
+- BUG-017: OnceADay extra (type 0x73) ctor called ONLY at 0x429300 inside
+  ExtraDataList::LoadGame - never created in-session.
+- BUG-007: GetPlayerInCombat=0x953C50 reads PC+0xDF0; combat-target clear
+  FUN_008c5ef0 never resets the aggregate; latch on death/unload.
+- BUG-025: combat-response processor FUN_009839b0 HAS a nearest-other-actor
+  selection (lines ~197-225) but flag local_21 (cleared by vt+0x214 pending
+  checks) skips it -> initiator self-says via vt+0x2A4.
+- BUG-011/030: sound stop (0x83C850 family) only issued inside per-frame
+  updater FUN_008dbe30; disable/death-load orphans the audio-manager-owned
+  loop handle (kFlag_Loop=0x10). StopAllSoundsWithFlags request 0x2A unused
+  on those paths.
+- BUG-016: package executor FUN_00766b80 locks/unlocks door (+0x198) via
+  0x5018B0/0x501930 with NO ExtraOwnership query in all 272 lines.
+- BUG-009: impact handler FUN_009c1b70 (JIP hook cont. 0x9C20C9); material
+  via 0x56F930 -> FX 0x9C20E0; ballistic raycast 0x9C0D80 can't hit water
+  (no collision geo); water branch (0x885D70 height) substitutes splash
+  0x9B4D90/0x9B5650 - impact-data decals unreachable for ballistic.
+- BUG-005 chain: PlaceLeveledActorAtMe 0x5D9810 -> spawn core 0x4698A0
+  (dispatch 0x2A/0x2B/0x33/0x51; leveled item pickers 0x46A080/0x46A190) ->
+  leveled ctx (0x8D1D30/0x8D43A0) vt+0x228 = the actor pick - next hop.
+- BUG-015 chain: say-create 0x83C520 -> per-sound 0x83D280 (flags/3D) - hop.
