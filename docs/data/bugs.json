@@ -260,21 +260,23 @@
  {
   "id": "FNV-BUG-009",
   "title": "Ballistic projectiles ignore defined water impact decals",
-  "status": "remapped",
+  "status": "root-caused",
   "subsystem": "Projectiles / rendering",
   "priority": 3,
   "platform": "PC",
   "summary": "Non-hitscan projectiles using full ballistic flight modeling reportedly fail to use water impact decals even when the impact data set defines them.",
   "re_findings": "2026-09-04 pass-15 refinement: the three ballistic callers are TRAJECTORY PLANNERS (FUN_009a7670 = two-pass aim/flight sampling calling FUN_009a6e90; consumes only hit position for targeting) - they apply no impact data. The decal application on ballistic impact therefore lives in the projectile-hit dispatcher (the same family JIP's ProjectileImpact event hooks), not in the planners. Next hop: obtain JIP's projectile-impact hook address from JIP-LN-NVSE source (internal/hooks.h) and decompile the vanilla dispatcher; the water-material skip is in its impact-data consumption vs the hitscan branch.",
   "hypothesis": "The ballistic collision path bypasses or misclassifies the water-material impact branch used by hitscan projectiles.",
-  "next": "Create matched hitscan and ballistic weapons using the same impact data, reproduce at controlled water surfaces, then compare impact-dispatch call paths.",
+  "next": "Runtime verify: same weapon impact data with hitscan ON vs OFF at a water surface; confirm decal only in hitscan. Then sampler-hook prototype.",
   "sources": [
    {
     "label": "GECKWiki engine bugs",
     "url": "https://geckwiki.com/index.php?title=Engine_Bugs_%28Fallout_New_Vegas%29"
    }
   ],
-  "research": "No public fix. JIP source documents the structures fully: BGSImpactData (model, effectOrientation, soundLevel, textureSet, decalInfo sub-struct) and BGSImpactDataSet.impactDatas[materialID <= 11] (12 material slots, water is one) plus runtime GetProjectileRefImpactMaterial - the material lookup and decal data exist and are runtime-mutable; only the ballistic flight path fails to consume them. JIP's hookable ProjectileImpact event gives the diff point vs the hitscan path."
+  "research": "No public fix. JIP source documents the structures fully: BGSImpactData (model, effectOrientation, soundLevel, textureSet, decalInfo sub-struct) and BGSImpactDataSet.impactDatas[materialID <= 11] (12 material slots, water is one) plus runtime GetProjectileRefImpactMaterial - the material lookup and decal data exist and are runtime-mutable; only the ballistic flight path fails to consume them. JIP's hookable ProjectileImpact event gives the diff point vs the hitscan path.",
+  "root_cause": "ROOT CAUSE (static, 2026-09-04): the ballistic projectile impact handler FUN_009c1b70 (contains JIP's projectile-impact hook continuation 0x9C20C9) resolves the impact material via FUN_0056f930(target) and spawns the full impact-data FX (incl. decals) through FUN_009c20e0 ONLY when a valid non-water hit was reported by the per-segment collision raycast FUN_009c0d80. Water in Gamebryo has no collision geometry: the ballistic sampler's segment raycast (the gravity-arc loop in FUN_009a6e90) can never report a water-surface hit, so the water material slot of BGSImpactDataSet is unreachable from this path. Instead the handler's water-level branch (FUN_00885d70 water-height query) routes to the generic splash FX (FUN_009b4d90/0x9b5650), which does not consult the impact data set. Hitscan traces use a ray type that DOES include water planes, which is why hitscan weapons get water decals and full-ballistic projectiles do not - exactly the wiki report.",
+  "fix_direction": "Include a water-plane intersection test in the ballistic sampler: after each segment (or on final impact), compare segment endpoints against FUN_00885d70's water height; on crossing, terminate with a synthetic water-material hit and route to the same impact-data FX path (0x9C20E0 with the water material) instead of only the splash. NVSE hook in the sampler loop of FUN_009a6e90."
  },
  {
   "id": "FNV-BUG-010",
