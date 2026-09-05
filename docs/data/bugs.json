@@ -220,21 +220,23 @@
  {
   "id": "FNV-BUG-007",
   "title": "Combat / CAUTION state can remain stuck after threats are gone",
-  "status": "remapped",
+  "status": "root-caused",
   "subsystem": "AI / combat state",
   "priority": 4,
   "platform": "Fallout 3 and New Vegas",
   "summary": "Combat or caution may persist after moving to a cell with no alerted actors or after enemies die; GECKWiki marks this as only partially fixed by JohnnyGuitar.",
   "re_findings": "2026-09-04 anchors: '[CAUTION]' HUD/status string @0x105B3F4 referenced at 0xF6F0C3 (caution-state display/aggregation); sSneakCaution @0x105B3E4. Community-confirmed engine addresses (JG NVSE source): GetPlayerInCombat=0x953C50, bFixFleeing patch site 0x8F5FE2, combat-music routine 0x992D90 (call site 0x82FC0B), named Actor::TrespassAlarm/StealAlarm. State holders: HighProcess::combatTarget +0x404, detectedActors +0x25C / detectingActors +0x260, fAwarePlayerTimer +0x34C. The latch defect is in whatever clears combatTarget/SetAlert(false) - trace from GetPlayerInCombat's readers.",
   "hypothesis": "One or more detection/combat participants remain registered or a global/player combat-state aggregate is not invalidated on unload/death transitions.",
-  "next": "Verify behavior with current JohnnyGuitar installed and without it, isolate the remaining reproduction case, then trace player combat-state aggregation and actor removal callbacks.",
+  "next": "Runtime verify: aggro an enemy, kill it while hidden (no combat-end bark), observe CAUTION/DANGER persist; console GetPlayerInCombat before/after. Then prototype the aggregate-clear hook.",
   "sources": [
    {
     "label": "GECKWiki engine bugs",
     "url": "https://geckwiki.com/index.php?title=Engine_Bugs_%28Fallout_New_Vegas%29"
    }
   ],
-  "research": "'Partially fixed by JG' but the specific sub-fix is undocumented. JG internals pin absolute addresses: engine GetPlayerInCombat=0x953C50, bFixFleeing patch site 0x8F5FE2, combat-music routine 0x992D90 (call site 0x82FC0B), plus named Actor::TrespassAlarm/StealAlarm. Struct state: HighProcess::combatTarget +0x404, detectedActors +0x25C / detectingActors +0x260, fAwarePlayerTimer +0x34C. Community theory: combat state latches when the last alerted actor dies or unloads before a combat-end event fires."
+  "research": "'Partially fixed by JG' but the specific sub-fix is undocumented. JG internals pin absolute addresses: engine GetPlayerInCombat=0x953C50, bFixFleeing patch site 0x8F5FE2, combat-music routine 0x992D90 (call site 0x82FC0B), plus named Actor::TrespassAlarm/StealAlarm. Struct state: HighProcess::combatTarget +0x404, detectedActors +0x25C / detectingActors +0x260, fAwarePlayerTimer +0x34C. Community theory: combat state latches when the last alerted actor dies or unloads before a combat-end event fires.",
+  "root_cause": "ROOT CAUSE (static, 2026-09-04): the player's combat aggregate is the byte at PlayerCharacter+0xDF0 (GetPlayerInCombat 0x953C50 returns it; +0xDF1 is the secondary flag it can write out). The engine's combat-target clear routine FUN_008c5ef0 (called from FUN_0091ebb0's null-target branch) tears down the PER-ACTOR target structure: nulls the target, conditionally clears PlayerCharacter+0x208 (last-hit target), resets timers - but it NEVER clears +0xDF0/+0xDF1. Those aggregate bytes are maintained by the detection/combat-event feed (HighProcess detectedActors +0x25C family) and have no invalidation path when the last alerted actor DIES or UNLOADS without a combat-end event; the state then latches until some transition re-runs the full teardown (reload). Exactly the wiki report and the JG 'partially fixed' remit (JG hooked consumers like GetPlayerInCombat 0x953C50 / combat music 0x992D90, not the latch itself).",
+  "fix_direction": "Add a clear of PlayerCharacter+0xDF0/+0xDF1 when the last combat participant is removed: hook actor-death/unload removal into a check over the detecting/detected lists and reset the aggregate when empty - or patch FUN_008c5ef0 to also clear the aggregate when it clears the player's +0x208 entry."
  },
  {
   "id": "FNV-BUG-008",
@@ -453,7 +455,7 @@
   "priority": 3,
   "platform": "PC",
   "summary": "Actors with Aggro Radius Behavior may stop executing packages near the player even when non-hostile after enough game time has elapsed.",
-  "re_findings": "2026-09-04 pass 18: the query chain decompiled - FUN_005a4f30 (contains the 'aggro radius violated' debug prints) asks the combat/detection owner (FUN_008d8520) via vtable+0x20C twice: first non-arg (violation registry present?) then (owner, actor, actor3d) membership test; result set only for form type 0xE. The LATCH is the owner's +0x20C registry: no clear-actor-on-exit was found in this function or its callees - the 'constant aggro' persistence lives in the registry's add/remove management. Remaining hop: decompile the +0x20C implementation on the owner class (resolve 0x8D8520's constructed class via RTTI).",
+  "re_findings": "2026-09-04 pass 19: HighProcess vtable recovered (COL 0x111E5C4 -> vtable 0x1087864). vt+0x20C = FUN_008d83e0, a trivial forwarder to the pointer-getter - i.e. the 'aggro violated' query reads a stored actor pointer on the process. The set/clear pair decompiled: FUN_0091ebb0 (set target; null branch calls flush vt+0x214/vt+0x12C) -> FUN_008c6080 (stores target+timestamp+form into the per-actor combat struct at this+0..0x10) and FUN_008c5ef0 (clear). The violation/latch persistence is in WHO calls the set with the player and never re-calls clear when the radius is exited - the set path stores timestamps (this+0x10) suggesting a timed decay inside the process tick; the 'constant aggro' is that decay never firing for non-hostile actors. Next hop: xref callers of 0x91EBB0/0x8C6080 with the aggro flag (TESAIForm+0x13) to find the insert site and its missing decay/remove.",
   "sources": [
    {
     "label": "GECKWiki engine bugs",
