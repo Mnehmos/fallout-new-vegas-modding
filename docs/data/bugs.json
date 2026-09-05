@@ -298,21 +298,23 @@
  {
   "id": "FNV-BUG-011",
   "title": "Looping weapon/object sounds survive reload or disable transitions",
-  "status": "remapped",
+  "status": "root-caused",
   "subsystem": "Audio / lifecycle",
   "priority": 3,
   "platform": "PC",
   "summary": "GECKWiki lists several related lifecycle failures: looping weapon audio can replay after death-load, and disabled objects can continue emitting looping sounds.",
   "re_findings": "2026-09-04 anchor: RTTI '.?AVExtraActivateLoopSound@@' TypeDescriptor @0x11851A8 (name @0x11851B0) -> COL 0x1104F70 -> vtable 0x1015F18. The activate-loop-sound extra-data class owns looping sound lifecycle on references; its teardown-on-disable/save-load path is where the stuck loop bug lives.",
   "hypothesis": "Looping sound handles are not consistently stopped when their owning reference is disabled, unloaded, or reconstructed from a save.",
-  "next": "Split into weapon-reload and disabled-object repro cases, capture sound-handle lifecycle, and identify the teardown path omitted by the failing transition.",
+  "next": "Runtime verify: flamer spin-up, die, load save - confirm ghost loop; then with the sweep hook, confirm silence.",
   "sources": [
    {
     "label": "GECKWiki engine bugs",
     "url": "https://geckwiki.com/index.php?title=Engine_Bugs_%28Fallout_New_Vegas%29"
    }
   ],
-  "research": "Death-load ghost loop: no public fix (sibling spin-weapon loop fixed by Stewie's bSpinWeaponsSoundFix at engine level). Audio internals from JIP GameSound.h: BSGameSound kFlag_Loop=0x10, kState_IsLooping=0x20000, SetIsLooping vtable+0x14, kRequestType_StopAllSoundsWithFlags=0x2A. Theory: loop handle owned by audio manager survives death-load because the load path issues no stop for orphaned loops; second load's teardown reaches it."
+  "research": "Death-load ghost loop: no public fix (sibling spin-weapon loop fixed by Stewie's bSpinWeaponsSoundFix at engine level). Audio internals from JIP GameSound.h: BSGameSound kFlag_Loop=0x10, kState_IsLooping=0x20000, SetIsLooping vtable+0x14, kRequestType_StopAllSoundsWithFlags=0x2A. Theory: loop handle owned by audio manager survives death-load because the load path issues no stop for orphaned loops; second load's teardown reaches it.",
+  "root_cause": "ROOT CAUSE (static, 2026-09-04, same family as FNV-BUG-030): weapon/attack loop sounds are BSGameSound handles with kFlag_Loop=0x10 owned by the audio manager and tracked through the weapon-idle extras (ExtraWeaponIdleSound TD @0x118515C) and the updater family FUN_008dbe30. The stop for an active loop is only issued from the updater/state-teardown chain that runs while the owning state machine is alive. On death-save-load, the weapon/actor state is reconstructed fresh (new process objects via the migration handlers) while the OLD state's updater never executes a final stop for its loop handle - the handle is orphaned in the audio manager and keeps playing until the second load's full audio teardown reaches it (the wiki's 'loading the save manually again will stop it'). No orphan-sweep (e.g. StopAllSoundsWithFlags request 0x2A on loop-flagged sounds) runs on the load path.",
+  "fix_direction": "On save-load init, sweep loop-flagged sounds: issue the audio request StopAllSoundsWithFlags (type 0x2A, kFlag_Loop) before reconstructing weapon state, or hook the weapon-loop extra teardown (ExtraWeaponIdleSound) to stop its handle when the owning process object is replaced."
  },
  {
   "id": "FNV-BUG-012",
@@ -645,7 +647,7 @@
  {
   "id": "FNV-BUG-030",
   "title": "Disabled looping-sound objects can keep playing audio",
-  "status": "remapped",
+  "status": "root-caused",
   "subsystem": "Audio / lifecycle",
   "priority": 3,
   "platform": "PC",
@@ -657,6 +659,9 @@
     "url": "https://geckwiki.com/index.php?title=Engine_Bugs_%28Fallout_New_Vegas%29"
    }
   ],
-  "research": "No public fix; scripters stop sounds on NVSE onDisable events as workaround. Same BSGameSound internals as BUG-011; theory: Disable unlinks 3D (onRefUnset3D) but positional loop sounds are not stopped - teardown tied to sound-object destruction the disable path omits. Shares the ExtraActivateLoopSound class path we recovered."
+  "research": "No public fix; scripters stop sounds on NVSE onDisable events as workaround. Same BSGameSound internals as BUG-011; theory: Disable unlinks 3D (onRefUnset3D) but positional loop sounds are not stopped - teardown tied to sound-object destruction the disable path omits. Shares the ExtraActivateLoopSound class path we recovered.",
+  "root_cause": "ROOT CAUSE (static, 2026-09-04): the talking-activator/loop-voice lifecycle updater FUN_008dbe30 (which contains the ExtraActivateLoopSound vtable continuation at 0x8DC4BC and the SayToDone 0x40000 marking) issues the ONLY stop for the active sound handle - FUN_0083c850(0) - from inside its per-frame update branches (e.g. at ~line 331/385/639 of the decompile), gated on the stored handle field (+0x368/+0xDA) and state flags. When a reference is DISABLED, it is removed from the update list; the updater then never runs again for that ref, the stop call is never reached, and because the loop handle is owned by the audio manager (BSGameSound, kFlag_Loop=0x10) rather than the reference, nothing else tears it down - the sound keeps playing. Exactly the wiki's 'disabled objects with looping sounds sometimes still play'.",
+  "fix_direction": "Independent teardown: hook the ref-disable path (the onDisable/onRefUnset3D transition) to issue the stop (call the 0x83C850-equivalent stop for any handle stored on the ref's extras, incl. ExtraActivateLoopSound) instead of relying on the updater's next tick. This is also the script-side workaround NVSE users apply manually.",
+  "next": "Runtime verify: TACT with looping sound, disable via console, confirm continued playback; then with an onDisable hook prototype, confirm silence."
  }
 ]
